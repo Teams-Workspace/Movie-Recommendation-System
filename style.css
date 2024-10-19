@@ -597,5 +597,18 @@ ul {
     color: #E50914;
     background-color: #ffffff;
 }
+/*responsive*/
+@media(max-width: 767px) {
+    .footer-col {
+        width: 50%;
+        margin-bottom: 30px;
+    }
+}
+
+@media(max-width: 574px) {
+    .footer-col {
+        width: 100%;
+    }
+}
 
 /* ========== Footer CSS Code End ========== */
