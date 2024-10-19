@@ -13,41 +13,90 @@
 <body>
     <header>
         <nav>
-            <div id="logo">
-                <img src="Photos/Elements/MRS logo.png" alt="Logo">
-            </div>
-            <ul class="nav-links">
-                <li class="nav-items"><a href="#">HOME</a></li>
-                <li class="nav-items"><a href="#">OLDEST</a></li>
-                <li class="nav-items"><a href="#">LATEST</a></li>
-                <li class="nav-items dropdown">
-                    <a href="#">CONTACT US</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">ABOUT US</a></li>
-                        <li><a href="#">CONTACT</a></li>
-                    </ul>
-                </li>
-            </ul>
+            <div class="full-container">
+                <div id="logo">
+                    <img src="Photos/Elements/MRS logo.png" alt="Logo">
+                </div>
+                <ul class="nav-links">
+                    <li class="nav-items"><a href="#">HOME</a></li>
+                    <li class="nav-items"><a href="#">OLDEST</a></li>
+                    <li class="nav-items"><a href="#">LATEST</a></li>
+                    <li class="nav-items dropdown" onclick="toggleNavDropdown(event)">
+                        <a href="#">CONTACT US</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">ABOUT US</a></li>
+                            <li><a href="#">CONTACT</a></li>
+                        </ul>
+                    </li>
+                </ul>
 
-            <div id="search-bar">
-                <input type="text" class="search-box" placeholder="Search">
-                <a href="#"><i class="bi bi-search"></i></a>
+                <div class="right-container">
+                    <div id="search-bar">
+                        <input type="text" class="search-box" placeholder="Search">
+                        <a href="#"><i class="bi bi-search"></i></a>
+                    </div>
+                    <div id="wishlist">
+                        <a class="watch" href="#"><i class="bi bi-bookmark"></i></a>
+                    </div>
+                    <div id="user-logo" onclick="toggleUserDropdown(event)">
+                        <img src="Photos/Elements/Deault-pic.png" alt="User Logo">
+                        <div class="user-info">
+                            <div id="username">DEFAULT USER!</div>
+                            <div class="user-dropdown">
+                                <ul class="user-dropdown-menu">
+                                    <li><a href="#"><i class="bi bi-upload"></i> Upload Profile</a></li>
+                                    <li><a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="wishlist">
-                <a class="watch" href="#"><i class="bi bi-bookmark"></i></a>
-            </div>
-            <div id="user-logo">
-                <img src="Photos/Elements/Deault-pic.png" alt="User Logo">
-                <div id="username">DEFAULT USER!</div>
-                <div class="dropdown">
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><i class="bi bi-upload"></i> Upload Profile</a></li>
-                        <li><a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-                    </ul>
+
+            <div class="responsive-container">
+                <div class="toggle-menu" onclick="toggleMenu()">
+                    <i class="bi bi-list"></i> <!-- Menu icon -->
+                </div>
+
+                <!-- Moved the nav-links inside the toggle-menu section -->
+                <ul class="nav-links" id="responsive-nav" style="display: none;">
+                    <li class="nav-items"><a href="#">HOME</a></li>
+                    <li class="nav-items"><a href="#">OLDEST</a></li>
+                    <li class="nav-items"><a href="#">LATEST</a></li>
+                    <li class="nav-items"><a href="#">CONTACT US</a></li>
+                    <li class="nav-items"><a href="#">ABOUT US</a></li>
+                    <li class="nav-items"><a href="#">CONTACT</a></li>
+                </ul>
+
+                <div id="logo">
+                    <img src="Photos/Elements/MRS logo.png" alt="Logo">
+                </div>
+
+                <div id="search-bar">
+                    <input type="text" class="search-box" placeholder="Search">
+                    <a href="#"><i class="bi bi-search"></i></a>
+                </div>
+                <div id="wishlist">
+                    <a class="watch" href="#"><i class="bi bi-bookmark"></i></a>
+                </div>
+                
+                <div id="user-logo" onclick="toggleResponsiveDropdown(event)">
+
+                    <img src="Photos/Elements/Deault-pic.png" alt="User Logo">
+                    <div class="user-info">
+                        <div id="username">DEFAULT USER!</div>
+                        <div class="responsive-user-dropdown">
+                            <ul class="responsive-user-dropdown-menu">
+                                <li><a href="#"><i class="bi bi-upload"></i> Upload Profile</a></li>
+                                <li><a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
 </body>
+<script src="script.js"></script>
 
 </html>
