@@ -1,70 +1,96 @@
+/* ========== NAVBAR-DROPDOWN  CSS Code START ========== */
 
-function toggleUserDropdown(event) {
-    event.stopPropagation(); // Prevent the click from bubbling up
-    const dropdown = document.querySelector('.user-dropdown');
-    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', function () {
-    const dropdown = document.querySelector('.user-dropdown');
-    if (dropdown.style.display === 'block') {
-        dropdown.style.display = 'none';
-    }
-});
-
+// Toggle dropdown menu when clicking the dropdown element
 function toggleNavDropdown(event) {
-    event.stopPropagation(); // Prevent the click from bubbling up
+    event.stopPropagation();
     const dropdown = event.currentTarget.querySelector('.dropdown-menu');
-    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+    const isDropdownVisible = dropdown.style.display === 'block';
+    
+    // Toggle dropdown visibility
+    dropdown.style.display = isDropdownVisible ? 'none' : 'block';
 }
+
+// Select all dropdown elements
+const dropdownItems = document.querySelectorAll('.nav-items.dropdown');
+
+// Add event listener to each dropdown item
+dropdownItems.forEach(item => {
+    item.addEventListener('click', toggleNavDropdown);
+});
 
 // Close dropdown when clicking outside
 document.addEventListener('click', function (event) {
-    const dropdowns = document.querySelectorAll('.dropdown-menu');
-    dropdowns.forEach(dropdown => {
+    dropdownItems.forEach(item => {
+        const dropdown = item.querySelector('.dropdown-menu');
         if (dropdown.style.display === 'block') {
-            dropdown.style.display = 'none'; // Hide dropdown
+            dropdown.style.display = 'none';
         }
     });
 });
 
 
-function toggleMenu() {
-    const navLinks = document.getElementById("responsive-nav");
-    if (navLinks.style.display === "none" || navLinks.style.display === "") {
-        navLinks.style.display = "block"; // Show the menu
-    } else {
-        navLinks.style.display = "none"; // Hide the menu
+/* ========== NAVBAR-DROPDOWN  CSS Code END ========== */
+
+/* ========== USER-DROPDOWN  CSS Code Start ========== */
+
+// Function to toggle the first user dropdown
+function toggleUserDropdown1(event) {
+    event.stopPropagation();
+    const userDropdown1 = document.querySelector('.user-dropdown');
+
+    if (userDropdown1) {
+        userDropdown1.classList.toggle('active');
     }
 }
 
-function toggleResponsiveDropdown(event) {
-    event.stopPropagation(); // Prevent the event from bubbling up
+// Function to toggle the second responsive user dropdown
+function toggleUserDropdown2(event) {
+    event.stopPropagation();
     const responsiveUserDropdown = document.querySelector('.responsive-user-dropdown');
 
     if (responsiveUserDropdown) {
-        responsiveUserDropdown.classList.toggle('active'); // Toggle dropdown visibility
+        responsiveUserDropdown.classList.toggle('active');
     }
 }
 
-// Close dropdown when clicking outside
-document.addEventListener('click', function (event) {
-    const responsiveUserDropdown = document.querySelector('.responsive-user-dropdown');
-    const userLogo = document.querySelector('#user-logo');
+// Select the user logo elements
+const userLogo1 = document.querySelector('#userLogo1');
+const userLogo2 = document.querySelector('#userLogo2');
 
-    if (responsiveUserDropdown && !userLogo.contains(event.target)) {
+// Add event listeners to the user logos
+userLogo1.addEventListener('click', toggleUserDropdown1);
+userLogo2.addEventListener('click', toggleUserDropdown2);
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function (event) {
+    const userDropdown1 = document.querySelector('.user-dropdown');
+    const responsiveUserDropdown = document.querySelector('.responsive-user-dropdown');
+
+    if (userDropdown1 && !userLogo1.contains(event.target)) {
+        userDropdown1.classList.remove('active');
+    }
+
+    if (responsiveUserDropdown && !userLogo2.contains(event.target)) {
         responsiveUserDropdown.classList.remove('active');
     }
 });
 
 
-function toggleIconList() {
-    const iconList = document.getElementById('icon-list');
-    // Toggle display of the icon list
-    if (iconList.style.display === 'none' || iconList.style.display === '') {
-        iconList.style.display = 'block'; // Show the icon list
-    } else {
-        iconList.style.display = 'none'; // Hide the icon list
-    }
+/* ========== USER-DROPDOWN  CSS Code END ========== */
+
+/* ========== NAV-ICON -DROPDOWN  CSS Code START ========== */
+
+function toggleMenu() {
+    const navLinks = document.getElementById("responsive-nav");
+    const isNavVisible = navLinks.style.display === "block";
+    
+    // Toggle the display of the navigation links
+    navLinks.style.display = isNavVisible ? "none" : "block";
 }
+
+const toggleMenuButton = document.querySelector('.toggle-menu');
+
+toggleMenuButton.addEventListener('click', toggleMenu);
+
+
+/* ========== NAV-ICON -DROPDOWN  CSS Code END ========== */

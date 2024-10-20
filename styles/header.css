@@ -1,0 +1,672 @@
+/* ========== DEFAULT CSS Code START ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #141414;
+    color: #d1d0cf;
+}
+
+/* ========== DEFAULT CSS Code End ========== */
+
+/* ========== FULL-CONTAINER CSS Code START ========== */
+
+.full-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* ========== FULL-CONTAINER CSS Code END ========== */
+
+/* ========== NAVBAR-FLEX CSS Code START ========== */
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #1c1c1c;
+}
+
+/* ========== NAVBAR-FLEX CSS Code END ========== */
+
+/* ========== LOGO CSS Code START ========== */
+
+.logo img {
+    width: 100px;
+    height: auto;
+}
+
+/* ========== LOGO CSS Code END ========== */
+
+/* ========== MENU-LINK CSS Code START ========== */
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-items {
+    margin: 0px;
+    position: relative;
+}
+
+.nav-items a {
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/* ========== MENU-LINK CSS Code END ========== */
+
+/* ========== MENU-LINK HOVER CSS Code START ========== */
+.nav-items a:hover {
+    background-color: rgba(255, 0, 0, 0.3);
+}
+
+.nav-items:hover a {
+    color: #E50914;
+}
+
+/* ========== MENU-LINK HOVER CSS Code END ========== */
+
+/* ========== MENU-LINK DROPDOWN CSS Code START ========== */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: #1c1c1c;
+    list-style-type: none;
+    margin: 10px -60px 8px 62px;
+    border-radius: 5px;
+    padding: 8px;
+    z-index: 1000;
+}
+
+/* ========== MENU-LINK DROPDOWN CSS Code END ========== */
+
+/* ========== MENU-LINK DROPDOW-INNER-MENU CSS Code START ========== */
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    cursor: pointer;
+}
+
+.dropdown-menu li a {
+    position: relative;
+    padding: 10px 20px;
+}
+
+.dropdown-menu li a {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+}
+
+/* ========== MENU-LINK DROPDOW-INNER-MENU CSS Code END ========== */
+
+/* ========== MENU-LINK DROPDOW-INNER-MENU  HOVER CSS Code START ========== */
+.dropdown-menu li a:hover {
+    background-color: rgba(255, 0, 0, 0.3);
+}
+
+/* ========== MENU-LINK DROPDOW-INNER-MENU  HOVER CSS Code END ========== */
+
+/* ========== DROPDOW-INNER-MENU LINE EFFECT CSS Code START ========== */
+
+.dropdown-menu li a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 4px;
+    height: 100%;
+    background-color: rgb(253, 12, 12);
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dropdown-menu li a:hover::before {
+    opacity: 1;
+}
+
+/* ========== DROPDOW-INNER-MENU LINE EFFECT CSS Code END ========== */
+
+/* ========== RIGHT-SIDE CONTAINER CSS Code START , SEARCH, WISHKIST, USER ========== */
+
+.right-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+/* ========== RIGHT-SIDE CONTAINER CSS Code END , SEARCH, WISHKIST, USER ========== */
+
+/* ========== SEARCH-BAR CSS Code START ========== */
+
+.search-box {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    color: #fff;
+    padding: 5px;
+    border-bottom: 1px solid #aaa;
+    width: 200px;
+    transition: all 0.3s ease;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+
+.search-box:focus {
+    width: 300px;
+    border-bottom: 2px solid #E50914;
+    transform: scale(1.02);
+}
+
+.search-bar a {
+    color: #fff;
+    font-size: 22px;
+    margin-right:  83px;
+}
+
+.search-bar a:hover {
+    color: #E50914;
+
+}
+
+/* ========== SEARCH-BAR CSS Code END ========== */
+
+/* ========== WISHLIST CSS Code START ========== */
+
+.wishlist a {
+    color: #fff;
+
+}
+.wishlist a:hover {
+    color: #E50914;
+
+}
+
+.wishlist {
+    font-size: 30px;
+    margin-right: 20px;
+}
+
+/* ========== WISHLIST CSS Code END ========== */
+
+/* ========== USER-LOGO CSS Code START ========== */
+
+.user-logo {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.user-logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 3px solid #E50914;
+}
+
+/* ========== USER-LOGO CSS Code END ========== */
+
+/* ========== USER-LOGO MENU CSS Code START ========== */
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* ========== USER-LOGO MENU CSS Code END ========== */
+
+/* ========== USER-NAME CSS Code START ========== */
+
+.username {
+    font-size: 14px;
+    color: white;
+}
+
+/* ========== USER-NAME CSS Code START ========== */
+
+/* ========== USER-DROPDOWN CSS Code START ========== */
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    left: -10px;
+    top: 30px;
+    background: #1c1c1c;
+    list-style-type: none;
+    margin: 27px 0px 0px -66px;
+    border-radius: 5px;
+    padding: 8px;
+    z-index: 1000;
+}
+
+/* ========== USER-DROPDOWN CSS Code END ========== */
+
+/* ========== USER-DROPDOWN CSS Code START ========== */
+
+.user-logo .user-dropdown.active {
+    display: block;
+}
+
+.user-dropdown-menu {
+    padding: 0;
+}
+
+.user-dropdown-menu li {
+    list-style: none;
+}
+
+.user-dropdown-menu li i {
+    padding: 0 5px;
+}
+
+.user-dropdown-menu li a {
+    text-decoration: none;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+}
+
+.user-dropdown-menu li a:hover {
+    background-color: rgba(255, 0, 0, 0.3);
+    color: #E50914;
+}
+
+
+.user-dropdown-menu li a {
+    position: relative;
+    padding: 10px 20px;
+}
+
+.user-dropdown-menu li a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 4px;
+    height: 100%;
+    background-color: rgb(253, 12, 12);
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.user-dropdown-menu li a:hover::before {
+    opacity: 1;
+}
+
+/* ========== USER-DROPDOWN CSS Code END ========== */
+
+/* ========== RESPONSIVE - NAVBAR CSS Code START  ========== */
+
+.responsive-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1c1c1c;
+}
+
+/* ========== RESPONSIVE - NAVBAR CSS Code start  ========== */
+
+/* ========== USER-DROPDOWN - NAVBAR CSS Code START  ========== */
+
+.responsive-user-dropdown {
+    display: none;
+    position: absolute;
+    left: -10px;
+    top: 30px;
+    background: #1c1c1c;
+    list-style-type: none;
+    margin: 11px 0px 0px -125px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.user-logo .responsive-user-dropdown.active {
+    display: block;
+}
+
+.responsive-user-dropdown li {
+    list-style: none;
+}
+
+.responsive-user-dropdown-menu li i {
+    padding: 0 5px;
+}
+
+.responsive-user-dropdown li a {
+    text-decoration: none;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+}
+
+
+
+.responsive-user-dropdown-menu li a {
+    position: relative;
+    padding: 10px 20px;
+}
+
+/* ========== USER-DROPDOWN - NAVBAR CSS Code END  ========== */
+
+/* ========== USER-DROPDOWN - NAVBAR HOVER EFFECT CSS Code START  ========== */
+
+.responsive-user-dropdown-menu li a:hover {
+    color: #E50914;
+    background-color: rgba(255, 0, 0, 0.3);
+}
+
+/* ========== USER-DROPDOWN - NAVBAR HOVER EFFECT CSS Code END  ========== */
+
+/* ========== DROPDOWN - NAVBAR LINE EFFECT EFFECT CSS Code START  ========== */
+
+.responsive-user-dropdown-menu li a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1px;
+    width: 4px;
+    height: 100%;
+    background-color: rgb(253, 12, 12);
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.responsive-user-dropdown-menu li a:hover::before {
+    opacity: 1;
+}
+
+/* ========== DROPDOWN - NAVBAR LINE EFFECT EFFECT CSS Code END  ========== */
+
+/* ========== MAX-WIDTH 1200PX CSS Code START  ========== */
+
+@media (max-width: 1200px) {
+
+    /* ========== RESPONSIVE-CONTAINER CSS Code START  ========== */
+
+    .responsive-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .full-container {
+        display: none;
+    }
+
+    .user-logo {
+        position: relative;
+    }
+
+    /* ========== RESPONSIVE-CONTAINER CSS Code END  ========== */
+
+    /* ========== LSIT ICON CSS Code START  ========== */
+
+    .toggle-menu {
+        font-size: 29px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .toggle-menu :hover {
+        color: #E50914;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 50px;
+        left: 10px;
+        background-color: #1c1c1c;
+        padding: 20px;
+        margin: 35px 0px 0px 16px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+
+    #responsive-nav li a {
+        font-size: 15px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    /* ========== LSIT ICON CSS Code END  ========== */
+
+    /* ========== LSIT ICON LINE-EFFECT CSS Code START  ========== */
+    #responsive-nav li a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -1px;
+        width: 4px;
+        height: 100%;
+        background-color: rgb(253, 12, 12);
+        z-index: 2000;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    #responsive-nav li a:hover::before {
+        opacity: 1;
+    }
+
+    /* ========== LSIT ICON LINE-EFFECT CSS Code END ========== */
+
+    /* ========== LOGO CSS Code START ========== */
+
+    .logo {
+        flex-grow: 1;
+        text-align: start;
+
+    }
+
+    .logo img {
+        display: block;
+        margin: auto;
+        width: 95px;
+        height: auto;
+    }
+
+    /* ========== LOGO CSS Code END ========== */
+
+    /* ========== SEARCH-BAR CSS Code START ========== */
+
+    .search-box {
+        width: 150px;
+    }
+
+    .search-box:focus {
+        transition: width 0.3s ease;
+        width: 200px;
+    }
+
+    /* ========== SEARCH-BAR CSS Code END ========== */
+}
+
+/* ========== LOGO  CSS Code START ========== */
+
+@media (min-width: 900px) {
+    .logo {
+        margin: 0px 269px 0 14px;
+    }
+    
+}
+/* ========== LOGO  CSS Code END ========== */
+
+/* ========== MAX-WIDTH 700PX CSS Code START ========== */
+
+@media(max-width:700px) {
+    .logo img {
+        width: 70px;
+        height: auto;
+    }
+
+    .wishlist {
+        font-size: x-large;
+    }
+
+    .user-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .user-logo img {
+        width: 35px;
+        height: auto;
+    }
+
+    .username {
+        margin-top: 5px;
+        text-align: center;
+        font-size: 10px;
+    }
+
+    .search-box {
+        width: 150px;
+    }
+
+    .search-box:focus {
+        transition: width 0.3s ease;
+        width: 150px;
+    }
+}
+
+/* ========== MAX-WIDTH 700PX CSS Code END ========== */
+
+/* ========== MAX-WIDTH 640PX CSS Code START ========== */
+
+@media (max-width: 640px) {
+
+    /* ========== USER-IMG CSS Code START ========== */
+    #logo img {
+        width: 35px;
+        height: auto;
+    }
+
+    .toggle-menu {
+        font-size: 24px;
+        margin-right: 5px;
+    }
+
+    .user-logo {
+        flex-direction: column;
+        align-items: center;
+        margin-left: -50px;
+        margin-right: -20px;
+    }
+
+    .username {
+        font-size: 10px;
+        margin-top: 3px;
+        text-align: center;
+
+    }
+
+    /* ========== USER-IMG CSS Code END ========== */
+
+    .wishlist {
+        margin-right: 60px;
+    }
+}
+
+@media (max-width: 640px) {
+    
+    /* ========== SEARCH - BAR CSS Code START ========== */
+    .search-bar {
+        margin-right: -40px;
+    }
+    
+    
+    .search-box {
+        width: 60%;
+        transform: none;
+    }
+    .search-box:focus {
+        width: 60%;
+        transform: none;
+    }
+
+    .logo {
+        margin: 0px 32px 0 1px;
+    }
+
+    /* ========== SEARCH - BAR CSS Code END ========== */
+}
+
+/* ========== NOTIFICATION CSS Code START ========== */
+
+.wishlist .watch div::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    right: 210px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    border: 2px solid white; 
+}
+
+.wishlist .watch:hover div::after {
+    border-color: #E50914;
+    background-color: #1c1c1c;
+
+
+}
+
+@media (max-width: 700px) {
+    .wishlist .watch div::after {
+        top: 26px;
+        right: 123px;
+        width: 10px; 
+        height: 10px;
+        background-color: #E50914; 
+    }
+}
+
+@media (max-width: 630px)
+{
+    .wishlist .watch div::after {
+        top: 26px;
+        right: 95px;
+        width: 10px; 
+        height: 10px;
+        background-color: red; 
+    }
+    
+}
+
+/* ========== NOTIFICATION CSS Code END ========== */
+
