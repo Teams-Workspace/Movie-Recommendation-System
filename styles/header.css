@@ -121,10 +121,6 @@ nav {
 .dropdown-menu li a {
     position: relative;
     padding: 10px 20px;
-}
-
-.dropdown-menu li a {
-    padding: 10px 20px;
     display: flex;
     align-items: center;
     color: #fff;
@@ -135,6 +131,7 @@ nav {
 /* ========== MENU-LINK DROPDOW-INNER-MENU  HOVER CSS Code START ========== */
 .dropdown-menu li a:hover {
     background-color: rgba(255, 0, 0, 0.3);
+    color: #E50914;
 }
 
 /* ========== MENU-LINK DROPDOW-INNER-MENU  HOVER CSS Code END ========== */
@@ -148,7 +145,7 @@ nav {
     left: -10px;
     width: 4px;
     height: 100%;
-    background-color: rgb(253, 12, 12);
+    background-color:rgb(253, 12, 12);
     z-index: 2000;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -308,6 +305,7 @@ nav {
     display: flex;
     align-items: center;
     color: #ffffff;
+    position: relative;
 }
 
 .user-dropdown-menu li a:hover {
@@ -316,10 +314,6 @@ nav {
 }
 
 
-.user-dropdown-menu li a {
-    position: relative;
-    padding: 10px 20px;
-}
 
 .user-dropdown-menu li a::before {
     content: "";
@@ -626,6 +620,7 @@ nav {
 @media (max-width: 640px) {
 
     /* ========== SEARCH - BAR CSS Code START ========== */
+    
     .search-bar {
         margin-right: -40px;
     }
@@ -717,7 +712,7 @@ nav {
         background-color: red;
     }
     .search-bar{
-        width: 40%;
+        width: 50%;
     }
 
 }
