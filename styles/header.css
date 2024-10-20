@@ -7,8 +7,13 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #141414;
+    background-color: transparent;
     color: #d1d0cf;
+}
+
+header {
+    position: fixed;
+    width: 100%;
 }
 
 /* ========== DEFAULT CSS Code End ========== */
@@ -31,7 +36,10 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #1c1c1c;
+    /* background-color: #202020; */
+    background: linear-gradient(to right,
+            rgba(20, 20, 20, 0.950),
+            rgba(20, 20, 20, 0.850));
 }
 
 /* ========== NAVBAR-FLEX CSS Code END ========== */
@@ -60,20 +68,31 @@ nav {
     color: white;
     padding: 10px 20px;
     text-decoration: none;
-    display: block;
+    display: inline-block;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
-/* ========== MENU-LINK CSS Code END ========== */
+/* ========== MENU-LINK HOVER CSS Code ========== */
 
-/* ========== MENU-LINK HOVER CSS Code START ========== */
 .nav-items a:hover {
-    background-color: rgba(255, 0, 0, 0.3);
+    color: #E50914;
+    font-weight: bold;
 }
 
-.nav-items:hover a {
-    color: #E50914;
+.nav-items a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: #E50914;
+    transition: width 0.3s ease;
+}
+
+.nav-items a:hover::before {
+    width: 100%;
 }
 
 /* ========== MENU-LINK HOVER CSS Code END ========== */
@@ -181,7 +200,7 @@ nav {
 .search-bar a {
     color: #fff;
     font-size: 22px;
-    margin-right:  83px;
+    margin-right: 83px;
 }
 
 .search-bar a:hover {
@@ -197,6 +216,7 @@ nav {
     color: #fff;
 
 }
+
 .wishlist a:hover {
     color: #E50914;
 
@@ -326,7 +346,7 @@ nav {
     display: none;
     flex-direction: column;
     align-items: center;
-    background-color: #1c1c1c;
+    background-color:transparent;
 }
 
 /* ========== RESPONSIVE - NAVBAR CSS Code start  ========== */
@@ -416,7 +436,7 @@ nav {
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        padding: 10px;
+        padding: 0px;
     }
 
     .full-container {
@@ -434,8 +454,10 @@ nav {
     .toggle-menu {
         font-size: 29px;
         cursor: pointer;
-        margin-right: 10px;
+        margin-right: 0px;
+        margin-left: -10px
     }
+
     .toggle-menu :hover {
         color: #E50914;
     }
@@ -485,14 +507,13 @@ nav {
 
     /* ========== LOGO CSS Code START ========== */
 
-    .logo {
+     .logo {
         flex-grow: 1;
-        text-align: start;
+        text-align: left;
 
-    }
+    } 
 
     .logo img {
-        display: block;
         margin: auto;
         width: 95px;
         height: auto;
@@ -520,8 +541,9 @@ nav {
     .logo {
         margin: 0px 269px 0 14px;
     }
-    
+
 }
+
 /* ========== LOGO  CSS Code END ========== */
 
 /* ========== MAX-WIDTH 700PX CSS Code START ========== */
@@ -602,17 +624,18 @@ nav {
 }
 
 @media (max-width: 640px) {
-    
+
     /* ========== SEARCH - BAR CSS Code START ========== */
     .search-bar {
         margin-right: -40px;
     }
-    
-    
+
+
     .search-box {
         width: 60%;
         transform: none;
     }
+
     .search-box:focus {
         width: 60%;
         transform: none;
@@ -626,12 +649,12 @@ nav {
 }
 
 @media (min-width: 585px) {
-    
+
     /* ========== SEARCH - BAR CSS Code START ========== */
     .search-bar {
         margin-right: -36px;
     }
-    
+
     .logo {
         margin: 0px 50px 0 5px;
     }
@@ -643,14 +666,14 @@ nav {
 
 .wishlist .watch div::after {
     content: "";
-    position: absolute;
-    top: 20px;
-    right: 210px;
+    position: fixed;
+    top: 15px;
+    right: 195px;
     width: 10px;
     height: 10px;
     background-color: red;
     border-radius: 50%;
-    border: 2px solid white; 
+    border: 2px solid white;
 }
 
 .wishlist .watch:hover div::after {
@@ -662,25 +685,41 @@ nav {
 
 @media (max-width: 700px) {
     .wishlist .watch div::after {
-        top: 26px;
-        right: 123px;
-        width: 10px; 
+        top: 15px;
+        right: 115px;
+        width: 10px;
         height: 10px;
-        background-color: #E50914; 
+        background-color: #E50914;
     }
 }
 
-@media (max-width: 630px)
-{
+@media (max-width: 640px) {
     .wishlist .watch div::after {
-        top: 26px;
-        right: 95px;
-        width: 10px; 
+        top: 15px;
+        right: 85px;
+        width: 10px;
         height: 10px;
-        background-color: red; 
+        background-color: red;
     }
-    
+
+}
+@media (max-width: 500px) {
+    .wishlist
+    {
+        margin-left: -20px;
+
+    }
+    .wishlist .watch div::after {
+        top: 15px;
+        right: 85px;
+        width: 10px;
+        height: 10px;
+        background-color: red;
+    }
+    .search-bar{
+        width: 40%;
+    }
+
 }
 
 /* ========== NOTIFICATION CSS Code END ========== */
-
