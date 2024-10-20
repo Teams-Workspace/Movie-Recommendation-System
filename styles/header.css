@@ -625,6 +625,20 @@ nav {
     /* ========== SEARCH - BAR CSS Code END ========== */
 }
 
+@media (min-width: 585px) {
+    
+    /* ========== SEARCH - BAR CSS Code START ========== */
+    .search-bar {
+        margin-right: -36px;
+    }
+    
+    .logo {
+        margin: 0px 50px 0 5px;
+    }
+
+    /* ========== SEARCH - BAR CSS Code END ========== */
+}
+
 /* ========== NOTIFICATION CSS Code START ========== */
 
 .wishlist .watch div::after {
