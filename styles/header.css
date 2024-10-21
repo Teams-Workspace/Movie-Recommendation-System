@@ -808,3 +808,68 @@ nav {
 
     /* ========== SEARCH - BAR CSS Code END ========== */
 }
+<<<<<<< Updated upstream
+=======
+
+/* ========== NOTIFICATION CSS Code START ========== */
+
+.wishlist .watch div::after {
+    content: "";
+    position: fixed;
+    top: 1px;
+    right: 205px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.wishlist .watch:hover div::after {
+    border-color: #E50914;
+    background-color: transparent;
+
+
+}
+
+@media (max-width: 700px) {
+    .wishlist .watch div::after {
+        top: 15px;
+        right: 115px;
+        width: 10px;
+        height: 10px;
+        background-color: #E50914;
+    }
+}
+
+@media (max-width: 640px) {
+    .wishlist .watch div::after {
+        top: 15px;
+        right: 85px;
+        width: 10px;
+        height: 10px;
+        background-color: red;
+    }
+
+}
+@media (max-width: 500px) {
+    .wishlist
+    {
+        margin-left: -20px;
+
+    }
+    .wishlist .watch div::after {
+        top: 15px;
+        right: 85px;
+        width: 10px;
+        height: 10px;
+        background-color: red;
+    }
+    .search-bar{
+        width: 50%;
+    }
+
+}
+
+/* ========== NOTIFICATION CSS Code END ========== */
+>>>>>>> Stashed changes
