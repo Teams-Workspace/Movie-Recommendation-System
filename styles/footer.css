@@ -119,9 +119,9 @@ ul {
     margin-top: 5px;
 }
 /* Disable underline effect for .developers-name h4 */
- .developers-name h4::before {
+.developers-name h4::before {
     content: none;
-} 
+}
 
 /* Hover effect for social media icons */
 .footer-col .social-links a:hover {
