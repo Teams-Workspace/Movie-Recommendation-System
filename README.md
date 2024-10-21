@@ -240,7 +240,7 @@ This project utilizes the following programming languages:
 5. **EJS (Embedded JavaScript)**
    - Used for templating and rendering dynamic HTML content.
 
-![Logo](http://127.0.0.1:5501/Movie-Recommendation-System/Photos/Elements/MRS%20logo.svg)
+![Logo](https://github.com/AbrarAli-SE/Movie-Recommendation-System/blob/main/Photos/Elements/MRS%20logo.png)
 
 
 ## Authors
