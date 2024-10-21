@@ -3,6 +3,9 @@
 
 The Movie Recommendation System suggests personalized movie options to users based on their viewing history, ratings, and preferences. Using a combination of data filtering and recommendation algorithms, the system aims to enhance user experience by providing tailored movie suggestions efficiently
 
+![Logo](https://github.com/AbrarAli-SE/Movie-Recommendation-System/blob/main/Photos/Elements/MRS%20logo.png)
+
+
 ## Project Structure
 
     movie-recommendation-system/
@@ -239,8 +242,6 @@ This project utilizes the following programming languages:
 
 5. **EJS (Embedded JavaScript)**
    - Used for templating and rendering dynamic HTML content.
-
-![Logo](https://github.com/AbrarAli-SE/Movie-Recommendation-System/blob/main/Photos/Elements/MRS%20logo.png)
 
 
 ## Authors
