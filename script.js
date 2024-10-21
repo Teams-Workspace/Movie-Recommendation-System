@@ -1,4 +1,4 @@
-/* ========== NAVBAR-DROPDOWN  CSS Code START ========== */
+/* ========== NAVBAR-DROPDOWN  JS Code START ========== */
 
 // Toggle dropdown menu when clicking the dropdown element
 function toggleNavDropdown(event) {
@@ -29,9 +29,9 @@ document.addEventListener('click', function (event) {
 });
 
 
-/* ========== NAVBAR-DROPDOWN  CSS Code END ========== */
+/* ========== NAVBAR-DROPDOWN  JS Code END ========== */
 
-/* ========== USER-DROPDOWN  CSS Code Start ========== */
+/* ========== USER-DROPDOWN  JS Code Start ========== */
 
 // Function to toggle the first user dropdown
 function toggleUserDropdown1(event) {
@@ -76,21 +76,46 @@ document.addEventListener('click', function (event) {
 });
 
 
-/* ========== USER-DROPDOWN  CSS Code END ========== */
+/* ========== USER-DROPDOWN  JS Code END ========== */
 
-/* ========== NAV-ICON -DROPDOWN  CSS Code START ========== */
+/* ========== NAV-ICON -DROPDOWN  JS Code START ========== */
 
-function toggleMenu() {
-    const navLinks = document.getElementById("responsive-nav");
-    const isNavVisible = navLinks.style.display === "block";
-    
-    // Toggle the display of the navigation links
-    navLinks.style.display = isNavVisible ? "none" : "block";
-}
+// Selecting the menu toggle icon and the nav links
+const toggleMenu = document.querySelector('.toggle-menu');
+const navLinks = document.getElementById('responsive-nav');
+const links = document.querySelectorAll('.nav-links a');
 
-const toggleMenuButton = document.querySelector('.toggle-menu');
+// Function to close the dropdown
+const closeDropdown = () => {
+    navLinks.style.display = 'none'; // Hide menu
+};
 
-toggleMenuButton.addEventListener('click', toggleMenu);
+// Event listener for the menu toggle
+toggleMenu.addEventListener('click', (event) => {
+    event.stopPropagation(); 
+    // Toggle the display property of navLinks
+    if (navLinks.style.display === 'none' || navLinks.style.display === '') {
+        navLinks.style.display = 'block'; // Show menu
+    } else {
+        navLinks.style.display = 'none';  // Hide menu
+    }
+});
+
+// Event listener for each link inside the dropdown
+links.forEach(link => {
+    link.addEventListener('click', () => {
+        // Close the dropdown when a link is clicked
+        closeDropdown();
+    });
+});
+
+// Event listener to close the dropdown when clicking outside
+document.addEventListener('click', (event) => {
+    // Check if the click is outside of navLinks and toggleMenu
+    if (!navLinks.contains(event.target) && !toggleMenu.contains(event.target)) {
+        closeDropdown(); // Close the dropdown
+    }
+});
 
 
-/* ========== NAV-ICON -DROPDOWN  CSS Code END ========== */
+/* ========== NAV-ICON -DROPDOWN  JS Code END ========== */
