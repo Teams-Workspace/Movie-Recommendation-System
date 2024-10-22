@@ -1,1 +1,8 @@
-index.html
+# Node.js dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Local configuration files
+package-lock.json
