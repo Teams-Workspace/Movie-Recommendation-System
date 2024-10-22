@@ -14,8 +14,11 @@ The Movie Recommendation System suggests personalized movie options to users bas
     │   │   └── styles.css          # Main stylesheet
     │   ├── js/                     # JavaScript files
     │   │   └── scripts.js          # Main JavaScript file
-    │   └── images/                 # Images (e.g., logos, movie posters)
-    │       └── logo.png            # Example logo file
+    │   |── images/                 # Images (e.g., logos, movie posters)
+    │   |   └── logo.png            # Example logo file
+    |   |── uploads/                # Directory for user-uploaded files
+    |   |   └── profile_pics/       # Subdirectory for profile pictures uploaded by users
+    |   |       └── example.jpg     # Example profile picture
     ├── routes/                     # Route definitions
     │   ├── authRoutes.js           # Routes for authentication (login/signup)
     │   ├── adminRoutes.js          # Routes for admin functionality
@@ -212,7 +215,7 @@ npm install helmet
 - **Documentation**: [Nodemon Documentation](https://nodemonjs.org/)
 - **Installation**:
 ```
-npm install --save-dev nodemon
+npm install nodemon
 
 ```
 ## API Use
