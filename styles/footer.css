@@ -15,6 +15,7 @@ main {
 
 /* ========== Footer Styles ========== */
 .footer {
+    position: relative;
     background-color: #202020;
     padding: 70px 0 20px; /* Adjust padding to push content down */
     color: white;
