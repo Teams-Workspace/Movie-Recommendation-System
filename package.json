@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js",
+    "start:prod": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -28,9 +29,12 @@
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
+    "mysql2": "^3.11.3",
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.15",
-    "nodemon": "^3.1.7",
     "swiper": "^11.1.14"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
