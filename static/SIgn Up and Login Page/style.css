@@ -1,0 +1,82 @@
+/* styles.css */
+
+/* Set basic styles for the body */
+body {
+    font-family: Arial, sans-serif; 
+    background: url('background.jpg') no-repeat center center/cover; 
+    height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin: 0; 
+}
+
+/* Container for the form */
+.form-container {
+    background-color: rgba(0, 0, 0, 0.6); 
+    padding: 40px; 
+    border-radius: 8px; 
+    width: 300px; 
+    color: #fff; 
+}
+
+/* Heading inside the form */
+.form-container h2 {
+    margin-bottom: 20px; 
+    text-align: center; 
+}
+
+/* Label styles for form inputs */
+.form-container label {
+    display: block; 
+    margin-bottom: 8px; 
+}
+
+/* Input fields styles */
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="password"],
+.form-container input[type="number"] {
+    width: 100%; 
+    padding: 10px; 
+    margin-bottom: 20px; 
+    border: none; 
+    border-radius: 4px; 
+}
+
+/* Styles for buttons */
+.form-container button {
+    width: 100%; 
+    padding: 10px; 
+    background-color: red; 
+    color: white; 
+    border: none; 
+    border-radius: 4px; 
+}
+
+/* Button hover effect */
+.form-container button:hover {
+    background-color: darkred; 
+}
+
+/* Link styles */
+.link {
+    text-align: center; 
+    margin-top: 10px; 
+}
+
+/* Link text styles */
+.link a {
+    color: #fff; 
+    text-decoration: none; 
+}
+
+/* Link hover effect */
+.link a:hover {
+    text-decoration: underline; 
+}
+
+/* Hidden OTP field */
+.otp-field {
+    display: none; 
+}
