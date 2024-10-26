@@ -1,23 +1,23 @@
 /* ========== Global Styles ========== */
 html, body {
-    height: 100%; /* Allow full height */
+    height: 100%; 
     margin: 0;
     display: flex;
-    flex-direction: column; /* Align children in a column */
+    flex-direction: column; 
 }
 
 /* ========== Main Content ========== */
 main {
-    flex: 1; /* Allow main content to grow */
+    flex: 1; 
     padding: 20px;
-    background-color: #f0f0f0; /* Optional background for visibility */
+    background-color: #f0f0f0; 
 }
 
 /* ========== Footer Styles ========== */
 .footer {
     position: relative;
     background-color: #202020;
-    padding: 70px 0 20px; /* Adjust padding to push content down */
+    padding: 70px 0 20px;
     color: white;
 }
 
@@ -133,7 +133,7 @@ ul {
 footer h6 { 
     text-align: center;
     color: #ffffff;
-    margin-top: auto; /* Push h6 down */
+    margin-top: auto; 
 }
 
 /* Responsive styles */
