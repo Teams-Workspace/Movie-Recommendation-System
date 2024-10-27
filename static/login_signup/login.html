@@ -4,22 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="login_stylesheet.css">
+    <link rel="stylesheet" href="/css/login.css"> <!-- Use absolute path for the stylesheet -->
 </head>
 <body>
-
     <div class="container">
         <!-- Left Side Text Section -->
         <div class="account-text">
             <h1>Login</h1>
-            <p>Don't have an account? <a href="signup.html" id="switchToSignup">Sign up</a></p>
+            <p>Don't have an account? <a href="signup" id="switchToSignup">Sign up</a></p>
         </div>
-
 
         <!-- Right Side Login Box -->
         <div class="login-box" id="loginBox">
             <h2>Login</h2>
-            <form id="loginForm">
+            <form id="loginForm" action="/login" method="POST">
                 <div class="input-field">
                     <input type="email" id="loginEmail" placeholder="Email" required>
                 </div>
@@ -31,7 +29,36 @@
         </div>
     </div>
 
-    <script src="login_script.js"></script>
-</body>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("loginForm");
 
+            loginForm.addEventListener("submit", (e) => {
+                const email = document.getElementById("loginEmail");
+                const password = document.getElementById("loginPassword");
+
+                // Clear any previous error states
+                email.classList.remove("error");
+                password.classList.remove("error");
+
+                // Validate email and password fields
+                let valid = true;
+                if (!email.value) {
+                    email.classList.add("error");
+                    valid = false;
+                }
+
+                if (!password.value) {
+                    password.classList.add("error");
+                    valid = false;
+                }
+
+                // If both fields are valid, allow the form to submit
+                if (!valid) {
+                    e.preventDefault(); // Prevent submission if not valid
+                }
+            });
+        });
+    </script>
+</body>
 </html>

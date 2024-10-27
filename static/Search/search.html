@@ -4,34 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Page Not Found</title>
+    <link rel="stylesheet" href="/Movie-Recommendation-System/static/styles/header.css">
+    <!-- Use absolute path for the stylesheet -->
+    <link rel="stylesheet" href="/Movie-Recommendation-System/static/styles/footer.css">
+    <!-- Use absolute path for the stylesheet -->
+    <link rel="stylesheet" href="/Movie-Recommendation-System/static/styles/search.css">
+    <!-- Use absolute path for the stylesheet -->
+    <link rel="stylesheet" href="/css/footer.css"> <!-- Use absolute path for the stylesheet -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" type="text/css"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link rel="shortcut icon" href="Photos/Elements/MRS logo.svg" type="image/x-icon">
-    <link rel="stylesheet" href="404_style.css"> Link to your compiled CSS
-    <link rel="stylesheet" href="/Movie-Recommendation-System/styles/header.css">
-    <link rel="stylesheet" href="/Movie-Recommendation-System/styles/footer.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <title>Search Page</title>
 </head>
 
 <body>
-    <!-- ========== HEADER HTML Code Start ========== -->
-
     <header>
-        <!-- NAV BAR HTML CODE START -->
-
         <nav>
-            <!-- full screen nav bar HTML CODE START -->
-
             <div class="full-container">
-
-                <!-- LOGO HTML CODE -->
                 <div class="logo">
                     <img src="/Movie-Recommendation-System/Photos/Elements/MRS logo.svg" alt="Logo">
+                    <!-- Updated logo path -->
                 </div>
-
-                <!-- USER MENU HTML CODE -->
                 <ul class="nav-links">
-                    <li class="nav-items"><a href="#" class="underline">HOME</a></li>
+                    <li class="nav-items"><a href="/" class="underline">HOME</a></li>
                     <li class="nav-items"><a href="#" class="underline">OLDEST</a></li>
                     <li class="nav-items"><a href="#" class="underline">LATEST</a></li>
                     <li class="nav-items dropdown">
@@ -42,32 +38,26 @@
                         </ul>
                     </li>
                 </ul>
-
-                <!-- Container HTML CODE ( search, wishlist, profile ) -->
-
                 <div class="right-container">
-
-                    <!-- SEARCH BAR HTML CODE -->
                     <div class="search-bar">
                         <input type="text" class="search-box" placeholder="Search">
                         <a href="#"><i class="bi bi-search"></i></a>
                     </div>
-
-                    <!-- WISHLIST HTML CODE -->
                     <div class="wishlist">
                         <a class="watch" href="#"><i class="bi bi-bookmark"></i>
-                            <div class="notification"></div> <!-- This div will hold the notification circle -->
+                            <div class="notification"></div>
                         </a>
                     </div>
-                    <!-- USER LOGO HTML CODE -->
                     <div class="user-logo" id="userLogo1">
                         <img src="/Movie-Recommendation-System/Photos/Elements/Deault-pic.png" alt="User Logo">
+                        <!-- Updated profile picture path -->
                         <div class="user-info">
                             <div class="username">DEFAULT USER!</div>
                             <div class="user-dropdown">
                                 <ul class="user-dropdown-menu">
                                     <li><a href="#"><i class="bi bi-upload"></i> Upload Profile</a></li>
-                                    <li><a href="script.js"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                                    <li><a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                                    <!-- Updated logout path -->
                                 </ul>
                             </div>
                         </div>
@@ -75,79 +65,74 @@
                 </div>
             </div>
 
-            <!-- full screen nav bar HTML CODE END -->
-
-            <!-- RESPONSIVE screen nav bar HTML CODE START -->
-
             <div class="responsive-container">
-
-                <!-- LIST ICON HTML CODE -->
                 <div class="toggle-menu">
-                    <i class="bi bi-list"></i> <!-- Menu icon -->
+                    <i class="bi bi-list"></i>
                 </div>
-
-                <!-- Moved the nav-links inside the toggle-menu section -->
                 <ul class="nav-links" id="responsive-nav" style="display: none;">
-                    <li class="nav-items hover-effect"><a href="#">HOME</a></li>
+                    <li class="nav-items hover-effect"><a href="/">HOME</a></li>
                     <li class="nav-items hover-effect"><a href="#">OLDEST</a></li>
                     <li class="nav-items hover-effect"><a href="#">LATEST</a></li>
                     <li class="nav-items hover-effect"><a href="#">CONTACT US</a></li>
                     <li class="nav-items hover-effect"><a href="#">ABOUT US</a></li>
                     <li class="nav-items hover-effect"><a href="#">CONTACT</a></li>
                 </ul>
-
-                <!-- LOGO HTML CODE -->
                 <div class="logo">
                     <img src="/Movie-Recommendation-System/Photos/Elements/MRS logo.svg" alt="Logo">
+                    <!-- Updated logo path -->
                 </div>
-
-                <!-- SEARCH BAR HTML CODE -->
                 <div class="search-bar">
                     <input type="text" class="search-box" placeholder="Search">
                     <a href="#"><i class="bi bi-search"></i></a>
                 </div>
-
-                <!-- WISHLIST HTML CODE -->
                 <div class="wishlist">
                     <a class="watch" href="#"><i class="bi bi-bookmark"></i>
-                        <div class="notification"></div> <!-- This div will hold the notification circle -->
+                        <div class="notification"></div>
                     </a>
                 </div>
-
-                <!-- USER LOGO HTML CODE -->
                 <div class="user-logo" id="userLogo2">
                     <img src="/Movie-Recommendation-System/Photos/Elements/Deault-pic.png" alt="User Logo">
+                    <!-- Updated profile picture path -->
                     <div class="user-info">
                         <div class="username">DEFAULT USER!</div>
                         <div class="responsive-user-dropdown ">
                             <ul class="responsive-user-dropdown-menu">
                                 <li><a href="#"><i class="bi bi-upload"></i> Upload Profile</a></li>
-                                <li><a href="footer.css"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                                <li><a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                                <!-- Updated logout path -->
                             </ul>
                         </div>
                     </div>
                 </div>
-
-                <!-- RESPONSIVE screen nav bar HTML CODE START -->
             </div>
         </nav>
-
-        <!-- NAV BAR HTML CODE end -->
     </header>
+    <main>
+        <section class="search-section">
+            <div id="search-movie" class="left-side">
+                <img src="https://image.tmdb.org/t/p/w200/lqoMzCcZYEFK729d6qzt349fB4o.jpg" alt="">
+            </div>
+            <div id="movie-detail">
+                <h3 class="title"><b>Title : </b> The Substance</h3>
+                <h4 class="overview"><b>Overview :</b> A fading celebrity decides to use a black market drug, a
+                    cell-replicating substance that temporarily creates a younger, better version of herself.</h4>
+                <h5 class="release-date"><b>Release Date :</b> 2024-09-07</h5>
+                <h3 class="rating"><b>Rating :</b> 7.367</h3>
+                <h3 class="genres"><b>Genres :</b> Horror, Drama, Science Fiction</h3>
+                <div class="wishlist-container">
+                    <h5 class="wishlist-text"><b>Add to Wishlist :</b></h5>
+                    <button id="wishlist" class="wishlist-button"><i class="bi bi-bookmark"></i></button>
+                </div>
+        </section>
+        <section id="related-movies">
+            <h2 id="suggest">Related Suggestions</h2>
+            <div id="movie-container" class="movie-container"></div>
 
-    <!-- ========== HEADER HTML Code END ========== -->
-
-    <!-- ========== 404 code HTML Code START ========== -->
-    <div class="container">
-        <div class="error-code">404</div>
-        <div class="message">Oops! Page Not Found</div>
-    </div>
-    <!-- ========== 404 code HTML Code START ========== -->
-
+        </section>
+    </main>
     <footer class="footer">
         <div class="footer-container">
             <div class="row">
-                <!-- First footer column -->
                 <div class="footer-col">
                     <h4>Web-App</h4>
                     <ul>
@@ -157,25 +142,19 @@
                         <li><a href="#">Terms of use</a></li>
                     </ul>
                 </div>
-
-                <!-- Second footer column -->
                 <div class="footer-col">
                     <h4>get help</h4>
                     <ul>
                         <li><a href="#">FAQ</a></li>
                         <li><a href="#">Payment Guidelines</a></li>
-                        <li><a href="#">Subsriptions Guidelines</a></li>
+                        <li><a href="#">Subscriptions Guidelines</a></li>
                         <li><a href="#">steps to watch</a></li>
                         <li><a href="#">payment options</a></li>
                     </ul>
                 </div>
-
-                <!-- Third footer column (empty for spacing) -->
                 <div class="footer-col">
                     <!-- Empty column for spacing -->
                 </div>
-
-                <!-- Fourth footer column -->
                 <div class="footer-col">
                     <h4>follow us</h4>
                     <div class="developers-name">
@@ -201,13 +180,11 @@
                 </div>
             </div>
         </div>
-        <h6> &copy; Developed by Abrar Ali & Saad Ali</h6>
+        <h6>&copy; Developed by Abrar Ali & Saad Ali</h6>
     </footer>
 
-    <!-- ========== Footer HTML Code End ========== -->
-
-
 </body>
-<script src="/Movie-Recommendation-System/script.js"></script>
+<script src="/Movie-Recommendation-System/public/js/scripts.js"></script>
+<script src="fetch.js"></script>
 
 </html>

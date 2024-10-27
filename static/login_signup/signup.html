@@ -2,45 +2,34 @@
 <html lang="en">
 
 <head>
-    <!-- Meta tags for character set and responsive design -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Login Page</title>
-    <!-- Link to the external CSS stylesheet -->
-    <link rel="stylesheet" href="signup_stylesheet.css">
+    <link rel="stylesheet" href="signup_stylesheet.css"> <!-- Use absolute path for the stylesheet -->
 </head>
 
 <body>
     <div class="container">
-        <!-- Section for account text and registration prompt -->
         <div class="account-text">
             <h1>Create New Account</h1>
-            <p>Already Registered? <a href="login.html">Login</a></p>
+            <p>Already Registered? <a href="login">Login</a></p>
         </div>
-        <!-- Login box containing the form -->
         <div class="login-box">
             <h2>Sign Up</h2>
-            <form id="loginForm">
-                <!-- Input field for name -->
+            <form id="signupForm" action="signup" method="POST">
                 <div class="input-field">
-                    <input type="text" id="name" placeholder="NAME">
+                    <input type="text" id="name" placeholder="NAME" required>
                 </div>
-                <!-- Input field for email with an OTP button -->
                 <div class="input-field email">
-                    <input type="email" id="email" placeholder="EMAIL">
-                    <button type="button" id="sendOTP">
-                        <img src="arrow.png" alt="" />
-                    </button>
+                    <input type="email" id="email" placeholder="EMAIL" required>
+                    <button type="button" id="sendOTP">Send OTP</button>
                 </div>
-                <!-- Input field for password -->
                 <div class="input-field">
-                    <input type="password" id="password" placeholder="PASSWORD">
+                    <input type="password" id="password" placeholder="PASSWORD" required>
                 </div>
-                <!-- Section for OTP input, hidden by default -->
                 <div id="otp-section" class="otp-section hidden">
                     <label for="otp">OTP</label>
                     <div class="otp-inputs">
-                        <!-- Individual OTP input fields -->
                         <input type="text" maxlength="1" class="otp-input">
                         <input type="text" maxlength="1" class="otp-input">
                         <input type="text" maxlength="1" class="otp-input">
@@ -48,13 +37,78 @@
                         <input type="text" maxlength="1" class="otp-input">
                     </div>
                 </div>
-                <!-- Sign up button -->
                 <button type="submit" class="signup-button">Sign Up</button>
             </form>
         </div>
     </div>
-    <!-- Link to the external JavaScript file -->
-    <script src="signup_script.js"></script>
-</body>
 
+    <script>
+        const sendOTPButton = document.getElementById('sendOTP');
+        const otpSection = document.getElementById('otp-section');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const otpInputs = document.querySelectorAll('.otp-input');
+        const signUpButton = document.querySelector('.signup-button');
+
+        // Function to validate fields and manage button states
+        function validateFields() {
+            const isNameFilled = nameInput.value.trim() !== '';
+            const isEmailFilled = emailInput.value.includes('@');
+            const isPasswordFilled = passwordInput.value.trim() !== '';
+
+            sendOTPButton.disabled = !(isNameFilled && isEmailFilled);
+            signUpButton.disabled = !(isNameFilled && isEmailFilled && isPasswordFilled);
+
+            // Highlight missing fields
+            nameInput.classList.toggle('error', !isNameFilled);
+            emailInput.classList.toggle('error', !isEmailFilled);
+            passwordInput.classList.toggle('error', !isPasswordFilled);
+        }
+
+        // Event listener for Send OTP button
+        sendOTPButton.addEventListener('click', () => {
+            validateFields();
+            if (nameInput.value.trim() && emailInput.value.includes('@')) {
+                otpSection.classList.remove('hidden'); // Show OTP section
+            }
+        });
+
+        // Add input event listeners for validation
+        nameInput.addEventListener('input', validateFields);
+        emailInput.addEventListener('input', validateFields);
+        passwordInput.addEventListener('input', validateFields);
+
+        // Handle input for OTP fields
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 1 && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus(); // Move to the next input
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && input.value === '' && index > 0) {
+                    otpInputs[index - 1].focus(); // Move to the previous input
+                }
+            });
+        });
+
+        // Handle form submission
+        document.getElementById('signupForm').addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+            const isOTPValid = Array.from(otpInputs).every(input => input.value.trim() !== '');
+            if (!isOTPValid) {
+                otpInputs.forEach(input => input.classList.add('error')); // Highlight OTP fields if invalid
+                return; // Stop submission
+            }
+            // If valid, proceed with form submission logic here
+            console.log('Form submitted successfully!'); // Replace with actual submission
+            // You can add an AJAX request to submit the form data here
+            // For example: 
+            // const formData = new FormData(event.target);
+            // fetch(event.target.action, { method: 'POST', body: formData });
+        });
+    </script>
+</body>
 </html>
