@@ -6,3 +6,7 @@ node_modules/
 
 # Local configuration files
 package-lock.json 
+
+app.js
+
+sendotp.js
