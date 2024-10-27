@@ -1,0 +1,43 @@
+
+/* ========== CONTAINER 404 CSS Code START ========== */
+
+.container {
+    margin: auto;
+    text-align: center;
+}
+
+/* ========== CONTAINER 404 CSS Code END ========== */
+
+/* ========== 404 CODE CSS Code START ========== */
+.error-code {
+    font-size: 10rem;
+    font-weight: 900;
+    
+}
+/* ========== 404 CODE CSS Code END ========== */
+
+/* ========== 404 MESSAGE CODE CSS Code START ========== */
+.message {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+/* ========== 404 MESSAGE CODE CSS Code END ========== */
+
+@media (max-width: 600px) {
+  .error-code {
+    font-size: 6rem;
+  }
+
+  .message {
+    font-size: 1.5rem;
+  }
+}
+@media (min-width: 2500px) {
+    .error-code {
+      font-size: 100rem;
+    }
+  
+    .message {
+      font-size: 1.5rem;
+    }
+  }

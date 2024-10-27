@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags for character set and responsive design -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Login Page</title>
+    <!-- Link to the external CSS stylesheet -->
+    <link rel="stylesheet" href="signup_stylesheet.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Section for account text and registration prompt -->
+        <div class="account-text">
+            <h1>Create New Account</h1>
+            <p>Already Registered? <a href="login.html">Login</a></p>
+        </div>
+        <!-- Login box containing the form -->
+        <div class="login-box">
+            <h2>Sign Up</h2>
+            <form id="loginForm">
+                <!-- Input field for name -->
+                <div class="input-field">
+                    <input type="text" id="name" placeholder="NAME">
+                </div>
+                <!-- Input field for email with an OTP button -->
+                <div class="input-field email">
+                    <input type="email" id="email" placeholder="EMAIL">
+                    <button type="button" id="sendOTP">
+                        <img src="arrow.png" alt="" />
+                    </button>
+                </div>
+                <!-- Input field for password -->
+                <div class="input-field">
+                    <input type="password" id="password" placeholder="PASSWORD">
+                </div>
+                <!-- Section for OTP input, hidden by default -->
+                <div id="otp-section" class="otp-section hidden">
+                    <label for="otp">OTP</label>
+                    <div class="otp-inputs">
+                        <!-- Individual OTP input fields -->
+                        <input type="text" maxlength="1" class="otp-input">
+                        <input type="text" maxlength="1" class="otp-input">
+                        <input type="text" maxlength="1" class="otp-input">
+                        <input type="text" maxlength="1" class="otp-input">
+                        <input type="text" maxlength="1" class="otp-input">
+                    </div>
+                </div>
+                <!-- Sign up button -->
+                <button type="submit" class="signup-button">Sign Up</button>
+            </form>
+        </div>
+    </div>
+    <!-- Link to the external JavaScript file -->
+    <script src="signup_script.js"></script>
+</body>
+
+</html>
