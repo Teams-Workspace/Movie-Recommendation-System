@@ -20,6 +20,7 @@
   "homepage": "https://github.com/AbrarAli-SE/Movie-Recommendation-System#readme",
   "dependencies": {
     "@splidejs/splide": "^4.1.4",
+    "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
