@@ -8,7 +8,7 @@
 
 /* ========== Body Styles ========== */
 body {
-    background-image: url('login_signup_background.png');
+    background-image: url('/Movie-Recommendation-System/public/images/login_signup_background.png');
     background-size: cover;
     display: flex;
     justify-content: center;

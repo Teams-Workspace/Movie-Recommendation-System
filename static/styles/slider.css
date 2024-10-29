@@ -80,15 +80,15 @@ header {
 
 /* Background Images for Each Slide */
 .background-1 {
-    background-image: url('pictures/sample1.jpg');
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample1.jpg');
 }
 
 .background-2 {
-    background-image: url('pictures/sample2.jpg');
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample2.jpg');
 }
 
 .background-3 {
-    background-image: url('pictures/sample3.jpg');
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample3.jpg');
 }
 
 /* Content Wrapper for Positioning Elements within Slide */
