@@ -5,6 +5,7 @@ const userRoutes = require('./routes/userRoutes'); // Import user routes
 const app = express();
 const path = require('path');
 require('dotenv').config;
+const app = express();
 const port = 3000;
 
 // Middleware to serve static files (like CSS)
@@ -17,6 +18,7 @@ app.use(session({
     saveUninitialized: true,
 }));
 
+
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
 
@@ -25,7 +27,6 @@ const adminRoutes = require('./routes/adminRoutes');
 
 // Routes
 app.use('/admin', adminRoutes);
-
 app.use('/', userRoutes); // '/user/upload-profile-pic' route
 // Route for the index page
 app.get('/', (req, res) => {
@@ -35,4 +36,5 @@ app.get('/', (req, res) => {
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
+
 });
