@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Movies</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1>Available Movies</h1>
+  <ul>
+    <% movies.forEach(movie => { %>  <!-- Loop through the movies array -->
+      <li><strong><%= movie.title %></strong> - Genre: <%= movie.genre %> - Rating: <%= movie.rating %></li>
+    <% }); %>
+  </ul>
+</body>
+</html>

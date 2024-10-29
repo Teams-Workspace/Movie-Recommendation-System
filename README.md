@@ -46,6 +46,7 @@
     │   ├── login.ejs               # Login page
     │   ├── signup.ejs              # Signup page
     │   ├── admin.ejs               # Admin panel page
+    |   ├── 404.ejs                 # Not found page
     │   └── userDashboard.ejs       # User dashboard page
     ├── config/                     # Configuration files
     │   └── dbConfig.js             # Database configuration (MySQL/PostgreSQL)
@@ -56,13 +57,19 @@
 
 ### Package.json
 
-- First write this command on your project folder then install these Packages
+- First check the folder directory to write this command on your project folder then install these Packages
 
 - **InInitializing the Package**:
 ``` 
-npm init -y
+npm install
 
 ```
+- **Check the Package List**:
+``` 
+npm list
+
+```
+## The all packages listed in the package.json
 
 ### Express
 - **Description**: A minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.

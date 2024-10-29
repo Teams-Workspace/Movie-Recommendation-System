@@ -5,4 +5,8 @@ node_modules/
 .env
 
 # Local configuration files
-package-lock.json
+package-lock.json 
+
+app.js
+
+sendotp.js
