@@ -178,6 +178,3 @@ document.addEventListener('DOMContentLoaded', function () {
     setInterval(nextSlide, slideInterval);
 });
 
-
-
-/* ========== SLIDER  Code End ========== */

@@ -65,8 +65,15 @@
     <%- include('partials/header') %>
 
         <div class="container">
+            <div id="admin-name">Welcome, <%= adminName %>!</div>
+
+            <input class="form-control" id="searchInput" type="text" placeholder="Search..." autocomplete="off" onkeyup="searchUsers()">
+
+            <table>
+
             <div id="admin-name" style="text-align: center;">Welcome, <%= adminName %>!</div>
             <table id="example" class="display" style="width:100%">
+
                 <thead>
                     <tr>
                         <th>#</th>
@@ -75,11 +82,41 @@
                         <th>Profile Picture</th>
                     </tr>
                 </thead>
-                <tbody>
+
+                <tbody id="tableBody">
+
+            
+
                     <% users.forEach((user, index)=> { %>
                         <tr>
                             <td>
                                 <%= index + 1 %>
+
+                            </td> <!-- Index number -->
+                            <td>
+                                <%= user.username %>
+                            </td> <!-- Username -->
+                            <td>
+                                <%= user.email %>
+                            </td> <!-- Email -->
+                            <td>
+                                <% if (user.profilePicture) { %>
+                                    <img src="/uploads/profile_pics/<%= user.profilePicture %>" alt="Profile Picture"
+                                        class="profile-pic">
+                                    <% } else { %>
+                                        <img src="/uploads/profile_pics/default.png" alt="Profile Picture"
+                                            class="profile-pic">
+                                        <% } %>
+                            </td> <!-- Profile Picture -->
+                        </tr>
+                        <% }); %>
+
+                </tbody> 
+
+            </table>
+            <div id="noMatchMessage" style="display: none; color: #1c1c1c; text-align: center; margin-top: 20px;">
+                No matches found.
+            </div>
                             </td>
                             <td>
                                 <%= user.username %>
@@ -108,9 +145,45 @@
                     </tr>
                 </tfoot>
             </table>
+
         </div>
 
         <%- include('partials/footer') %>
+
+
+            <script src="/js/scripts.js"></script>
+            <script>
+                function searchUsers() {
+                    const input = document.getElementById('searchInput').value.toLowerCase(); // Get the search input and convert to lowercase
+                    const tableBody = document.getElementById('tableBody');
+                    const rows = tableBody.getElementsByTagName('tr'); // Get all rows in the table body
+                    let hasMatch = false; // Flag to check if there are matches
+                    const noMatchMessage = document.getElementById('noMatchMessage'); // Reference to the no match message
+            
+                    // Clear previous message
+                    noMatchMessage.style.display = 'none';
+            
+                    for (let i = 0; i < rows.length; i++) {
+                        const username = rows[i].getElementsByTagName('td')[1]?.textContent.toLowerCase(); // Get the username from the second cell
+                        const email = rows[i].getElementsByTagName('td')[2]?.textContent.toLowerCase(); // Get the email from the third cell
+            
+                        // Check if the search term is included in username or email
+                        if (username.includes(input) || email.includes(input)) {
+                            rows[i].style.display = ''; // Show the row
+                            hasMatch = true; // Set flag to true if there is a match
+                        } else {
+                            rows[i].style.display = 'none'; // Hide the row
+                        }
+                    }
+            
+                    // If no matches were found, display the no match message
+                    if (!hasMatch) {
+                        noMatchMessage.style.display = ''; // Show no match message
+                    }
+                }
+            </script>
+            
+
 
 
             <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
