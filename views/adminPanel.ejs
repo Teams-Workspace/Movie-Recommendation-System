@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/adminPanel.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <title>Admin Panel</title>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <div class="container">
+            <div id="admin-name" style="text-align: center;">Welcome, <%= adminName %>!</div>
+            <table id="example" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Profile Picture</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach((user, index)=> { %>
+                        <tr>
+                            <td>
+                                <%= index + 1 %>
+                            </td>
+                            <td>
+                                <%= user.username %>
+                            </td> <!-- Username -->
+                            <td>
+                                <%= user.email %>
+                            </td> <!-- Email -->
+                            <td>
+                                <% if (user.profilePicture) { %>
+                                    <img src="/uploads/profile_pics/<%= user.profilePicture %>" alt="Profile Picture"
+                                        class="profile-pic">
+                                    <% } else { %>
+                                        <img src="/uploads/profile_pics/default.png" alt="Profile Picture"
+                                            class="profile-pic">
+                                        <% } %>
+                            </td> <!-- Profile Picture -->
+                        </tr>
+                        <% }); %>
+
+                </tbody> 
+
+            </table>
+        </div>
+
+        <%- include('partials/footer') %>
+
+
+            <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+            <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+            <script src="/Movie-Recommendation-System/public/js/scripts.js"></script>
+            <script src="/js/scripts.js"></script>
+            <script>
+                function searchUsers() {
+                    const input = document.getElementById('searchInput').value.toLowerCase(); // Get the search input and convert to lowercase
+                    const tableBody = document.getElementById('tableBody');
+                    const rows = tableBody.getElementsByTagName('tr'); // Get all rows in the table body
+                    let hasMatch = false; // Flag to check if there are matches
+                    const noMatchMessage = document.getElementById('noMatchMessage'); // Reference to the no match message
+            
+                    // Clear previous message
+                    noMatchMessage.style.display = 'none';
+            
+                    for (let i = 0; i < rows.length; i++) {
+                        const username = rows[i].getElementsByTagName('td')[1]?.textContent.toLowerCase(); // Get the username from the second cell
+                        const email = rows[i].getElementsByTagName('td')[2]?.textContent.toLowerCase(); // Get the email from the third cell
+            
+                        // Check if the search term is included in username or email
+                        if (username.includes(input) || email.includes(input)) {
+                            rows[i].style.display = ''; // Show the row
+                            hasMatch = true; // Set flag to true if there is a match
+                        } else {
+                            rows[i].style.display = 'none'; // Hide the row
+                        }
+                    }
+            
+                    // If no matches were found, display the no match message
+                    if (!hasMatch) {
+                        noMatchMessage.style.display = ''; // Show no match message
+                    }
+                }
+            </script>
+            
+
+</body>
+
+</html>
