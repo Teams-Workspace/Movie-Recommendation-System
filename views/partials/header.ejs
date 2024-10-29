@@ -26,21 +26,41 @@
                         <div class="notification"></div>
                     </a>
                 </div>
+
+                <!-- User Profile Dropdown with Upload and Preview -->
                 <div class="user-logo" id="userLogo1">
-                    <img src="/uploads/profile_pics/default.png" alt="User Logo"> <!-- Updated profile picture path -->
+                    <img id="profilePreview" src="/profile_pics/default.png" alt="User Logo">
+                    <!-- Updated profile picture path -->
                     <div class="user-info">
                         <div class="username">DEFAULT USER!</div>
+                        <!-- User Dropdown -->
                         <div class="user-dropdown">
                             <ul class="user-dropdown-menu">
-                                <li><a href="#"><i class="bi bi-upload"></i> Upload Profile</a></li>
-                                <li><a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li> <!-- Updated logout path -->
+                                <!-- Profile Upload -->
+                                <li>
+                                    <a href="#" id="uploadProfileLink">
+                                        <i class="bi bi-upload"></i> Upload Profile
+                                    </a>
+                                    <!-- Hidden form and input field for profile upload -->
+                                    <form id="uploadProfileForm" action="/upload-profile-pic" method="POST"
+                                        enctype="multipart/form-data" style="display:none;">
+                                        <input type="file" id="profilePictureInput" name="profile_picture"
+                                            accept=".png, .jpg">
+                                    </form>
+                                </li>
+                                <!-- Logout -->
+                                <li>
+                                    <a href="/user/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                                </li> <!-- Updated logout path -->
                             </ul>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
+        <!-- Responsive Container -->
         <div class="responsive-container">
             <div class="toggle-menu">
                 <i class="bi bi-list"></i>
@@ -65,18 +85,37 @@
                     <div class="notification"></div>
                 </a>
             </div>
-            <div class="user-logo" id="userLogo2">
-                <img src="/uploads/profile_pics/default.png" alt="User Logo"> <!-- Updated profile picture path -->
+
+            <!-- User Profile Dropdown with Upload and Preview -->
+            <div class="user-logo" id="userLogo1">
+                <img id="profilePreview" src="/profile_pics/default.png" alt="User Logo">
+                <!-- Updated profile picture path -->
                 <div class="user-info">
                     <div class="username">DEFAULT USER!</div>
-                    <div class="responsive-user-dropdown ">
-                        <ul class="responsive-user-dropdown-menu">
-                            <li><a href="#"><i class="bi bi-upload"></i> Upload Profile</a></li>
-                            <li><a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li> <!-- Updated logout path -->
+                    <!-- User Dropdown -->
+                    <div class="user-dropdown">
+                        <ul class="user-dropdown-menu">
+                            <!-- Profile Upload -->
+                            <li>
+                                <a href="#" id="uploadProfileLink">
+                                    <i class="bi bi-upload"></i> Upload Profile
+                                </a>
+                                <!-- Hidden form and input field for profile upload -->
+                                <form id="uploadProfileForm" action="/upload-profile-pic" method="POST"
+                                    enctype="multipart/form-data" style="display:none;">
+                                    <input type="file" id="profilePictureInput" name="profile_picture"
+                                        accept=".png, .jpg">
+                                </form>
+                            </li>
+                            <!-- Logout -->
+                            <li>
+                                <a href="/user/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                            </li> <!-- Updated logout path -->
                         </ul>
                     </div>
                 </div>
             </div>
+
         </div>
     </nav>
 </header>
