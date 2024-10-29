@@ -20,18 +20,22 @@
   "homepage": "https://github.com/AbrarAli-SE/Movie-Recommendation-System#readme",
   "dependencies": {
     "@splidejs/splide": "^4.1.4",
+    "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
     "express-session": "^1.18.1",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.11.3",
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.15",
+    "otp-generator": "^4.0.1",
     "swiper": "^11.1.14"
   },
   "devDependencies": {
