@@ -5,7 +5,7 @@ function toggleNavDropdown(event) {
     event.stopPropagation();
     const dropdown = event.currentTarget.querySelector('.dropdown-menu');
     const isDropdownVisible = dropdown.style.display === 'block';
-    
+
     // Toggle dropdown visibility
     dropdown.style.display = isDropdownVisible ? 'none' : 'block';
 }
@@ -27,7 +27,6 @@ document.addEventListener('click', function (event) {
         }
     });
 });
-
 
 /* ========== NAVBAR-DROPDOWN  JS Code END ========== */
 
@@ -74,8 +73,6 @@ document.addEventListener('click', function (event) {
         responsiveUserDropdown.classList.remove('active');
     }
 });
-
-
 /* ========== USER-DROPDOWN  JS Code END ========== */
 
 /* ========== NAV-ICON -DROPDOWN  JS Code START ========== */
@@ -92,7 +89,7 @@ const closeDropdown = () => {
 
 // Event listener for the menu toggle
 toggleMenu.addEventListener('click', (event) => {
-    event.stopPropagation(); 
+    event.stopPropagation();
     // Toggle the display property of navLinks
     if (navLinks.style.display === 'none' || navLinks.style.display === '') {
         navLinks.style.display = 'block'; // Show menu
@@ -117,5 +114,70 @@ document.addEventListener('click', (event) => {
     }
 });
 
-
 /* ========== NAV-ICON -DROPDOWN  JS Code END ========== */
+
+/* ========== SLIDER  Code Start ========== */
+document.addEventListener('DOMContentLoaded', function () {
+    const slider = document.querySelector('#slider-container');
+    const slides = document.querySelectorAll('.slide');
+    const prevArrow = document.querySelector('.prev-arrow');
+    const nextArrow = document.querySelector('.next-arrow');
+    let currentSlide = 0;
+    const slideInterval = 5000; // 5 seconds
+
+    // Ensure the initial active class is set
+    slides[currentSlide].classList.add('active');
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.remove('active');
+            if (i === index) {
+                slide.classList.add('active');
+                slide.style.transform = 'translateX(0)';
+                slide.style.opacity = '1';
+                slide.style.zIndex = '2';
+            } else {
+                slide.style.transform = 'translateX(100%)';
+                slide.style.opacity = '0';
+                slide.style.zIndex = '1';
+            }
+        });
+    }
+
+    function nextSlide() {
+        slides[currentSlide].style.transition = 'transform 1s ease-in-out, opacity 1s ease-in-out';
+        slides[currentSlide].style.transform = 'translateX(-100%)';
+        slides[currentSlide].style.opacity = '0';
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].style.transition = 'none';
+        slides[currentSlide].style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            slides[currentSlide].style.transition = 'transform 1s ease-in-out, opacity 1s ease-in-out';
+            slides[currentSlide].style.transform = 'translateX(0)';
+            slides[currentSlide].style.opacity = '1';
+        }, 20); // Short delay to ensure transition applies
+    }
+
+    function prevSlide() {
+        slides[currentSlide].style.transition = 'transform 1s ease-in-out, opacity 1s ease-in-out';
+        slides[currentSlide].style.transform = 'translateX(100%)';
+        slides[currentSlide].style.opacity = '0';
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        slides[currentSlide].style.transition = 'none';
+        slides[currentSlide].style.transform = 'translateX(-100%)';
+        setTimeout(() => {
+            slides[currentSlide].style.transition = 'transform 1s ease-in-out, opacity 1s ease-in-out';
+            slides[currentSlide].style.transform = 'translateX(0)';
+            slides[currentSlide].style.opacity = '1';
+        }, 20); // Short delay to ensure transition applies
+    }
+
+    nextArrow.addEventListener('click', nextSlide);
+    prevArrow.addEventListener('click', prevSlide);
+
+    setInterval(nextSlide, slideInterval);
+});
+
+
+
+/* ========== SLIDER  Code End ========== */
