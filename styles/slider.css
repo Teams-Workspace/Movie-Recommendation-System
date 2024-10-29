@@ -8,6 +8,13 @@ header {
     /* Ensure header has a background to cover content underneath */
 }
 
+.main {
+    padding-top: 60px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+}
+
 /* Main Slider Section */
 .iq-main-slider {
     position: relative;
@@ -16,6 +23,7 @@ header {
     overflow: hidden;
 }
 
+/* Slider setup */
 .slider {
     position: relative;
     width: 100%;
@@ -27,8 +35,11 @@ header {
     display: flex;
     transition: transform 1s ease-in-out;
     /* Smooth transition */
+    transform: translateX(0);
+    /* Ensure initial position */
 }
 
+/* Individual Slide Styling */
 .slide {
     position: absolute;
     width: 100vw;
@@ -38,14 +49,19 @@ header {
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    transition: transform 1s ease-in-out;
-    /* Smooth transition for sliding */
+    opacity: 0;
+    /* Initial state: invisible */
+    transform: translateX(100%);
+    /* Initial state: off-screen to the right */
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
 }
 
+/* Active Slide */
 .slide.active {
     transform: translateX(0);
     /* Active slide is visible */
     opacity: 1;
+    /* Active slide is visible */
     z-index: 2;
 }
 
@@ -60,20 +76,6 @@ header {
     background: linear-gradient(to right, rgb(0, 0, 0), transparent);
     z-index: 1;
     /* Ensure the overlay is above the background but below the text */
-}
-
-/* Individual Slide Styling */
-.slide {
-    position: absolute;
-    width: 100vw;
-    /* Full viewport width for each slide */
-    height: 100%;
-    /* Full height */
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
-    /* Smooth transition for sliding and opacity */
 }
 
 /* Background Images for Each Slide */
@@ -96,7 +98,8 @@ header {
     display: flex;
     align-items: center;
     height: 100%;
-    /* padding-left: 5% ; */
+    padding-left: 5%;
+    /* Ensure padding for text from the left */
 }
 
 /* Slide Content */
@@ -155,6 +158,10 @@ header {
 }
 
 /* Buttons */
+.buttons {
+    margin-top: 40px;
+}
+
 .buttons .btn {
     background-color: #e50914;
     color: #fff;
@@ -168,7 +175,6 @@ header {
 .buttons .btn:hover {
     background-color: #bf000a;
 }
-
 
 .video-preview {
     position: absolute;
@@ -196,10 +202,10 @@ header {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.753);
     /* Black shadow for text */
 }
+
 .play-button span:hover {
     color: red;
-
-    /* Black shadow for text */
+    /* Change text color on hover */
 }
 
 /* Slick Navigation */
@@ -209,8 +215,12 @@ header {
     transform: translateY(-50%);
     z-index: 2;
     font-size: 2em;
-    color: #fff;
+    color: #e5091496;
     cursor: pointer;
+}
+
+.slick-nav:hover {
+    color: #e50914;
 }
 
 .prev-arrow {
@@ -222,13 +232,13 @@ header {
 }
 
 /* Responsiveness */
-@media (min-width : 1499px) {
+@media (min-width: 1499px) {
     .title {
         font-size: 2.5em;
     }
 
     .content-wrapper {
-        padding-left: 3%;
+        padding-left: 5%;
     }
 }
 
@@ -254,7 +264,6 @@ header {
     }
 
     .trailor-video {
-        
         display: none;
     }
 
@@ -265,16 +274,25 @@ header {
 
 @media (max-width: 767px) {
     .title {
-        font-size: 2em;
+        font-size: 1.5em;
     }
 
     .details {
-        font-size: 1em;
+        font-size: 0.9em;
         flex-wrap: wrap;
     }
 
     .description {
-        font-size: 1em;
+        font-size: 0.9em;
+    }
+
+    .buttons .btn {
+        font-size: 0.9em;
+        padding: 10px 20px;
+    }
+
+    .logo-link img {
+        width: 80px;
     }
 
     .video-preview {

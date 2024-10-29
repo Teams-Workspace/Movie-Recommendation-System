@@ -125,9 +125,14 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentSlide = 0;
     const slideInterval = 5000; // 5 seconds
 
+    // Ensure the initial active class is set
+    slides[currentSlide].classList.add('active');
+
     function showSlide(index) {
         slides.forEach((slide, i) => {
+            slide.classList.remove('active');
             if (i === index) {
+                slide.classList.add('active');
                 slide.style.transform = 'translateX(0)';
                 slide.style.opacity = '1';
                 slide.style.zIndex = '2';
@@ -172,6 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setInterval(nextSlide, slideInterval);
 });
+
 
 
 /* ========== SLIDER  Code End ========== */
