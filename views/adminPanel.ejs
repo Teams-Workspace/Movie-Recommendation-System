@@ -17,11 +17,8 @@
     <%- include('partials/header') %>
 
         <div class="container">
-            <div id="admin-name">Welcome, <%= adminName %>!</div>
-
-            <input class="form-control" id="searchInput" type="text" placeholder="Search..." autocomplete="off" onkeyup="searchUsers()">
-
-            <table>
+            <div id="admin-name" style="text-align: center;">Welcome, <%= adminName %>!</div>
+            <table id="example" class="display" style="width:100%">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -30,12 +27,12 @@
                         <th>Profile Picture</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody">
+                <tbody>
                     <% users.forEach((user, index)=> { %>
                         <tr>
                             <td>
                                 <%= index + 1 %>
-                            </td> <!-- Index number -->
+                            </td>
                             <td>
                                 <%= user.username %>
                             </td> <!-- Username -->
@@ -57,13 +54,14 @@
                 </tbody> 
 
             </table>
-            <div id="noMatchMessage" style="display: none; color: #1c1c1c; text-align: center; margin-top: 20px;">
-                No matches found.
-            </div>
         </div>
 
         <%- include('partials/footer') %>
 
+
+            <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+            <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+            <script src="/Movie-Recommendation-System/public/js/scripts.js"></script>
             <script src="/js/scripts.js"></script>
             <script>
                 function searchUsers() {
