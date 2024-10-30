@@ -91,6 +91,58 @@ header {
     background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample3.jpg');
 }
 
+.background-4 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample4.jpg');
+}
+
+.background-5 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample5.jpg');
+}
+
+.background-6 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample6.jpg');
+}
+
+.background-7 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample7.jpg');
+}
+
+.background-8 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample8.jpg');
+}
+
+.background-9 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample9.jpg');
+}
+
+.background-10 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample10.jpg');
+}
+
+.background-11 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample11.jpg');
+}
+
+.background-12 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample12.jpg');
+}
+
+.background-13 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample13.jpg');
+}
+
+.background-14 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample14.jpg');
+}
+
+.background-15 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample15.jpg');
+}
+
+.background-16 {
+    background-image: url('/Movie-Recommendation-System/static/slider/pictures/sample16.jpg');
+}
+
 /* Content Wrapper for Positioning Elements within Slide */
 .content-wrapper {
     position: relative;
