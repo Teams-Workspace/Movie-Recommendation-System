@@ -5,7 +5,9 @@ const dbConnection = require('../models/dbConnection');
 const isValidAdmin = (adminName, password) => {
     return (
         (adminName === process.env.ADMIN_NAME_SAAD && password === process.env.ADMIN_PASSWORD_SAAD) ||
-        (adminName === process.env.ADMIN_NAME_ABRAR && password === process.env.ADMIN_PASSWORD_ABRAR)
+        (adminName === process.env.ADMIN_NAME_ABRAR && password === process.env.ADMIN_PASSWORD_ABRAR ||
+         adminName === process.env.ADMIN_NAME_HAROON && password === process.env.ADMIN_PASSWORD_HAROON    
+        )
     );
 };
 
