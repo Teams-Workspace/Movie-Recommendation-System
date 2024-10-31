@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <link rel="stylesheet" href="/Movie-Recommendation-System/static/styles/description_stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
-
 <body>
     <!-- Header -->
     <header>
@@ -19,34 +17,62 @@
             </div>
         </nav>
     </header>
-
+    
     <!-- Main Content -->
     <main class="content">
         <!-- Movie Poster -->
         <div class="movie-poster">
-            <img src="pictures/sample1.jpg" alt="Black Panther Poster">
+            <img src="" alt="Movie Poster" id="moviePoster">
         </div>
-
+        
         <!-- Movie Details -->
         <div class="movie-details">
-            <h1>Black Panther</h1>
+            <h1 id="movieTitle"></h1>
             <div class="rating">
-                <span><i class="fa fa-star"></i> 7.3 IMDb</span>
-                <span><i class="fa fa-calendar-alt"></i> 2018</span>
-                <span><i class="fa fa-clock"></i> 2h 21min</span>
-                <span><i class="fa fa-user-alt"></i> 16+</span>
+                <span><i class="fa fa-star"></i> <span id="movieRating"></span> IMDb</span>
+                <span><i class="fa fa-calendar-alt"></i> <span id="movieYear"></span></span>
+                <span><i class="fa fa-clock"></i> <span id="movieDuration"></span></span>
+                <span><i class="fa fa-user-alt"></i> <span id="movieAgeRating"></span></span>
             </div>
-            <p class="description">
-                T'Challa, the King of Wakanda, rises to the throne in the isolated, technologically advanced African
-                nation, but his claim is challenged by a vengeful outsider.
-            </p>
+            <p class="description" id="movieDescription"></p>
         </div>
     </main>
-
+    
     <!-- Footer -->
     <footer>
         <p>&copy; Movie Recommendation System</p>
     </footer>
-</body>
 
+    <script>
+        // Function to get URL parameters
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                title: params.get('title'),
+                rating: params.get('rating'),
+                year: params.get('year'),
+                duration: params.get('duration'),
+                age: params.get('age'),
+                description: params.get('description'),
+                poster: params.get('poster')
+            };
+        }
+
+        // Function to update the page content
+        function updatePageContent() {
+            const movieData = getQueryParams();
+            document.getElementById('moviePoster').src = movieData.poster;
+            document.getElementById('moviePoster').alt = movieData.title + ' Poster';
+            document.getElementById('movieTitle').textContent = movieData.title;
+            document.getElementById('movieRating').textContent = movieData.rating;
+            document.getElementById('movieYear').textContent = movieData.year;
+            document.getElementById('movieDuration').textContent = movieData.duration;
+            document.getElementById('movieAgeRating').textContent = movieData.age;
+            document.getElementById('movieDescription').textContent = movieData.description;
+        }
+
+        // Update the content when the page loads
+        window.onload = updatePageContent;
+    </script>
+</body>
 </html>
