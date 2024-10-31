@@ -1,17 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Available Movies</title>
-  <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/header.css"> <!-- Use absolute path for the stylesheet -->
+    <link rel="stylesheet" href="/css/footer.css"> <!-- Use absolute path for the stylesheet -->
+    <link rel="stylesheet" href="/css/search.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" type="text/css"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <title>Movie Search Results</title>
 </head>
 <body>
-  <h1>Available Movies</h1>
-  <ul>
-    <% movies.forEach(movie => { %>  <!-- Loop through the movies array -->
-      <li><strong><%= movie.title %></strong> - Genre: <%= movie.genre %> - Rating: <%= movie.rating %></li>
-    <% }); %>
-  </ul>
+    <%- include('partials/header.ejs') %>
+
+    <main class="content">
+        <!-- Movie Poster for the Searched Item -->
+        <div class="movie-poster">
+            <img src="https://image.tmdb.org/t/p/w500/<%= searchedMovie.poster_path %>" alt="<%= searchedMovie.title %> Poster">
+        </div>
+        <!-- Movie Details for the Searched Item -->
+        <div class="movie-details">
+            <h1><%= searchedMovie.title %></h1>
+            <div class="rating">
+                <span><i class="fa fa-star"></i> <%= searchedMovie.rating %> IMDb</span>
+                <span><i class="fa fa-calendar-alt"></i>  <%= new Date(searchedMovie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                <span><i class="fa fa-clock"></i> <%= searchedMovie.runtime %></span>
+                <span><i class="fa fa-user-alt"></i> N/A</span>
+            </div>
+            <p class="description">
+                <%= searchedMovie.overview %>
+            </p>
+            <p class="genres">
+                <strong>Genres:</strong> <%= searchedMovie.genres %>
+            </p>
+            <div class="line"></div>
+            <h2 class="sug-movies">Suggestion Movies</h2>
+            <!-- Suggested Movies Section -->
+            <div class="suggestion">
+                <div class="image-container">
+                    <% movies.forEach(movie => { %>
+                        <div class="image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/<%= movie.poster_path %>" alt="<%= movie.title %>">
+                            <div class="overlay">
+                                <span class="plus-sign">Add to Wishlist +</span>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </main>
+    <%- include('partials/footer.ejs') %>
 </body>
+<script src="/js/scripts.js"></script> <!-- Use absolute path for the script -->
+
 </html>
