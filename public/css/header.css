@@ -16,6 +16,10 @@ header {
     width: 100%;
 }
 
+html {
+    scroll-behavior: smooth; /* Enable smooth scrolling */
+}
+
 /* ========== DEFAULT CSS Code End ========== */
 
 /* ========== FULL-CONTAINER CSS Code START ========== */
@@ -175,6 +179,12 @@ header {
 
 /* ========== SEARCH-BAR CSS Code START ========== */
 
+.search-bar form {
+    display: flex;
+    align-items: center;
+    margin-right: 63px;
+}
+
 .search-box {
     border: none;
     background-color: transparent;
@@ -186,28 +196,34 @@ header {
     transition: all 0.3s ease;
 }
 
-.search-bar {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-}
-
-
+/* Adjust focus styling for the search box */
 .search-box:focus {
-    width: 300px;
-    border-bottom: 2px solid #E50914;
-    transform: scale(1.02);
+    width: 300px; /* Expands the width on focus */
+    border-bottom: 2px solid #E50914; /* Change border color on focus */
+    transform: scale(1.02); /* Slightly scales up the input */
 }
 
-.search-bar a {
-    color: #fff;
-    font-size: 22px;
-    margin-right: 83px;
+/* Button styling */
+.search-bar button {
+    background: transparent; /* Match the background of the input */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Change cursor to pointer */
+    margin-left: 10px; /* Add space between input and button */
+    padding: 5px; /* Optional padding */
 }
 
-.search-bar a:hover {
-    color: #E50914;
+.search-bar button i {
+    color: #fff; /* Set icon color to white */
+    font-size: 22px; /* Make icon size consistent */
+}
 
+/* Hover effect for the search button */
+.search-bar button:hover i {
+    color: #E50914; /* Change icon color on hover */
+}
+
+.search-bar input {
+    font-size: large;
 }
 
 /* ========== SEARCH-BAR CSS Code END ========== */
@@ -551,7 +567,7 @@ header {
 
 /* ========== DROPDOWN - NAVBAR LINE EFFECT EFFECT CSS Code START  ========== */
 
-.responsive-user-dropdown-menu li a::before {
+.user-dropdown-menu li a::before {
     content: "";
     position: absolute;
     top: 0;
@@ -564,7 +580,7 @@ header {
     transition: opacity 0.2s ease;
 }
 
-.responsive-user-dropdown-menu li a:hover::before {
+.user-dropdown-menu li a:hover::before {
     opacity: 1;
 }
 

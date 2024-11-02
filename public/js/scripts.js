@@ -1,6 +1,6 @@
 /* ========== NAVBAR-DROPDOWN  JS Code START ========== */
 
-// Toggle dropdown menu when clicking the dropdown element
+// Toggle dropdown menu visibility
 function toggleNavDropdown(event) {
     event.stopPropagation();
     const dropdown = event.currentTarget.querySelector('.dropdown-menu');
@@ -10,58 +10,51 @@ function toggleNavDropdown(event) {
     dropdown.style.display = isDropdownVisible ? 'none' : 'block';
 }
 
-// Select all dropdown elements
+// Select all dropdown elements and add event listeners
 const dropdownItems = document.querySelectorAll('.nav-items.dropdown');
-
-// Add event listener to each dropdown item
 dropdownItems.forEach(item => {
     item.addEventListener('click', toggleNavDropdown);
 });
 
-// Close dropdown when clicking outside
-document.addEventListener('click', function (event) {
+// Close dropdowns when clicking outside
+document.addEventListener('click', function () {
     dropdownItems.forEach(item => {
         const dropdown = item.querySelector('.dropdown-menu');
-        if (dropdown.style.display === 'block') {
-            dropdown.style.display = 'none';
-        }
+        dropdown.style.display = 'none';
     });
 });
 
-
 /* ========== NAVBAR-DROPDOWN  JS Code END ========== */
 
-/* ========== USER-DROPDOWN  JS Code Start ========== */
 
-// Function to toggle the first user dropdown
+/* ========== USER-DROPDOWN  JS Code START ========== */
+// Function to toggle the first user dropdown for non-responsive view
 function toggleUserDropdown1(event) {
     event.stopPropagation();
     const userDropdown1 = document.querySelector('.user-dropdown');
-
-    if (userDropdown1) {
-        userDropdown1.classList.toggle('active');
-    }
+    userDropdown1?.classList.toggle('active');
 }
 
-// Function to toggle the second responsive user dropdown
+// Function to toggle the second user dropdown for responsive view
 function toggleUserDropdown2(event) {
     event.stopPropagation();
     const responsiveUserDropdown = document.querySelector('.responsive-user-dropdown');
-
-    if (responsiveUserDropdown) {
-        responsiveUserDropdown.classList.toggle('active');
-    }
+    responsiveUserDropdown?.classList.toggle('active');
 }
 
-// Select the user logo elements
+// Select user logo elements for both views
 const userLogo1 = document.querySelector('#userLogo1');
 const userLogo2 = document.querySelector('#userLogo2');
 
-// Add event listeners to the user logos
-userLogo1.addEventListener('click', toggleUserDropdown1);
-userLogo2.addEventListener('click', toggleUserDropdown2);
+// Add event listeners if elements exist
+if (userLogo1) {
+    userLogo1.addEventListener('click', toggleUserDropdown1);
+}
+if (userLogo2) {
+    userLogo2.addEventListener('click', toggleUserDropdown2);
+}
 
-// Close dropdowns when clicking outside
+// Close user dropdowns when clicking outside
 document.addEventListener('click', function (event) {
     const userDropdown1 = document.querySelector('.user-dropdown');
     const responsiveUserDropdown = document.querySelector('.responsive-user-dropdown');
@@ -75,47 +68,51 @@ document.addEventListener('click', function (event) {
     }
 });
 
-
 /* ========== USER-DROPDOWN  JS Code END ========== */
 
-/* ========== NAV-ICON -DROPDOWN  JS Code START ========== */
 
-// Selecting the menu toggle icon and the nav links
+/* ========== NAV-ICON DROPDOWN  JS Code START ========== */
+
+// Selecting the menu toggle icon and responsive nav links
 const toggleMenu = document.querySelector('.toggle-menu');
 const navLinks = document.getElementById('responsive-nav');
 const links = document.querySelectorAll('.nav-links a');
 
-// Function to close the dropdown
-const closeDropdown = () => {
-    navLinks.style.display = 'none'; // Hide menu
-};
-
-// Event listener for the menu toggle
+// Toggle menu visibility
 toggleMenu.addEventListener('click', (event) => {
-    event.stopPropagation(); 
-    // Toggle the display property of navLinks
-    if (navLinks.style.display === 'none' || navLinks.style.display === '') {
-        navLinks.style.display = 'block'; // Show menu
-    } else {
-        navLinks.style.display = 'none';  // Hide menu
-    }
+    event.stopPropagation();
+    navLinks.style.display = navLinks.style.display === 'block' ? 'none' : 'block';
 });
 
-// Event listener for each link inside the dropdown
+// Close dropdown when a link inside it is clicked
 links.forEach(link => {
     link.addEventListener('click', () => {
-        // Close the dropdown when a link is clicked
-        closeDropdown();
+        navLinks.style.display = 'none';
     });
 });
 
-// Event listener to close the dropdown when clicking outside
+// Close dropdown when clicking outside
 document.addEventListener('click', (event) => {
-    // Check if the click is outside of navLinks and toggleMenu
     if (!navLinks.contains(event.target) && !toggleMenu.contains(event.target)) {
-        closeDropdown(); // Close the dropdown
+        navLinks.style.display = 'none';
     }
 });
 
+/* ========== NAV-ICON DROPDOWN  JS Code END ========== */
 
-/* ========== NAV-ICON -DROPDOWN  JS Code END ========== */
+// search bar functionality
+
+document.addEventListener("DOMContentLoaded", function() {
+    const forms = [document.getElementById('searchForm'), document.getElementById('responsiveSearchForm')];
+
+    forms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            const searchInput = this.querySelector('.search-box');
+
+            // Check if the input field is empty
+            if (searchInput.value.trim() === '') {
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+});

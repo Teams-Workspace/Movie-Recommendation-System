@@ -1,0 +1,72 @@
+<!-- views/movieDetails.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/movieDetails.css"> <!-- Use absolute path for the stylesheet -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <title><%= movie.title %> Details</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="Home">
+                <a href="/"><i class="fa fa-arrow-left"></i> HOME</a>
+            </div>
+        </nav>
+    </header>
+    <!-- Main Content -->
+
+    <main class="content">
+        <!-- Movie Poster -->
+
+        <div class="movie-poster">
+            <img src="https://image.tmdb.org/t/p/w500/<%= movie.poster_path %>" alt="<%= movie.title %> Poster">
+        </div>
+
+        <div class="movie-details">
+            <h1><%= movie.title %></h1>
+            <div class="rating">
+                <span><i class="fa fa-star"></i> <%= movie.rating %> IMDb</span>
+                <span>
+                    <i class="fa fa-calendar-alt"></i> 
+                    <%= movie.release_date ? new Date(movie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A' %>
+                </span>
+                <span><i class="fa fa-clock"></i> <%= movie.runtime ? movie.runtime : 'N/A' %></span>
+                <span><i class="fa fa-user-alt"></i> <%= movie.age_rating ? movie.age_rating : 'N/A' %></span>
+            </div>
+             <!-- Overview Section with Read More -->
+             <div class="overview description">
+                <p>
+                    <%= movie.overview.length > 200 ? movie.overview.substring(0, 200) + '...' : movie.overview %>
+                    <span class="overview-content"><%= movie.overview.length > 200 ? movie.overview.substring(200) : '' %></span>
+                    <% if (movie.overview.length > 200) { %>
+                        <span class="read-more" onclick="toggleOverview(this)">Read More</span>
+                    <% } %>
+                </p>
+            </div>
+            <p class="genres">
+                <strong>Genres:</strong> <%= movie.genres ? movie.genres.split(',').join(', ') : 'N/A' %>
+            </p>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; Movie Recommendation System</p>
+    </footer>
+    <script>
+        function toggleOverview(element) {
+            const overviewContent = element.previousElementSibling; // The hidden content
+            const isExpanded = overviewContent.style.display === 'block';
+
+            overviewContent.style.display = isExpanded ? 'none' : 'block'; // Toggle visibility
+            element.textContent = isExpanded ? 'Read More' : 'Read Less'; // Toggle text
+        }
+    </script>
+</body>
+</html>
