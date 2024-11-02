@@ -4,141 +4,201 @@
     box-sizing: border-box;
 }
 
-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #f1f4fd;
+.custom-container {
+    width: 100%;
+    overflow: hidden;
+    /* Added margin to the top of the container */
 }
 
-.container {
-    max-width: 1200px;
-    width: 95%;
-}
-
-.slider-wrapper {
+.custom-slider-wrapper {
     position: relative;
+    overflow: hidden;
+    background: #202020;
 }
 
-.slider-wrapper .slide-button {
+.top-movies-label {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 1.5rem;
+    color: #fff;
+    font-weight: bold;
+    z-index: 10;
+}
+
+.custom-slider-wrapper .custom-slide-button {
     position: absolute;
     top: 50%;
     outline: none;
     border: none;
-    height: 50px;
-    width: 50px;
-    z-index: 5;
+    height: 40px;
+    width: 40px;
     color: #fff;
     display: flex;
     cursor: pointer;
     font-size: 2.2rem;
-    background: #000;
+    background: #E50914;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     transform: translateY(-50%);
+    z-index: 5;
 }
 
-.slider-wrapper .slide-button:hover {
-    background: #404040;
+.custom-slider-wrapper .custom-slide-button:hover {
+    background: #202020;
 }
 
-.slider-wrapper .slide-button#prev-slide {
-    left: -25px;
-    display: none;
+.custom-slider-wrapper .custom-slide-button#custom-prev-slide {
+    left: 10px;
 }
 
-.slider-wrapper .slide-button#next-slide {
-    right: -25px;
+.custom-slider-wrapper .custom-slide-button#custom-next-slide {
+    right: 10px;
 }
 
-.slider-wrapper .image-list {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 18px;
-    font-size: 0;
-    list-style: none;
-    margin-bottom: 30px;
-    overflow-x: auto;
-    scrollbar-width: none;
+.custom-image-list {
+    margin-top: 40px;
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    will-change: transform;
 }
 
-.slider-wrapper .image-list::-webkit-scrollbar {
-    display: none;
+.custom-image-item {
+    position: relative;
+    min-width: 200px;
+    height: 250px;
+    border-radius: 3px;
+    margin-right: 15px;
+    overflow: hidden;
+    transition: transform 0.5s ease;
 }
 
-.slider-wrapper .image-list .image-item {
-    width: 325px;
-    height: 400px;
+.custom-image-item:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s ease;
+}
+
+.custom-image-item img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 
-.container .slider-scrollbar {
-    height: 24px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.slider-scrollbar .scrollbar-track {
-    background: #ccc;
-    width: 100%;
-    height: 2px;
-    display: flex;
-    align-items: center;
-    border-radius: 4px;
-    position: relative;
-}
-
-.slider-scrollbar:hover .scrollbar-track {
-    height: 4px;
-}
-
-.slider-scrollbar .scrollbar-thumb {
+.details-overlay {
     position: absolute;
-    background: #000;
-    top: 0;
     bottom: 0;
-    width: 50%;
-    height: 100%;
-    cursor: grab;
-    border-radius: inherit;
-}
-
-.slider-scrollbar .scrollbar-thumb:active {
-    cursor: grabbing;
-    height: 8px;
-    top: -2px;
-}
-
-.slider-scrollbar .scrollbar-thumb::after {
-    content: "";
-    position: absolute;
     left: 0;
     right: 0;
-    top: -10px;
-    bottom: -10px;
+    background: rgba(0, 0, 0, 0.799);
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
-/* Styles for mobile and tablets */
-@media only screen and (max-width: 1023px) {
-    .slider-wrapper .slide-button {
-        display: none !important;
+.custom-image-item:hover .details-overlay {
+    opacity: 1;
+}
+
+.movie-title {
+    color: #E50914;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.rating,
+.duration {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+.wishlist-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.wishlist-icon:hover {
+    transform: scale(1.2);
+    transition: transform 0.3s ease;
+}
+
+.wishlist-icon.active {
+    color: #E50914;
+}
+
+.details-btn {
+    margin-top: 10px;
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    color: #fff;
+    background: #E50914;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.details-btn:hover {
+    background: #bf000a;
+}
+/* Medium screens (tablets) */
+@media (max-width: 768px) {
+    .custom-image-item {
+        min-width: 150px;
+        height: 200px;
     }
 
-    .slider-wrapper .image-list {
-        gap: 10px;
-        margin-bottom: 15px;
-        scroll-snap-type: x mandatory;
+    .top-movies-label {
+        font-size: 1.2rem;
     }
 
-    .slider-wrapper .image-list .image-item {
-        width: 280px;
-        height: 380px;
+    .custom-slider-wrapper .custom-slide-button {
+        height: 35px;
+        width: 35px;
+        font-size: 1.8rem;
+    }
+}
+
+/* Small screens (large phones) */
+@media (max-width: 576px) {
+    .custom-image-item {
+        min-width: 120px;
+        height: 160px;
+        margin-right: 10px;
     }
 
-    .slider-scrollbar .scrollbar-thumb {
-        width: 20%;
+    .custom-slider-wrapper .custom-slide-button {
+        height: 30px;
+        width: 30px;
+        font-size: 1.5rem;
+    }
+
+    .top-movies-label {
+        font-size: 1rem;
+    }
+}
+
+/* Extra small screens (small phones) */
+@media (max-width: 400px) {
+    .custom-image-item {
+        min-width: 100px;
+        height: 140px;
+        margin-right: 5px;
+    }
+
+    .details-overlay {
+        font-size: 0.8em;
+    }
+
+    .custom-slider-wrapper .custom-slide-button {
+        height: 25px;
+        width: 25px;
+        font-size: 1.3rem;
     }
 }

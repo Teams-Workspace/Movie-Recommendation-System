@@ -178,3 +178,71 @@ document.addEventListener('DOMContentLoaded', function () {
     setInterval(nextSlide, slideInterval);
 });
 
+// ======> mini slider javascript code <=========
+const initSlider = () => {
+    const imageList = document.querySelector(".custom-image-list");
+    const slideButtons = document.querySelectorAll(".custom-slide-button");
+    const images = Array.from(document.querySelectorAll(".custom-image-item"));
+    const totalImages = images.length;
+    const visibleImagesCount = Math.min(6, totalImages); // Show up to 6 images or the total if fewer
+    let currentPosition = visibleImagesCount;
+
+    // Clear any existing clones (in case of reinitialization)
+    imageList.innerHTML = '';
+    images.forEach(img => imageList.appendChild(img));
+
+    // Clone the first and last few images for smooth looping, if there are enough images
+    if (totalImages > 1) {
+        for (let i = 0; i < visibleImagesCount; i++) {
+            const cloneFirst = images[i % totalImages].cloneNode(true);
+            const cloneLast = images[(totalImages - i - 1) % totalImages].cloneNode(true);
+            imageList.appendChild(cloneFirst);
+            imageList.insertBefore(cloneLast, imageList.firstChild);
+        }
+    }
+
+    // Calculate the offset to center the visible images
+    const updateImagePosition = () => {
+        const offset = -currentPosition * (images[0].clientWidth + 15);
+        imageList.style.transform = `translateX(${offset}px)`;
+    };
+
+    // Initial positioning
+    imageList.style.transform = `translateX(-${currentPosition * (images[0].clientWidth + 15)}px)`;
+
+    slideButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const direction = button.id === "custom-prev-slide" ? -1 : 1;
+            currentPosition += direction;
+
+            updateImagePosition();
+
+            // Reset position if out of bounds for seamless loop
+            imageList.addEventListener("transitionend", () => {
+                if (currentPosition >= totalImages + visibleImagesCount) {
+                    imageList.style.transition = "none";
+                    currentPosition = visibleImagesCount;
+                    imageList.style.transform = `translateX(-${currentPosition * (images[0].clientWidth + 15)}px)`;
+                } else if (currentPosition <= 0) {
+                    imageList.style.transition = "none";
+                    currentPosition = totalImages;
+                    imageList.style.transform = `translateX(-${currentPosition * (images[0].clientWidth + 15)}px)`;
+                }
+                setTimeout(() => {
+                    imageList.style.transition = "transform 0.5s ease-in-out";
+                }, 50);
+            });
+        });
+    });
+
+    // Wishlist icon toggle
+    imageList.addEventListener('click', function (event) {
+        if (event.target.classList.contains('wishlist-icon')) {
+            event.target.classList.toggle('active');
+        }
+    });
+};
+
+// Initialize the slider
+window.addEventListener("load", initSlider);
+window.addEventListener("resize", initSlider);
