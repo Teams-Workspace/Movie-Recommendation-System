@@ -23,15 +23,16 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Route imports
 const adminRoutes = require('./routes/adminRoutes');
-const movieRoutes = require('./routes/movieRoutes'); // Add more routes as needed
+const moviesRouter = require("./routes/movies");
 
 // Use imported routes
 app.use('/admin', adminRoutes);
-app.use('/movies', movieRoutes); // Example additional route for movies
+app.use('/movies', moviesRouter); // Example additional route for movies
 
 // Route for the index page
 app.get('/', (req, res) => {
-    res.render('index'); // Render your index.ejs page
+    const searchTerm = req.query.q || ''; // Get search term from query parameters or default to an empty string
+    res.render('index', { searchTerm }); // Pass searchTerm to the view
 });
 
 // Error handling middleware (optional)

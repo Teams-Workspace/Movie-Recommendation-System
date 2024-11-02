@@ -1,248 +1,7 @@
-/* Global Styles */
-*{
-    margin: 0%;
-    padding: 0%;
-    box-sizing: border-box;
-}
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
 
-
-/* Main Content */
-main.content {
-    padding: 80px 20px 20px;
-    text-align: center;
-}
-
-/* Movie Poster */
-.movie-poster img {
-    width: 100%;
-    max-width: 300px;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    margin-top: 15px;
-}
-
-/* Movie Details */
-.movie-details {
-    margin-top: 25px;
-}
-
-.movie-details h1 {
-    font-size: 2em;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.movie-details .rating {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 1em;
-    margin-bottom: 25px;
-    color: #666;
-}
-
-.movie-details .description {
-    font-size: 1em;
-    color: #555;
-    line-height: 1.6;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.genres
+.content
 {
-    margin-top: 5px;
-    color:#333
-}
-
-
-/* Responsiveness */
-@media (max-width: 991px) {
-    .movie-details h1 {
-        font-size: 2em;
-    }
-
-    .movie-details .description {
-        font-size: 1em;
-    }
-
-    .movie-poster img {
-        max-width: 300px;
-    }
-}
-
-@media (max-width: 767px) {
-    .movie-details h1 {
-        font-size: 1.5em;
-    }
-
-    .movie-details .rating {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .movie-details .description {
-        font-size: 0.9em;
-    }
-
-    .movie-poster img {
-        max-width: 100%;
-    }
-
- 
-}
-
-header{
-    z-index: 10;
-}
-
-.suggestion {
-    display: flex;
-    justify-content: center; /* Center the images */
-    margin: 20px 0; /* Add margin around the suggestion container */
-}
-
-.image-container {
-    display: flex; /* Enable Flexbox */
-    flex-wrap: wrap; /* Allow items to wrap onto multiple lines */
-    gap: 10px; /* Add space between the images */
-}
-
-.image-item {
-    border-radius: 10px;
-    position: relative; /* For positioning the overlay */
-    overflow: hidden; /* Hide overflow for the overlay effect */
-    flex: 1 1 calc(25% - 10px); /* Default: four images in a row with gaps */
-}
-
-.image-item img {
-    width: 100%; /* Make images responsive */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Ensure no space below the image */
-}
-.overlay {
-    position: absolute; /* Position overlay on top of the image */
-    top: 0;
-    left: 0; /* Set left to 0 for full width */
-    right: 0; /* Set right to 0 for full width */
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Light black transparent background */
-    display: flex; /* Enable Flexbox to position the plus sign */
-    justify-content: center; /* Center the plus sign horizontally */
-    align-items: flex-end; /* Align the plus sign to the bottom */
-    opacity: 0; /* Start with overlay hidden */
-    transition: opacity 0.3s ease; /* Smooth transition for opacity */
-}
-
-.image-item:hover .overlay {
-    opacity: 1; /* Show overlay on hover */
-}
-/* Global Styles */
-*{
-    margin: 0%;
-    padding: 0%;
-    box-sizing: border-box;
-}
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-
-/* Main Content */
-main.content {
-    padding: 80px 20px 20px;
-    text-align: center;
-}
-
-/* Movie Poster */
-.movie-poster img {
-    width: 100%;
-    max-width: 300px;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    margin-top: 15px;
-}
-
-/* Movie Details */
-.movie-details {
-    margin-top: 25px;
-}
-
-.movie-details h1 {
-    font-size: 2em;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.movie-details .rating {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 1em;
-    margin-bottom: 25px;
-    color: #666;
-}
-
-.movie-details .description {
-    font-size: 1em;
-    color: #555;
-    line-height: 1.6;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.genres
-{
-    margin-top: 5px;
-    color:#333
-}
-
-
-/* Responsiveness */
-@media (max-width: 991px) {
-    .movie-details h1 {
-        font-size: 2em;
-    }
-
-    .movie-details .description {
-        font-size: 1em;
-    }
-
-    .movie-poster img {
-        max-width: 300px;
-    }
-}
-
-@media (max-width: 767px) {
-    .movie-details h1 {
-        font-size: 1.5em;
-    }
-
-    .movie-details .rating {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .movie-details .description {
-        font-size: 0.9em;
-    }
-
-    .movie-poster img {
-        max-width: 100%;
-    }
-
- 
+    margin-top: 70px;
 }
 
 header{
@@ -264,7 +23,6 @@ header{
     width: 100%;
     margin: 0 auto;
 }
-
 .image-item {
     position: relative; /* Position relative to contain absolute children */
     flex: 1 1 calc(20% - 10px); /* Default: five images in a row */
@@ -272,6 +30,11 @@ header{
     overflow: hidden; /* Ensure overlay is contained */
     border-radius: 10px;
     box-sizing: border-box;
+    transition: transform 0.3s ease; /* Smooth transition for scaling */
+}
+
+.image-item:hover {
+    transform: scale(0.95); /* Scale down the image slightly */
 }
 
 .image-item img {
@@ -281,6 +44,11 @@ header{
     border-radius: 10px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     display: block; /* Ensure no space below the image */
+    transition: transform 0.3s ease; /* Smooth transition for scaling */
+}
+
+.image-item:hover img {
+    transform: scale(1.05); /* Scale up the image slightly on hover */
 }
 
 .overlay {
@@ -301,6 +69,7 @@ header{
 .image-item:hover .overlay {
     opacity: 1; /* Show overlay on hover */
 }
+
 
 .plus-sign {
     /* font-size: 24px; */
@@ -342,48 +111,10 @@ header{
     }
 }
 
+.no-found
+{
+    margin: 70px;
+    color: black;
+    font-size: larger;
 
-.sug-movies {
-    text-align: left;
-    margin-top: 10px;
-    color: #333;
-    padding: 0; /* Optional */
-    margin-left: 6px; /* Optional */
-}
-
-.line {
-    display: block;            /* Makes it act as a block element */
-    margin: 20px 10px;            /* Adds space above and below */
-    width: 100%; 
-    height: 2px;               /* Set the thickness of the line */
-    background-color: #1c1c1c; /* Color for the line */
-    border: none;              /* Removes any default border */
-}
-
-
-
-.plus-sign {
-    font-size: 24px; /* Adjust size of the plus sign */
-    color: white; /* White color for the plus sign */
-    padding: 10px; /* Add padding around the plus sign */
-    background: rgba(0, 0, 0, 0.7); /* Slightly darker background for better visibility */
-    border-radius: 5px; /* Rounded corners for the background */
-    margin-bottom: 10px; /* Add some margin at the bottom */
-    cursor: pointer;
-}
-
-
-
-/* Media Query for screens smaller than 1024px */
-@media (max-width: 1024px) {
-    .image-item {
-        flex: 1 1 calc(50% - 10px); /* Two images in a row */
-    }
-}
-
-/* Media Query for screens smaller than 768px */
-@media (max-width: 767px) {
-    .image-item {
-        flex: 1 1 100%; /* One image per row */
-    }
 }
