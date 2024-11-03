@@ -4,61 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="/css/login.css"> <!-- Use absolute path for the stylesheet -->
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
     <div class="container">
-        <!-- Left Side Text Section -->
         <div class="account-text">
             <h1>Login</h1>
-            <p>Don't have an account? <a href="signup" id="switchToSignup">Sign up</a></p>
+            <p>Don't have an account? <a href="/auth/signup" id="switchToSignup">Sign up</a></p>
         </div>
-
-        <!-- Right Side Login Box -->
         <div class="login-box" id="loginBox">
             <h2>Login</h2>
-            <form id="loginForm" action="/login" method="POST">
+            <form id="loginForm">
                 <div class="input-field">
-                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="email" name="email" id="loginEmail" placeholder="Email" required>
+                    <small class="error-message" id="emailError"></small>
                 </div>
                 <div class="input-field">
-                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <input type="password" name="password" id="loginPassword" placeholder="Password" required>
+                    <small class="error-message" id="passwordError"></small>
                 </div>
                 <button type="submit" class="submit-button">Login</button>
+                <div id="errorMessage" style="color: red; margin-top: 10px;"></div>
             </form>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const loginForm = document.getElementById("loginForm");
-
-            loginForm.addEventListener("submit", (e) => {
-                const email = document.getElementById("loginEmail");
-                const password = document.getElementById("loginPassword");
-
-                // Clear any previous error states
-                email.classList.remove("error");
-                password.classList.remove("error");
-
-                // Validate email and password fields
-                let valid = true;
-                if (!email.value) {
-                    email.classList.add("error");
-                    valid = false;
-                }
-
-                if (!password.value) {
-                    password.classList.add("error");
-                    valid = false;
-                }
-
-                // If both fields are valid, allow the form to submit
-                if (!valid) {
-                    e.preventDefault(); // Prevent submission if not valid
-                }
-            });
-        });
-    </script>
+    
 </body>
+
+<script src="/js/login.js"></script> <!-- Use absolute path for the script -->
+
 </html>

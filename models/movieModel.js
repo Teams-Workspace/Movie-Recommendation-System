@@ -1,66 +1,99 @@
-// models/movieModel.js
-const dbConnection = require('./dbConnection');
+const initializeConnection = require('./dbConnection');
+const { quickSort, compareByRating, compareByReleaseDate, getRandomMovies } = require('../utils/sortUtils');
 
-// // Search movies by title, genres, or rating
-// exports.searchMovies = (searchTerm, callback) => {
-//     const query = `
-//         SELECT * FROM movies 
-//         WHERE title LIKE ? OR genres LIKE ? OR rating LIKE ?`;
-//     dbConnection.query(query, [`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`], (err, results) => {
-//         callback(err, results);
-//     });
-// };
+/**
+ * Fetches all movies from the database.
+ */
+exports.getAllMovies = async () => {
+    const connection = await initializeConnection();
+    const query = "SELECT * FROM movies";
+    try {
+        const [results] = await connection.query(query);
+        return results;
+    } catch (err) {
+        // console.error('Error fetching all movies:', err);
+        throw err;
+    } finally {
+        await connection.end();
+    }
+};
 
-// // Optional: If you want to add methods for finding movies by title or genre
-// exports.findMovieByTitle = (title, callback) => {
-//     const query = `SELECT * FROM movies WHERE title = ?`;
-//     dbConnection.query(query, [title], (err, result) => {
-//         callback(err, result[0]); // Returning single movie
-//     });
-// };
+/**
+ * Searches for movies by a term, applying a specified sorting method.
+ */
+exports.searchMovies = async (searchTerm, searchType = 'quickSort') => {
+    const connection = await initializeConnection();
+    const query = "SELECT * FROM movies WHERE title LIKE ? OR overview LIKE ?";
+    const pattern = `%${searchTerm}%`;
+    try {
+        const [results] = await connection.query(query, [pattern, pattern]);
+        // Apply sorting based on searchType
+        let sortedMovies = results;
+        if (searchType === 'quickSort') {
+            sortedMovies = quickSort(results, compareByRating); // Sort by rating
+        }
+        return sortedMovies;
+    } catch (err) {
+        // console.error('Error executing search query:', err);
+        throw err;
+    } finally {
+        await connection.end();
+    }
+};
 
-// exports.findSuggestionsByGenre = (genres, callback) => {
-//     const query = `SELECT * FROM movies WHERE genres IN (?) LIMIT 4`;
-//     dbConnection.query(query, [genres.split(', ')], callback); // Splits genres string into an array
-// };
-// models/movieModel.js
-const { quickSort, dfsSearch, bfsSearch } = require('../utils/searchUtils');
+/**
+ * Retrieves movie details by its unique ID.
+ */
+exports.getMovieById = async (movieId) => {
+    const connection = await initializeConnection();
+    const query = "SELECT * FROM movies WHERE id = ?";
+    try {
+        const [results] = await connection.query(query, [movieId]);
+        const movie = results[0];
+        return movie;
+    } catch (err) {
+        // console.error('Error fetching movie details:', err);
+        throw err;
+    } finally {
+        await connection.end();
+    }
+};
 
-// // Search for movies based on the search term and type
-// exports.searchMovies = (searchTerm, searchType, callback) => {
-//     const query = `SELECT * FROM movies WHERE title LIKE ? OR genres LIKE ?`;
-//     const searchPattern = `%${searchTerm}%`;
+/**
+ * Fetches and sorts the oldest movies by release date.
+ */
+exports.getOldestMovies = async (limit = 50) => {
+    const connection = await initializeConnection();
+    const query = "SELECT * FROM movies";
+    try {
+        const [results] = await connection.query(query);
+        const sortedOldestMovies = quickSort(results, compareByReleaseDate);
+        const oldestMovies = getRandomMovies(sortedOldestMovies, limit);
+        return oldestMovies;
+    } catch (err) {
+        // console.error('Error fetching movies for oldest selection:', err);
+        throw err;
+    } finally {
+        await connection.end();
+    }
+};
 
-//     dbConnection.query(query, [searchPattern, searchPattern], (err, results) => {
-//         if (err) return callback(err);
-
-//         let sortedResults;
-//         switch (searchType) {
-//             case 'quickSort':
-//                 // Sort by rating in descending order
-//                 sortedResults = quickSort(results, (a, b) => b.rating - a.rating);
-//                 break;
-//             case 'dfs':
-//                 // Assuming the searchTerm is a genre
-//                 sortedResults = dfsSearch(results, searchTerm);
-//                 break;
-//             case 'bfs':
-//                 // Assuming the searchTerm is a keyword in the title
-//                 sortedResults = bfsSearch(results, searchTerm);
-//                 break;
-//             default:
-//                 sortedResults = results; // No sorting applied
-//         }
-
-//         callback(null, sortedResults);
-//     });
-// };
-
-// // Get a movie by its ID
-// exports.getMovieById = (movieId, callback) => {
-//     const query = `SELECT * FROM movies WHERE id = ?`;
-//     dbConnection.query(query, [movieId], (err, results) => {
-//         if (err) return callback(err);
-//         callback(null, results[0]); // Return the first (and only) result
-//     });
-// };
+/**
+ * Fetches and sorts the latest movies by release date.
+ */
+exports.getLatestMovies = async (limit = 50) => {
+    const connection = await initializeConnection();
+    const query = "SELECT * FROM movies";
+    try {
+        const [results] = await connection.query(query);
+        // Sort by release date and reverse for latest movies
+        const sortedLatestMovies = quickSort(results, compareByReleaseDate).reverse();
+        const latestMovies = getRandomMovies(sortedLatestMovies, limit);
+        return latestMovies;
+    } catch (err) {
+        // console.error('Error fetching movies for latest selection:', err);
+        throw err;
+    } finally {
+        await connection.end();
+    }
+};

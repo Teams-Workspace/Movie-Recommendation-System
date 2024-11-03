@@ -1,15 +1,15 @@
 // dbConnection.js
-const mysql = require('mysql2');
-const dbConfig = require('../config/dbConfig'); // Adjusted path to go up one directory
+const mysql = require('mysql2/promise');
+const dbConfig = require('../config/dbConfig');
 
-const dbConnection = mysql.createConnection(dbConfig);
-
-dbConnection.connect(err => {
-    if (err) {
+async function initializeConnection() {
+    try {
+        const connection = await mysql.createConnection(dbConfig);
+        console.log('Connected to database as id ' + connection.threadId);
+        return connection;
+    } catch (err) {
         console.error('Database connection failed: ' + err.stack);
-        return;
     }
-    console.log('Connected to database as id ' + dbConnection.threadId);
-});
+}
 
-module.exports = dbConnection;
+module.exports = initializeConnection;

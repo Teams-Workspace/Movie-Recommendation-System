@@ -4,14 +4,13 @@ const path = require('path');
 // Set up storage engine for Multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './uploads/profile_pics'); // Define the destination folder
+        cb(null, './public/uploads/profile_pics');  // Ensure this path exists
     },
     filename: function (req, file, cb) {
-        cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`); // Set unique file name
+        cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
     }
 });
 
-// File filter to allow only PNG and JPG
 const fileFilter = (req, file, cb) => {
     const filetypes = /jpeg|jpg|png/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -24,11 +23,10 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-// Upload middleware configuration
 const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
-    limits: { fileSize: 1000000 } // Limit the file size to 1MB
+    limits: { fileSize: 2000000 }  // Limit file size to 2MB
 });
 
 module.exports = upload;
