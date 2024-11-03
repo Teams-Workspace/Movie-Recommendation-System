@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="/Movie-Recommendation-System/static/styles/header.css">
     <link rel="stylesheet" href="/Movie-Recommendation-System/static/styles/footer.css">
     <link rel="stylesheet" href="/Movie-Recommendation-System/static/styles/slider.css">
+    <link rel="stylesheet" href="/Movie-Recommendation-System/static/styles/newMovie_stylesheet.css">
+    <link rel="stylesheet" href="/Movie-Recommendation-System/static/styles/verticalSliderStyleSheet.css">
     <link rel="stylesheet" href="/Movie-Recommendation-System/static/styles/mini_Slider_stylesheet.css">
 
     <title>MRS-HOME</title>
@@ -1099,6 +1101,357 @@
         </div>
 
 
+
+        <div class="slider-container">
+            <!-- Sidebar for movie list -->
+            <aside class="slider-sidebar">
+                <h2>Movies</h2>
+                <div class="slider-movie-list">
+                    <!-- Horror/Drama Movies -->
+                    <div class="slider-movie-item" onclick="displayMovie('Never Let Go')">
+                        <img src="https://image.tmdb.org/t/p/w500/3EpZ2ksjijmdr8BhISP03PYzNFW.jpg"
+                            alt="Never Let Go Poster">
+                        <div class="slider-movie-info">
+                            <span>Never Let Go</span>
+                            <span>Horror, Drama</span>
+                        </div>
+                    </div>
+                    <div class="slider-movie-item" onclick="displayMovie('Speak No Evil')">
+                        <img src="https://image.tmdb.org/t/p/w500/fDtkrO2OAF8LKQTdzYmu1Y7lCLB.jpg"
+                            alt="Speak No Evil Poster">
+                        <div class="slider-movie-info">
+                            <span>Speak No Evil</span>
+                            <span>Horror, Thriller</span>
+                        </div>
+                    </div>
+                    <div class="slider-movie-item" onclick="displayMovie('The Park Maniac')">
+                        <img src="https://image.tmdb.org/t/p/w500/xUIaDutJAWyfWEyZRcqaNWcoR55.jpg"
+                            alt="The Park Maniac Poster">
+                        <div class="slider-movie-info">
+                            <span>The Park Maniac</span>
+                            <span>Drama, Crime, Thriller, Horror</span>
+                        </div>
+                    </div>
+
+                    <!-- Comedy Movies -->
+                    <div class="slider-movie-item" onclick="displayMovie('Deadpool & Wolverine')">
+                        <img src="https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg"
+                            alt="Deadpool & Wolverine Poster">
+                        <div class="slider-movie-info">
+                            <span>Deadpool & Wolverine</span>
+                            <span>Action, Comedy, Sci-Fi</span>
+                        </div>
+                    </div>
+                    <div class="slider-movie-item" onclick="displayMovie('Beetlejuice Beetlejuice')">
+                        <img src="https://image.tmdb.org/t/p/w500/kKgQzkUCnQmeTPkyIwHly2t6ZFI.jpg"
+                            alt="Beetlejuice Beetlejuice Poster">
+                        <div class="slider-movie-info">
+                            <span>Beetlejuice Beetlejuice</span>
+                            <span>Comedy, Fantasy, Horror</span>
+                        </div>
+                    </div>
+                    <div class="slider-movie-item" onclick="displayMovie('Inside Out 2')">
+                        <img src="https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg"
+                            alt="Inside Out 2 Poster">
+                        <div class="slider-movie-info">
+                            <span>Inside Out 2</span>
+                            <span>Animation, Family, Adventure, Comedy, Drama</span>
+                        </div>
+                    </div>
+                    <div class="slider-movie-item" onclick="displayMovie('Despicable Me 4')">
+                        <img src="https://image.tmdb.org/t/p/w500/wWba3TaojhK7NdycRhoQpsG0FaH.jpg"
+                            alt="Despicable Me 4 Poster">
+                        <div class="slider-movie-info">
+                            <span>Despicable Me 4</span>
+                            <span>Animation, Family, Comedy, Action</span>
+                        </div>
+                    </div>
+                    <div class="slider-movie-item" onclick="displayMovie('Brothers')">
+                        <img src="https://image.tmdb.org/t/p/w500/Akweo95FGyDpucYVT81h0SbX8Ky.jpg"
+                            alt="Brothers Poster">
+                        <div class="slider-movie-info">
+                            <span>Brothers</span>
+                            <span>Action, Comedy, Crime</span>
+                        </div>
+                    </div>
+                    <div class="slider-movie-item" onclick="displayMovie('Bad Boys: Ride or Die')">
+                        <img src="https://image.tmdb.org/t/p/w500/oGythE98MYleE6mZlGs5oBGkux1.jpg"
+                            alt="Bad Boys: Ride or Die Poster">
+                        <div class="slider-movie-info">
+                            <span>Bad Boys: Ride or Die</span>
+                            <span>Action, Comedy</span>
+                        </div>
+                    </div>
+                    <div class="slider-movie-item" onclick="displayMovie('SpongeBob Squarepants: Kreepaway Kamp')">
+                        <img src="https://image.tmdb.org/t/p/w500/blRsgsexoBqnjcEJkV8beKAVT6J.jpg"
+                            alt="SpongeBob Squarepants: Kreepaway Kamp Poster">
+                        <div class="slider-movie-info">
+                            <span>SpongeBob Squarepants: Kreepaway Kamp</span>
+                            <span>TV Movie, Family, Comedy, Horror, Animation</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main display area -->
+            <main class="slider-main-display">
+                <img id="sliderDisplayImage" src="https://image.tmdb.org/t/p/w500/3EpZ2ksjijmdr8BhISP03PYzNFW.jpg"
+                    alt="Movie Poster">
+                <div class="movie-details">
+                    <h3 id="movieTitle">Never Let Go</h3>
+                    <p id="movieOverview">As an evil takes over the world beyond their front doorstep, the only
+                        protection for a
+                        mother and her twin sons is their house and their family’s protective bond.</p>
+                    <p><strong>Rating:</strong> <span id="movieRating">6.1</span></p>
+                    <p><strong>Release Date:</strong> <span id="movieReleaseDate">2024-09-18</span></p>
+                    <p><strong>Genres:</strong> <span id="movieGenres">Horror, Drama</span></p>
+                    <div class="buttons">
+                        <a href="SampleTrailer.mp4" class="btn play-btn"><i class="fa fa-play"></i> Play Now</a>
+                        <a href="description.html?title=Never%20Let%20Go&rating=6.1&year=2024&duration=N%2FA&age=N%2FA&description=As%20an%20evil%20takes%20over%20the%20world%20beyond%20their%20front%20doorstep%2C%20the%20only%20protection%20for%20a%20mother%20and%20her%20twin%20sons%20is%20their%20house%20and%20their%20family%E2%80%99s%20protective%20bond.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2F3EpZ2ksjijmdr8BhISP03PYzNFW.jpg"
+                            class="btn details-btn">More Details</a>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+
+
+        <div class="custom-container">
+            <div class="new-slider-wrapper">
+                <span class="top-movies-label">New Movies</span>
+                <button id="new-prev-slide" class="new-slide-button material-symbols-rounded">chevron_left</button>
+                <ul class="new-image-list">
+                    <ul class="new-image-list">
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg"
+                                alt="Pulp Fiction" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">Pulp Fiction</h6>
+                                <span class="rating">8.488 IMDb</span>
+                                <span class="duration">2h 34min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=Pulp%20Fiction&rating=8.488&year=1994&duration=2h%2034min&age=R&description=A%20burger-loving%20hit%20man%2C%20his%20philosophical%20partner%2C%20a%20drug-addled%20gangster's%20moll%20and%20a%20washed-up%20boxer%20converge%20in%20this%20sprawling%2C%20comedic%20crime%20caper.%20Their%20adventures%20unfurl%20in%20three%20stories%20that%20ingeniously%20trip%20back%20and%20forth%20in%20time.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2Fd5iIlFn5s0ImszYzBPb8JPIfbXD.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/191nKfP0ehp3uIvWqgPbFmI4lv9.jpg" alt="Se7en" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">Se7en</h6>
+                                <span class="rating">8.4 IMDb</span>
+                                <span class="duration">2h 7min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=Se7en&rating=8.4&year=1995&duration=2h%207min&age=R&description=Two%20homicide%20detectives%20are%20on%20a%20desperate%20hunt%20for%20a%20serial%20killer%20whose%20crimes%20are%20based%20on%20the%20'seven%20deadly%20sins'%20in%20this%20dark%20and%20haunting%20film%20that%20takes%20viewers%20from%20the%20tortured%20remains%20of%20one%20victim%20to%20the%20next.%20The%20seasoned%20Det.%20Sommerset%20researches%20each%20sin%20in%20an%20effort%20to%20get%20inside%20the%20killer's%20mind%2C%20while%20his%20novice%20partner%2C%20Mills%2C%20scoffs%20at%20his%20efforts%20to%20unravel%20the%20case.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2F191nKfP0ehp3uIvWqgPbFmI4lv9.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg"
+                                alt="Forrest Gump" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">Forrest Gump</h6>
+                                <span class="rating">8.472 IMDb</span>
+                                <span class="duration">2h 22min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=Forrest%20Gump&rating=8.472&year=1994&duration=2h%2022min&age=PG-13&description=A%20man%20with%20a%20low%20IQ%20has%20accomplished%20great%20things%20in%20his%20life%20and%20been%20present%20during%20significant%20historic%20events—in%20each%20case%2C%20far%20exceeding%20what%20anyone%20imagined%20he%20could%20do.%20But%20despite%20all%20he%20has%20achieved%2C%20his%20one%20true%20love%20eludes%20him.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2Farw2vcBveWOVZr6pxd9XTd1TdQa.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/sNjL6SqErDBE8OUZlrDLkexfsCj.jpg" alt="Looper" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">Looper</h6>
+                                <span class="rating">6.885 IMDb</span>
+                                <span class="duration">1h 53min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=Looper&rating=6.885&year=2012&duration=1h%2053min&age=R&description=In%20the%20year%202044%2C%20time%20travel%20has%20not%20yet%20been%20invented%20but%20in%2030%20years%20it%20will%20have%20been.%20When%20the%20mob%20wants%20to%20get%20rid%20of%20someone%2C%20they%20will%20send%20their%20target%20into%20the%20past%20where%20a%20looper%2C%20a%20hired%20gun%2C%20like%20Joe%20is%20waiting%20to%20mop%20up.%20Joe%20is%20getting%20rich%20and%20life%20is%20good%20until%20the%20day%20the%20mob%20decides%20to%20close%20the%20loop%2C%20sending%20back%20Joe's%20future%20self%20for%20assassination.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FsNjL6SqErDBE8OUZlrDLkexfsCj.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/p96dm7sCMn4VYAStA6siNz30G1r.jpg"
+                                alt="The Matrix" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">The Matrix</h6>
+                                <span class="rating">8.218 IMDb</span>
+                                <span class="duration">2h 16min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=The%20Matrix&rating=8.218&year=1999&duration=2h%2016min&age=R&description=Set%20in%20the%2022nd%20century%2C%20The%20Matrix%20tells%20the%20story%20of%20a%20computer%20hacker%20who%20joins%20a%20group%20of%20underground%20insurgents%20fighting%20the%20vast%20and%20powerful%20computers%20who%20now%20rule%20the%20earth.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2Fp96dm7sCMn4VYAStA6siNz30G1r.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/nWtySDlffTfwAa0rSfq61o33ZXV.jpg" alt="Memento" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">Memento</h6>
+                                <span class="rating">8.181 IMDb</span>
+                                <span class="duration">1h 53min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=Memento&rating=8.181&year=2000&duration=1h%2053min&age=R&description=Leonard%20Shelby%20is%20tracking%20down%20the%20man%20who%20raped%20and%20murdered%20his%20wife.%20The%20difficulty%20of%20locating%20his%20wife's%20killer%2C%20however%2C%20is%20compounded%20by%20the%20fact%20that%20he%20suffers%20from%20a%20rare%2C%20untreatable%20form%20of%20short-term%20memory%20loss.%20Although%20he%20can%20recall%20details%20of%20life%20before%20his%20accident%2C%20Leonard%20cannot%20remember%20what%20happened%20fifteen%20minutes%20ago%2C%20where%20he's%20going%2C%20or%20why.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FnWtySDlffTfwAa0rSfq61o33ZXV.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/kjWsMh72V6d8KRLV4EOoSJLT1H7.jpg"
+                                alt="One Flew Over the Cuckoo's Nest" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">One Flew Over the Cuckoo's Nest</h6>
+                                <span class="rating">8.417 IMDb</span>
+                                <span class="duration">2h 13min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=One%20Flew%20Over%20the%20Cuckoo's%20Nest&rating=8.417&year=1975&duration=2h%2013min&age=R&description=A%20petty%20criminal%20fakes%20insanity%20to%20serve%20his%20sentence%20in%20a%20mental%20ward%20rather%20than%20prison.%20He%20soon%20finds%20himself%20as%20a%20leader%20to%20the%20other%20patients—and%20an%20enemy%20to%20the%20cruel%2C%20domineering%20nurse%20who%20runs%20the%20ward.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FkjWsMh72V6d8KRLV4EOoSJLT1H7.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/euypWkaYFOLW3e5rLIcTAjWnhhT.jpg"
+                                alt="American History X" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">American History X</h6>
+                                <span class="rating">8.344 IMDb</span>
+                                <span class="duration">1h 59min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=American%20History%20X&rating=8.344&year=1998&duration=1h%2059min&age=R&description=Derek%20Vineyard%20is%20paroled%20after%20serving%203%20years%20in%20prison%20for%20killing%20two%20African-American%20men.%20Through%20his%20brother%2C%20Danny%20Vineyard's%20narration%2C%20we%20learn%20that%20before%20going%20to%20prison%2C%20Derek%20was%20a%20skinhead%20and%20the%20leader%20of%20a%20violent%20white%20supremacist%20gang%20that%20committed%20acts%20of%20racial%20crime%20throughout%20L.A.%20and%20his%20actions%20greatly%20influenced%20Danny.%20Reformed%20and%20fresh%20out%20of%20prison%2C%20Derek%20severs%20contact%20with%20the%20gang%20and%20becomes%20determined%20to%20keep%20Danny%20from%20going%20down%20the%20same%20violent%20path%20as%20he%20did.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FeuypWkaYFOLW3e5rLIcTAjWnhhT.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg"
+                                alt="City of God" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">City of God</h6>
+                                <span class="rating">8.4 IMDb</span>
+                                <span class="duration">2h 10min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=City%20of%20God&rating=8.4&year=2002&duration=2h%2010min&age=R&description=In%20the%20poverty-stricken%20favelas%20of%20Rio%20de%20Janeiro%20in%20the%201970s%2C%20two%20young%20men%20choose%20different%20paths.%20Rocket%20is%20a%20budding%20photographer%20who%20documents%20the%20increasing%20drug-related%20violence%20of%20his%20neighborhood%2C%20while%20Jos%C3%A9%20%E2%80%9CZ%C3%A9%E2%80%9D%20Pequeno%20is%20an%20ambitious%20drug%20dealer%20diving%20into%20a%20dangerous%20life%20of%20crime.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2Fk7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/rWbsxdwF9qQzpTPCLmDfVnVqTK1.jpg"
+                                alt="The Usual Suspects" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">The Usual Suspects</h6>
+                                <span class="rating">8.2 IMDb</span>
+                                <span class="duration">1h 46min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=The%20Usual%20Suspects&rating=8.2&year=1995&duration=1h%2046min&age=R&description=Held%20in%20an%20L.A.%20interrogation%20room%2C%20Verbal%20Kint%20attempts%20to%20convince%20the%20feds%20that%20a%20mythic%20crime%20lord%2C%20Keyser%20Soze%2C%20not%20only%20exists%2C%20but%20was%20also%20responsible%20for%20drawing%20him%20and%20his%20four%20partners%20into%20a%20multi-million%20dollar%20heist%20that%20ended%20with%20an%20explosion%20in%20San%20Pedro%20harbor%20%E2%80%93%20leaving%20few%20survivors.%20Verbal%20lures%20his%20interrogators%20with%20an%20incredible%20story%20of%20the%20crime%20lord's%20almost%20supernatural%20prowess.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FrWbsxdwF9qQzpTPCLmDfVnVqTK1.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/ljsZTbVsrQSqZgWeep2B1QiDKuh.jpg"
+                                alt="Inception" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">Inception</h6>
+                                <span class="rating">8.369 IMDb</span>
+                                <span class="duration">2h 28min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=Inception&rating=8.369&year=2010&duration=2h%2028min&age=PG-13&description=Cobb%2C%20a%20skilled%20thief%20who%20commits%20corporate%20espionage%20by%20infiltrating%20the%20subconscious%20of%20his%20targets%20is%20offered%20a%20chance%20to%20regain%20his%20old%20life%20as%20payment%20for%20a%20task%20considered%20to%20be%20impossible%3A%20'inception'%2C%20the%20implantation%20of%20another%20person's%20idea%20into%20a%20target's%20subconscious.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FljsZTbVsrQSqZgWeep2B1QiDKuh.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/evph7FByd63yCZ42e2YRmIy37uc.jpg" alt="The Game" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">The Game</h6>
+                                <span class="rating">7.6 IMDb</span>
+                                <span class="duration">2h 9min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=The%20Game&rating=7.6&year=1997&duration=2h%209min&age=R&description=In%20honor%20of%20his%20birthday%2C%20San%20Francisco%20banker%20Nicholas%20Van%20Orton%2C%20a%20financial%20genius%20and%20a%20cold-hearted%20loner%2C%20receives%20an%20unusual%20present%20from%20his%20younger%20brother%2C%20Conrad%3A%20a%20gift%20certificate%20to%20play%20a%20unique%20kind%20of%20game.%20In%20nary%20a%20nanosecond%2C%20Nicholas%20finds%20himself%20consumed%20by%20a%20dangerous%20set%20of%20ever-changing%20rules%2C%20unable%20to%20distinguish%20where%20the%20charade%20ends%20and%20reality%20begins.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2Fevph7FByd63yCZ42e2YRmIy37uc.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+                                alt="The Dark Knight" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">The Dark Knight</h6>
+                                <span class="rating">8.516 IMDb</span>
+                                <span class="duration">2h 32min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=The%20Dark%20Knight&rating=8.516&year=2008&duration=2h%2032min&age=PG-13&description=Batman%20raises%20the%20stakes%20in%20his%20war%20on%20crime.%20With%20the%20help%20of%20Lt.%20Jim%20Gordon%20and%20District%20Attorney%20Harvey%20Dent%2C%20Batman%20sets%20out%20to%20dismantle%20the%20remaining%20criminal%20organizations%20that%20plague%20the%20streets.%20The%20partnership%20proves%20to%20be%20effective%2C%20but%20they%20soon%20find%20themselves%20prey%20to%20a%20reign%20of%20chaos%20unleashed%20by%20a%20rising%20criminal%20mastermind%20known%20to%20the%20terrified%20citizens%20of%20Gotham%20as%20the%20Joker.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FqJ2tW6WMUDux911r6m7haRef0WH.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/bV0rWoiRo7pHUTQkh6Oio6irlXO.jpg"
+                                alt="Django Unchained" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">Django Unchained</h6>
+                                <span class="rating">8.181 IMDb</span>
+                                <span class="duration">2h 45min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=Django%20Unchained&rating=8.181&year=2012&duration=2h%2045min&age=R&description=With%20the%20help%20of%20a%20German%20bounty%20hunter%2C%20a%20freed%20slave%20sets%20out%20to%20rescue%20his%20wife%20from%20a%20brutal%20Mississippi%20plantation%20owner.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FbV0rWoiRo7pHUTQkh6Oio6irlXO.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg"
+                                alt="The Lord of the Rings: The Fellowship of the Ring" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">The Lord of the Rings: The Fellowship of the Ring</h6>
+                                <span class="rating">8.416 IMDb</span>
+                                <span class="duration">2h 58min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=The%20Lord%20of%20the%20Rings%3A%20The%20Fellowship%20of%20the%20Ring&rating=8.416&year=2001&duration=2h%2058min&age=PG-13&description=Young%20hobbit%20Frodo%20Baggins%2C%20after%20inheriting%20a%20mysterious%20ring%20from%20his%20uncle%20Bilbo%2C%20must%20leave%20his%20home%20in%20order%20to%20keep%20it%20from%20falling%20into%20the%20hands%20of%20its%20evil%20creator.%20Along%20the%20way%2C%20a%20fellowship%20is%20formed%20to%20protect%20the%20ringbearer%20and%20make%20sure%20that%20the%20ring%20arrives%20at%20its%20final%20destination%3A%20Mt.%20Doom%2C%20the%20only%20place%20where%20it%20can%20be%20destroyed.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2F6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/nNAeTmF4CtdSgMDplXTDPOpYzsX.jpg"
+                                alt="The Empire Strikes Back" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">The Empire Strikes Back</h6>
+                                <span class="rating">8.392 IMDb</span>
+                                <span class="duration">2h 4min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=The%20Empire%20Strikes%20Back&rating=8.392&year=1980&duration=2h%204min&age=PG&description=The%20epic%20saga%20continues%20as%20Luke%20Skywalker%2C%20in%20hopes%20of%20defeating%20the%20evil%20Galactic%20Empire%2C%20learns%20the%20ways%20of%20the%20Jedi%20from%20aging%20master%20Yoda.%20But%20Darth%20Vader%20is%20more%20determined%20than%20ever%20to%20capture%20Luke.%20Meanwhile%2C%20rebel%20leader%20Princess%20Leia%2C%20cocky%20Han%20Solo%2C%20Chewbacca%2C%20and%20droids%20C-3PO%20and%20R2-D2%20are%20thrown%20into%20various%20stages%20of%20capture%2C%20betrayal%20and%20despair.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FnNAeTmF4CtdSgMDplXTDPOpYzsX.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/yKmmT0q35R4AfW9Rbq2IPVAPwk3.jpg"
+                                alt="Trainspotting" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">Trainspotting</h6>
+                                <span class="rating">8 IMDb</span>
+                                <span class="duration">1h 34min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=Trainspotting&rating=8&year=1996&duration=1h%2034min&age=R&description=Heroin%20addict%20Mark%20Renton%20stumbles%20through%20bad%20ideas%20and%20sobriety%20attempts%20with%20his%20unreliable%20friends%20--%20Sick%20Boy%2C%20Begbie%2C%20Spud%20and%20Tommy.%20He%20also%20has%20an%20underage%20girlfriend%2C%20Diane%2C%20along%20for%20the%20ride.%20After%20cleaning%20up%20and%20moving%20from%20Edinburgh%20to%20London%2C%20Mark%20finds%20he%20can't%20escape%20the%20life%20he%20left%20behind%20when%20Begbie%20shows%20up%20at%20his%20front%20door%20on%20the%20lam%2C%20and%20a%20scheming%20Sick%20Boy%20follows.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FyKmmT0q35R4AfW9Rbq2IPVAPwk3.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg"
+                                alt="The Shawshank Redemption" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">The Shawshank Redemption</h6>
+                                <span class="rating">8.707 IMDb</span>
+                                <span class="duration">2h 22min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=The%20Shawshank%20Redemption&rating=8.707&year=1994&duration=2h%2022min&age=R&description=Imprisoned%20in%20the%201940s%20for%20the%20double%20murder%20of%20his%20wife%20and%20her%20lover%2C%20upstanding%20banker%20Andy%20Dufresne%20begins%20a%20new%20life%20at%20the%20Shawshank%20prison%2C%20where%20he%20puts%20his%20accounting%20skills%20to%20work%20for%20an%20amoral%20warden.%20During%20his%20long%20stretch%20in%20prison%2C%20Dufresne%20comes%20to%20be%20admired%20by%20the%20other%20inmates%20--%20including%20an%20older%20prisoner%20named%20Red%20--%20for%20his%20integrity%20and%20unquenchable%20sense%20of%20hope.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2F9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+                        <li class="new-image-item">
+                            <img src="https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg"
+                                alt="The Lord of the Rings: The Return of the King" />
+                            <div class="details-overlay">
+                                <h6 class="movie-title">The Lord of the Rings: The Return of the King</h6>
+                                <span class="rating">8.483 IMDb</span>
+                                <span class="duration">3h 21min</span>
+                                <i class="fa fa-heart wishlist-icon"></i>
+                                <a href="description.html?title=The%20Lord%20of%20the%20Rings%3A%20The%20Return%20of%20the%20King&rating=8.483&year=2003&duration=3h%2021min&age=PG-13&description=As%20armies%20mass%20for%20a%20final%20battle%20that%20will%20decide%20the%20fate%20of%20the%20world--and%20powerful%2C%20ancient%20forces%20of%20Light%20and%20Dark%20compete%20to%20determine%20the%20outcome--one%20member%20of%20the%20Fellowship%20of%20the%20Ring%20is%20revealed%20as%20the%20noble%20heir%20to%20the%20throne%20of%20the%20Kings%20of%20Men.%20Yet%2C%20the%20sole%20hope%20for%20triumph%20over%20evil%20lies%20with%20a%20brave%20hobbit%2C%20Frodo%2C%20who%2C%20accompanied%20by%20his%20loyal%20friend%20Sam%20and%20the%20hideous%2C%20wretched%20Gollum%2C%20ventures%20deep%20into%20the%20very%20dark%20heart%20of%20Mordor%20on%20his%20seemingly%20impossible%20quest%20to%20destroy%20the%20Ring%20of%20Power.&poster=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Fw500%2FrCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg"
+                                    class="btn details-btn">More Details</a>
+                            </div>
+                        </li>
+
+                    </ul>
+                    <button id="new-next-slide" class="new-slide-button material-symbols-rounded">chevron_right</button>
+            </div>
+        </div>
 
 
 

@@ -4,19 +4,18 @@
     box-sizing: border-box;
 }
 
-.custom-container {
+.new-container {
     width: 100%;
     overflow: hidden;
-    /* Added margin to the top of the container */
 }
 
-.custom-slider-wrapper {
+.new-slider-wrapper {
     position: relative;
     overflow: hidden;
     background: #202020;
 }
 
-.top-movies-label {
+.new-movies-label {
     position: absolute;
     top: 5px;
     left: 10px;
@@ -26,45 +25,46 @@
     z-index: 10;
 }
 
-.custom-slider-wrapper .custom-slide-button {
+.new-slider-wrapper .new-slide-button {
     position: absolute;
-    top: 50%;
-    outline: none;
-    border: none;
-    height: 40px;
-    width: 40px;
-    color: #fff;
-    display: flex;
-    cursor: pointer;
-    font-size: 2.2rem;
-    background: #E50914;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transform: translateY(-50%);
-    z-index: 5;
+        top: 50%;
+        outline: none;
+        border: none;
+        height: 40px;
+        width: 40px;
+        color: #fff;
+        display: flex;
+        cursor: pointer;
+        font-size: 2.2rem;
+        background: #E50914;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transform: translateY(-50%);
+        z-index: 5;
 }
 
-.custom-slider-wrapper .custom-slide-button:hover {
+.new-slider-wrapper .new-slide-button:hover {
     background: #202020;
 }
 
-.custom-slider-wrapper .custom-slide-button#custom-prev-slide {
+.new-slider-wrapper .new-slide-button#new-prev-slide {
     left: 10px;
 }
 
-.custom-slider-wrapper .custom-slide-button#custom-next-slide {
+.new-slider-wrapper .new-slide-button#new-next-slide {
+    display: flex;
     right: 10px;
 }
 
-.custom-image-list {
+.new-image-list {
     margin-top: 40px;
     display: flex;
     transition: transform 0.5s ease-in-out;
     will-change: transform;
 }
 
-.custom-image-item {
+.new-image-item {
     position: relative;
     min-width: 200px;
     height: 250px;
@@ -74,31 +74,18 @@
     transition: transform 0.4s ease;
 }
 
-.custom-image-item:hover {
+.new-image-item:hover {
     transform: scale(1.07);
 }
 
-.custom-image-item img {
+.new-image-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.details-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.799);
-    color: #fff;
-    padding: 10px;
-    text-align: left;
-    
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
 
-.custom-image-item:hover .details-overlay {
+.new-image-item:hover .details-overlay {
     opacity: 1;
 }
 
@@ -117,7 +104,7 @@
 
 .wishlist-icon {
     position: absolute;
-    bottom: 10px;
+    bottom: 50px;
     right: 10px;
     color: white;
     font-size: 1.5em;
@@ -147,18 +134,19 @@
 .details-btn:hover {
     background: #bf000a;
 }
+
 /* Medium screens (tablets) */
 @media (max-width: 768px) {
-    .custom-image-item {
+    .new-image-item {
         min-width: 150px;
         height: 200px;
     }
 
-    .top-movies-label {
+    .new-movies-label {
         font-size: 1.2rem;
     }
 
-    .custom-slider-wrapper .custom-slide-button {
+    .new-slider-wrapper .new-slide-button {
         height: 35px;
         width: 35px;
         font-size: 1.8rem;
@@ -167,26 +155,26 @@
 
 /* Small screens (large phones) */
 @media (max-width: 576px) {
-    .custom-image-item {
+    .new-image-item {
         min-width: 120px;
         height: 160px;
         margin-right: 10px;
     }
 
-    .custom-slider-wrapper .custom-slide-button {
+    .new-slider-wrapper .new-slide-button {
         height: 30px;
         width: 30px;
         font-size: 1.5rem;
     }
 
-    .top-movies-label {
+    .new-movies-label {
         font-size: 1rem;
     }
 }
 
 /* Extra small screens (small phones) */
 @media (max-width: 400px) {
-    .custom-image-item {
+    .new-image-item {
         min-width: 100px;
         height: 140px;
         margin-right: 5px;
@@ -196,7 +184,7 @@
         font-size: 0.8em;
     }
 
-    .custom-slider-wrapper .custom-slide-button {
+    .new-slider-wrapper .new-slide-button {
         height: 25px;
         width: 25px;
         font-size: 1.3rem;
