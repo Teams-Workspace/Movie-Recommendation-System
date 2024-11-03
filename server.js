@@ -1,47 +1,93 @@
-// app.js
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const adminRoutes = require('./routes/adminRoutes');
+const moviesRouter = require('./routes/movies');
+const authRoutes = require('./routes/authRoutes');
+const authenticateToken = require('./middleware/authenticateToken');
+const setAuthVariables = require('./middleware/setAuthVariables');
+const initializeConnection = require('./models/dbConnection');  // Import the function
 const app = express();
 
-// Load environment variables from .env file
 dotenv.config();
 
-// Set up port from environment variable or default to 3000
 const port = process.env.PORT || 3000;
 
-// Middleware for parsing JSON and URL-encoded form data
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your_session_secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }
+}));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware to serve static files (like CSS, JS)
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
-// Set EJS as the templating engine and views directory path
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Route imports
-const adminRoutes = require('./routes/adminRoutes');
-const moviesRouter = require("./routes/movies");
+app.use(authenticateToken);
+app.use(setAuthVariables);
 
-// Use imported routes
+app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
-app.use('/movies', moviesRouter); // Example additional route for movies
+app.use('/movies', moviesRouter);
 
-// Route for the index page
-app.get('/', (req, res) => {
-    const searchTerm = req.query.q || ''; // Get search term from query parameters or default to an empty string
-    res.render('index', { searchTerm }); // Pass searchTerm to the view
+app.get('/', async (req, res) => {
+    try {
+        const userId = req.user ? req.user.id : null;
+        let user = {};
+        if (userId) {
+            const connection = await initializeConnection();
+            const [rows] = await connection.query('SELECT * FROM users WHERE id = ?', [userId]);
+            user = rows[0];
+            await connection.end();
+        }
+        const searchTerm = req.query.q || '';
+        // console.log('Index Route:', res.locals, 'User:', user);
+
+        res.render('index', { user, searchTerm });
+    } catch (err) {
+        // console.error('Database query error:', err);
+        res.status(500).render('500');
+    }
 });
 
-// Error handling middleware (optional)
+app.get('/admin', async (req, res) => {
+    try {
+        const connection = await initializeConnection();
+        const [users] = await connection.query('SELECT * FROM users');
+        await connection.end();
+        const adminName = req.user ? req.user.username : 'Admin';
+        // console.log('Admin Route Users:', users);
+
+        res.render('adminPanel', { adminName, users });
+    } catch (err) {
+        // console.error('Database query error:', err);
+        res.status(500).render('500');
+    }
+});
+
+app.use((req, res, next) => {
+    res.status(404).render('404');
+});
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send('Something went wrong!');
+    res.status(500).render('500');
 });
 
-// Start the server
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });

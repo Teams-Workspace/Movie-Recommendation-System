@@ -39,8 +39,8 @@
                     <td><%= user.username %></td> <!-- Username -->
                     <td><%= user.email %></td> <!-- Email -->
                     <td>
-                        <% if (user.profilePicture) { %>
-                            <img src="/uploads/profile_pics/<%= user.profilePicture %>" alt="Profile Picture" class="profile-pic">
+                        <% if (user.profile_picture) { %>
+                            <img id="profilePreview" src="<%= user.profile_picture || '/images/default.png' %>" alt="User Logo" class="profile-pic">
                         <% } else { %>
                             <img src="/images/default.png" alt="Profile Picture" class="profile-pic">
                         <% } %>

@@ -2,7 +2,7 @@
     <nav id="nav">
         <div class="full-container">
             <div class="logo">
-                <img src="/images/logo.svg" alt="Logo"> <!-- Updated logo path -->
+                <img src="/images/logo.svg" alt="Logo">
             </div>
             <ul class="nav-links">
                 <li class="nav-items"><a href="/" class="underline">HOME</a></li>
@@ -31,27 +31,40 @@
 
                 <!-- User Profile Dropdown with Upload and Preview -->
                 <div class="user-logo" id="userLogo1">
-                    <img id="profilePreview" src="/images/default.png" alt="User Logo">
+                    <img id="profilePreview" src="<%= user.profile_picture || '/images/default.png' %>" alt="User Logo">
                     <div class="user-info">
-                        <div class="username">DEFAULT USER!</div>
+                        <div class="username">
+                            <% if (isAuthenticated) { %>
+                                <%= user.username %>
+                                    <% } else { %>
+                                        DEFAULT USER!
+                                        <% } %>
+                        </div>
                         <div class="user-dropdown">
                             <ul class="user-dropdown-menu">
-                                <!-- Profile Upload -->
-                                <li>
-                                    <a href="#" id="uploadProfileLink">
-                                        <i class="bi bi-upload"></i> Upload Profile
-                                    </a>
-                                    <!-- Hidden form and input field for profile upload -->
-                                    <form id="uploadProfileForm" action="/upload-profile-pic" method="POST"
-                                        enctype="multipart/form-data" style="display:none;">
-                                        <input type="file" id="profilePictureInput" name="profile_picture"
-                                            accept=".png, .jpg">
-                                    </form>
-                                </li>
-                                <!-- Logout -->
-                                <li>
-                                    <a href="/user/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
-                                </li> <!-- Updated logout path -->
+                                <% if (isAuthenticated) { %>
+                                    <li>
+                                        <a href="#" id="uploadProfileLink">
+                                            <i class="bi bi-upload"></i> Upload Profile
+                                        </a>
+                                        <form id="uploadProfileForm" action="/auth/upload-profile-pic" method="POST"
+                                            enctype="multipart/form-data" style="display:none;">
+                                            <input type="file" id="profilePictureInput" name="profile_picture"
+                                                accept=".png, .jpg">
+                                        </form>
+
+                                    </li>
+                                    <li>
+                                        <a href="/auth/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                                    </li>
+                                    <% } else { %>
+                                        <li>
+                                            <a href="/auth/login"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                                        </li>
+                                        <li>
+                                            <a href="/auth/signup"><i class="bi bi-person-plus"></i> Signup</a>
+                                        </li>
+                                        <% } %>
                             </ul>
                         </div>
                     </div>
@@ -67,12 +80,12 @@
             <ul class="nav-links" id="responsive-nav" style="display: none;">
                 <li class="nav-items hover-effect"><a href="/">HOME</a></li>
                 <li class="nav-items hover-effect"><a href="/movies/oldest">OLDEST</a></li>
-                <li class="nav-items hover-effect"><a href="/movies/oldest">LATEST</a></li>
+                <li class="nav-items hover-effect"><a href="/movies/latest">LATEST</a></li>
                 <li class="nav-items hover-effect"><a href="#about-us">ABOUT US</a></li>
                 <li class="nav-items hover-effect"><a href="#contact">CONTACT</a></li>
             </ul>
             <div class="logo">
-                <img src="/images/logo.svg" alt="Logo"> <!-- Updated logo path -->
+                <img src="/images/logo.svg" alt="Logo">
             </div>
             <div class="search-bar">
                 <form id="responsiveSearchForm" action="/movies/search" method="get">
@@ -88,28 +101,45 @@
 
             <!-- User Profile Dropdown with Upload and Preview -->
             <div class="user-logo" id="userLogo2">
-                <img id="profilePreviewResponsive" src="/images/default.png" alt="User Logo">
+                <img id="profilePreviewResponsive" src="<%= user.profile_picture || '/images/default.png' %>"
+                    alt="User Logo">
                 <div class="user-info">
-                    <div class="username">DEFAULT USER!</div>
+                    <div class="username">
+                        <% if (isAuthenticated) { %>
+                            <%= user.username %>
+                                <% } else { %>
+                                    DEFAULT USER!
+                                    <% } %>
+                    </div>
                     <div class="responsive-user-dropdown">
                         <ul class="user-dropdown-menu">
-                            <li>
-                                <a href="#" id="uploadProfileLinkResponsive">
-                                    <i class="bi bi-upload"></i> Upload Profile
-                                </a>
-                                <form id="uploadProfileFormResponsive" action="/upload-profile-pic" method="POST"
-                                    enctype="multipart/form-data" style="display:none;">
-                                    <input type="file" id="profilePictureInputResponsive" name="profile_picture"
-                                        accept=".png, .jpg">
-                                </form>
-                            </li>
-                            <li>
-                                <a href="/user/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
-                            </li>
+                            <% if (isAuthenticated) { %>
+                                <li>
+                                    <a href="#" id="uploadProfileLinkResponsive">
+                                        <i class="bi bi-upload"></i> Upload Profile
+                                    </a>
+                                    <form id="uploadProfileFormResponsive" action="/auth/upload-profile-pic"
+                                        method="POST" enctype="multipart/form-data" style="display:none;">
+                                        <input type="file" id="profilePictureInputResponsive" name="profile_picture"
+                                            accept=".png, .jpg">
+                                    </form>
+                                </li>
+                                <li>
+                                    <a href="/auth/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                                </li>
+                                <% } else { %>
+                                    <li>
+                                        <a href="/auth/login"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                                    </li>
+                                    <li>
+                                        <a href="/auth/signup"><i class="bi bi-person-plus"></i> Signup</a>
+                                    </li>
+                                    <% } %>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+
     </nav>
 </header>
