@@ -18,9 +18,9 @@
     <%- include('partials/header') %>
 
     <div class="container">
-        <div id="admin-name">Welcome, <%= adminName %>!</div>
+        <div id="admin-name">Welcome, <%= user.username %>!</div>
 
-        <input class="form-control" id="searchInput" type="text" placeholder="Search..." autocomplete="off" onkeyup="searchUsers()">
+        <input class="form-control" id="searchInput" type="text" placeholder="Search..." autocomplete="off">
 
         <table id="example" class="display" style="width:100%">
             <thead>
@@ -39,12 +39,13 @@
                     <td><%= user.username %></td> <!-- Username -->
                     <td><%= user.email %></td> <!-- Email -->
                     <td>
-                        <% if (user.profile_picture) { %>
-                            <img id="profilePreview" src="<%= user.profile_picture || '/images/default.png' %>" alt="User Logo" class="profile-pic">
-                        <% } else { %>
-                            <img src="/images/default.png" alt="Profile Picture" class="profile-pic">
-                        <% } %>
-                    </td>
+                        <img 
+                            src="<%= user.profile_picture || '/images/default.png' %>" 
+                            alt="Profile Picture" 
+                            class="profile-pic"
+                            onerror="this.onerror=null; this.src='/images/default.png';"
+                        >
+                    </td> <!-- Profile Picture -->
                     <!-- Profile Picture -->
                 </tr>
                 <% }); %>
@@ -60,34 +61,42 @@
 
     <script src="/js/scripts.js"></script>
     <script>
-        function searchUsers() {
-            const input = document.getElementById('searchInput').value.toLowerCase(); // Get the search input and convert to lowercase
-            const tableBody = document.getElementById('tableBody');
-            const rows = tableBody.getElementsByTagName('tr'); // Get all rows in the table body
-            let hasMatch = false; // Flag to check if there are matches
-            const noMatchMessage = document.getElementById('noMatchMessage'); // Reference to the no match message
+        document.addEventListener('DOMContentLoaded', function () {
+            function searchUsers() {
+                const input = document.getElementById('searchInput').value.toLowerCase();
+                const tableBody = document.getElementById('tableBody');
+                const rows = tableBody.getElementsByTagName('tr');
+                let hasMatch = false;
+                const noMatchMessage = document.getElementById('noMatchMessage');
 
-            // Clear previous message
-            noMatchMessage.style.display = 'none';
+                noMatchMessage.style.display = 'none';
 
-            for (let i = 0; i < rows.length; i++) {
-                const username = rows[i].getElementsByTagName('td')[1]?.textContent.toLowerCase(); // Get the username from the second cell
-                const email = rows[i].getElementsByTagName('td')[2]?.textContent.toLowerCase(); // Get the email from the third cell
+                if (input.length === 0) {
+                    for (let i = 0; i < rows.length; i++) {
+                        rows[i].style.display = '';
+                    }
+                    return;
+                }
 
-                // Check if the search term is included in username or email
-                if (username.includes(input) || email.includes(input)) {
-                    rows[i].style.display = ''; // Show the row
-                    hasMatch = true; // Set flag to true if there is a match
-                } else {
-                    rows[i].style.display = 'none'; // Hide the row
+                for (let i = 0; i < rows.length; i++) {
+                    const username = rows[i].cells[1]?.textContent.toLowerCase();
+                    const email = rows[i].cells[2]?.textContent.toLowerCase();
+
+                    if (username.includes(input) || email.includes(input)) {
+                        rows[i].style.display = '';
+                        hasMatch = true;
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
+                }
+
+                if (!hasMatch) {
+                    noMatchMessage.style.display = '';
                 }
             }
 
-            // If no matches were found, display the no match message
-            if (!hasMatch) {
-                noMatchMessage.style.display = ''; // Show no match message
-            }
-        }
+            document.getElementById('searchInput').addEventListener('input', searchUsers);
+        });
     </script>
 
 </body>

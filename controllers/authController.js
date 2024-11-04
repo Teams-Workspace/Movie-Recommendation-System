@@ -75,7 +75,8 @@ exports.login = async (req, res) => {
         }
 
         // Include username in the token
-        const token = jwt.sign({ id: user.id, email: user.email, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id, email: user.email, username: user.username, profile_picture: user.profile_picture }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        // const token = jwt.sign({ id: user.id, email: user.email, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
         // console.log('Generated Token:', token);
 
         res.cookie('token', token, { httpOnly: true });
@@ -112,33 +113,27 @@ exports.logout = (req, res) => {
         res.redirect('/');  // Redirect to the homepage
     });
 };
-exports.uploadProfilePic = async (req, res) => {
-    // console.log('Request received:', req.file);
-
-    if (!req.file) {
-        return res.status(400).send('No file uploaded');
-    }
-
-    const profilePicPath = `/uploads/profile_pics/${req.file.filename}`;
-    const userId = req.user ? req.user.id : null;
-    // console.log('Profile Pic Path:', profilePicPath);
-    // console.log('User ID:', userId);
-
-    if (!userId) {
-        return res.status(400).send('User not authenticated');
-    }
-
+// controllers/authController.js
+exports.updateProfilePicture = async (req, res) => {
     try {
+        if (!req.file) {
+            console.error('No file uploaded'); // Debug log
+            return res.status(400).send('No file uploaded.');
+        }
+
+        const userId = req.user.id; // Ensure req.user is available
+        const profilePicturePath = `/uploads/profile_pics/${req.file.filename}`;
+        
         const connection = await initializeConnection();
-        // console.log('Connected to the database');
-
-        const [result] = await connection.query('UPDATE users SET profile_picture = ? WHERE id = ?', [profilePicPath, userId]);
-        // console.log('Database update result:', result);
-
+        await connection.query('UPDATE users SET profile_picture = ? WHERE id = ?', [profilePicturePath, userId]);
         await connection.end();
-        res.redirect('/');
+
+        // Update the req.user object directly if it's available.
+        req.user.profile_picture = profilePicturePath;
+
+        res.redirect('/'); // Redirect to the profile or home page
     } catch (err) {
-        // console.error('Error updating profile picture:', err);
-        res.status(500).render('505');
+        console.error('Error updating profile picture:', err);
+        res.status(500).render('500');
     }
 };
