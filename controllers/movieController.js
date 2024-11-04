@@ -1,5 +1,6 @@
 // controllers/movieController.js
 const movieModel = require('../models/movieModel');
+const initializeConnection = require('../models/dbConnection');
 
 // Get all movies
 exports.getAllMovies = async (req, res) => {
@@ -68,3 +69,23 @@ exports.getLatestMovies = async (req, res) => {
         // res.status(500).render('500', { message: 'Internal Server Error' });
     }
 };
+
+
+// // controllers/movieController.js
+// exports.searchMovieTitles = async (searchTerm) => {
+//     const connection = await initializeConnection();
+//     const query = "SELECT title FROM movies WHERE title LIKE ? LIMIT 10"; // LIMIT ensures no more than 10 results
+//     const pattern = `%${searchTerm}%`;
+    
+//     try {
+//         const [results] = await connection.query(query, [pattern]);
+//         return results.map(movie => movie.title); // This will return all titles found, up to 10
+//     } catch (err) {
+//         console.error('Error fetching movie titles:', err);
+//         throw err;
+//     } finally {
+//         await connection.end();
+//     }
+// };
+
+

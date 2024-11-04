@@ -100,19 +100,19 @@ document.addEventListener('click', (event) => {
 
 /* ========== NAV-ICON DROPDOWN  JS Code END ========== */
 
-// search bar functionality
+// // search bar functionality
 
-document.addEventListener("DOMContentLoaded", function() {
-    const forms = [document.getElementById('searchForm'), document.getElementById('responsiveSearchForm')];
+// document.addEventListener("DOMContentLoaded", function() {
+//     const forms = [document.getElementById('searchForm'), document.getElementById('responsiveSearchForm')];
 
-    forms.forEach(form => {
-        form.addEventListener('submit', function(event) {
-            const searchInput = this.querySelector('.search-box');
+//     forms.forEach(form => {
+//         form.addEventListener('submit', function(event) {
+//             const searchInput = this.querySelector('.search-box');
 
-            // Check if the input field is empty
-            if (searchInput.value.trim() === '') {
-                event.preventDefault(); // Prevent form submission
-            }
-        });
-    });
-});
+//             // Check if the input field is empty
+//             if (searchInput.value.trim() === '') {
+//                 event.preventDefault(); // Prevent form submission
+//             }
+//         });
+//     });
+// });

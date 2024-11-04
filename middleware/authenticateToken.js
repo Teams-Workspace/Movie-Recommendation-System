@@ -1,31 +1,26 @@
 const jwt = require('jsonwebtoken');
 
 const authenticateToken = (req, res, next) => {
-    if (req.path === '/auth/login') {
-        return next();  // Skip token verification for the login page
-    }
-
     const token = req.cookies.token;
-    // console.log('Token:', token);
 
     if (!token) {
+        res.locals.isAuthenticated = false;
+        res.locals.user = {};
         return next();  // Allow unauthenticated requests to proceed
     }
 
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET);
         req.user = verified;
-        // console.log('Verified User:', req.user);
+        res.locals.isAuthenticated = true;
+        res.locals.user = req.user;
         next();
     } catch (err) {
-        // console.error('JWT Verification Error:', err);
-        
-        if (err.name === 'TokenExpiredError') {
-            return res.status(401).render('login');  // Render token expired page
-        }
-
-        res.status(400).render('404');  // Render 404 page for other token errors
+        res.locals.isAuthenticated = false;
+        res.locals.user = {};
+        return res.status(401).redirect('/auth/login');  // Redirect to login if token is invalid
     }
 };
+
 
 module.exports = authenticateToken;

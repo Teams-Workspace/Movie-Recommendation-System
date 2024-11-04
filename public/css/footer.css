@@ -1,21 +1,24 @@
 /* ========== Global Styles ========== */
 html, body {
-    height: 100%; /* Allow full height */
+    height: 100%; /* Ensure the body takes the full height */
     margin: 0;
     display: flex;
     flex-direction: column; /* Align children in a column */
 }
 
-/* ========== Main Content ========== */
-
+main {
+    flex: 1; /* This makes the main content area take up the remaining space */
+}
 
 /* ========== Footer Styles ========== */
 .footer {
     z-index: -1;
-    position: relative;
     background-color: #202020;
     padding: 70px 0 20px; /* Adjust padding to push content down */
     color: white;
+    position:-ms-page;  /* Sticky position keeps it at the bottom */
+    bottom: 0;  /* Align at the bottom */
+    width: 100%;
 }
 
 /* Footer container and row styles */
