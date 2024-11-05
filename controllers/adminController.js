@@ -1,4 +1,4 @@
-const initializeConnection = require('../models/dbConnection');
+const pool = require('../models/dbConnection');
 
 // Function to check if admin credentials are valid
 const isValidAdmin = (email, password) => {
@@ -11,18 +11,19 @@ const isValidAdmin = (email, password) => {
 
 exports.getAdminPanel = async (req, res) => {
     const email = req.user.email;
-    const password = req.query.password; // Assuming the password is passed in the query
+    const password = req.query.password;
 
     if (isValidAdmin(email, password)) {
+        let connection;
         try {
-            const connection = await initializeConnection();
+            connection = await pool.getConnection();
             const [users] = await connection.query('SELECT username, email, profile_picture FROM users');
-            // Pass the admin email as adminName
             res.render('adminPanel', { adminName: email, users });
-            await connection.end();
         } catch (err) {
-            // console.error('Database query error:', err);
-            res.status(500).render('505');
+            console.error('Database query error:', err);
+            res.status(500).render('500');
+        } finally {
+            if (connection) connection.release();
         }
     } else {
         res.redirect('/');

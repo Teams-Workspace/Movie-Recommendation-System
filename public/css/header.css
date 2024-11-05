@@ -198,7 +198,7 @@ html {
 
 /* Adjust focus styling for the search box */
 .search-box:focus {
-    width: 300px; /* Expands the width on focus */
+    width: 250px; /* Expands the width on focus */
     border-bottom: 2px solid #E50914; /* Change border color on focus */
     transform: scale(1.02); /* Slightly scales up the input */
 }
@@ -285,6 +285,7 @@ html {
 .username {
     font-size: 14px;
     color: white;
+    text-transform: uppercase;
 }
 
 /* ========== USER-NAME CSS Code START ========== */
@@ -294,7 +295,7 @@ html {
 .user-dropdown {
     display: none;
     position: absolute;
-    left: -10px;
+    right: 26px;
     top: 30px;
     background: #1c1c1c;
     list-style-type: none;
@@ -314,6 +315,7 @@ html {
 
 .user-dropdown-menu {
     padding: 0;
+    width: 164px; /* Set a fixed width to prevent wrapping */
 }
 
 .user-dropdown-menu li {
@@ -331,7 +333,11 @@ html {
     align-items: center;
     color: #ffffff;
     position: relative;
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    overflow: hidden; /* Hide any overflowing text */
+    text-overflow: ellipsis; /* Add ellipsis (...) if the text overflows */
 }
+
 
 .user-dropdown-menu li a:hover {
     background-color: rgba(255, 0, 0, 0.3);
@@ -396,7 +402,7 @@ html {
 /* ========== USER-DROPDOWN - NAVBAR CSS Code START  ========== */
 
 .responsive-user-dropdown {
-    display: none;
+    /* display: none; */
     position: absolute;
     left: -10px;
     top: 30px;
@@ -608,10 +614,12 @@ html {
 
     .user-logo img {
         width: 35px;
-        height: auto;
+        height: 35px;
+        border-radius: 50%;
     }
 
     .username {
+        text-transform: uppercase;
         margin-top: 5px;
         text-align: center;
         font-size: 10px;
@@ -706,24 +714,47 @@ html {
 }
 
 
-/* In your search.css */
-.suggestions {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    z-index: 1000;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
+.suggestions { 
+    position: absolute; 
+    background-color: #1c1c1c; 
+    z-index: 1000; 
+    max-height: 266px; 
+    overflow-y: auto; 
+    top: 56px; /* Adjust as needed */ 
+    width: 200px; /* Initial width to match search box */ 
+    transition: width 0.3s ease; /* Smooth transition */ 
+    border-radius: 4px; /* Add subtle rounding to corners */ 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
+    margin-left: -4px 
+} /* Adjust width of suggestions when search box is focused */ 
+
+.search-box:focus + .suggestions { 
+    width: 300px; /* Expand width to match search box */ 
+} 
+.suggestion-item { 
+    padding: 10px; 
+    cursor: pointer; 
+    color: #ffffff; /* White text for better visibility */ 
+}
+.suggestion-item:hover { 
+    background-color: #fcfcfcba; 
+    color: #1c1c1c; /* Text color change on hover */
 }
 
-.suggestion-item {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.suggestion-item:hover {
-    background-color: #f0f0f0;
+/* Styling the scrollbar */ 
+.suggestions::-webkit-scrollbar { 
+    width: 8px; /* Width of the scrollbar */ 
+} /* Track */ 
+.suggestions::-webkit-scrollbar-track { 
+    background: #1c1c1c; /* Match background color */ 
+    border-radius: 4px; /* Subtle rounding */ 
+} /* Handle */ 
+.suggestions::-webkit-scrollbar-thumb { 
+    background: #E50914; /* Red color for the handle */ 
+    border-radius: 4px; /* Subtle rounding */ 
+} /* Handle on hover */ 
+.suggestions::-webkit-scrollbar-thumb:hover { 
+    background: #f5f5f5; /* Lighter color on hover */ 
 }
 
 .wishlist {
@@ -755,3 +786,80 @@ html {
 /* .wishlist .notification:hover {
     color: #1c1c1c;
 } */
+
+
+@media (max-width: 1050px) {
+    .responsive-user-dropdown {
+        display: none;
+        position: absolute;
+        /* left: 38px; */
+        top: 30px;
+        background: #1c1c1c;
+        list-style-type: none;
+        margin: 11px 0px 0px -125px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+}
+
+@media (max-width: 675px) {
+    .responsive-user-dropdown {
+        display: none;
+        position: absolute;
+        left: 65px;
+        top: 14px;
+        background: #1c1c1c;
+        list-style-type: none;
+        margin: 11px 0px 0px -125px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+}
+
+@media (max-width: 550px) {
+    .responsive-user-dropdown {
+        display: none;
+        position: absolute;
+        left: -5px;
+        top: 15px;
+        background: #1c1c1c;
+        list-style-type: none;
+        margin: 11px 0px 0px -125px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+}
+
+@media (max-width: 598px) {
+    .search-bar form {
+        display: flex;
+        align-items: center;
+        margin-right: 3px;
+    }
+}
+
+
+/* Global Scrollbar Styling */
+
+/* Scrollbar */
+*::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+    height: 8px; /* Height of the horizontal scrollbar */
+}
+
+/* Scrollbar Track */
+*::-webkit-scrollbar-track {
+    background: #1c1c1c; /* Match background color */
+    /* border-radius: 4px; Subtle rounding */
+}
+
+/* Scrollbar Handle */
+*::-webkit-scrollbar-thumb {
+    background: #E50914; /* Red color for the handle */
+    border-radius: 4px; /* Subtle rounding */
+}
+
+/* Scrollbar Handle on Hover */
+*::-webkit-scrollbar-thumb:hover {
+    background: #f5f5f5; /* Lighter color on hover */
+}

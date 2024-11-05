@@ -1,5 +1,4 @@
 // config/dbConfig.js
-
 require('dotenv').config(); // Load environment variables
 
 const dbConfig = {
@@ -9,4 +8,4 @@ const dbConfig = {
     database: process.env.DB_NAME || 'movie_recommendation_system',
 };
 
-module.exports = dbConfig; // Export the configuration
+module.exports = dbConfig;
