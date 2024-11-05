@@ -1,6 +1,5 @@
-// controllers/movieController.js
 const movieModel = require('../models/movieModel');
-const initializeConnection = require('../models/dbConnection');
+const pool = require('../models/dbConnection');
 
 // Get all movies
 exports.getAllMovies = async (req, res) => {
@@ -8,24 +7,22 @@ exports.getAllMovies = async (req, res) => {
         const movies = await movieModel.getAllMovies();
         // res.render('allMovies', { movies });
     } catch (err) {
-        // console.error('Error fetching all movies:', err);
+        console.error('Error fetching all movies:', err);
         res.status(500).render('500');
-        // res.status(500).render('500', { message: 'Internal Server Error' });
     }
 };
 
 // Search for movies
 exports.searchMovies = async (req, res) => {
     const searchTerm = req.query.q || '';
-    const searchType = req.query.searchType || 'quickSort'; 
+    const searchType = req.query.searchType || 'quickSort';
 
     try {
         const movies = await movieModel.searchMovies(searchTerm, searchType);
         res.render('searchResults', { searchTerm, movies });
     } catch (err) {
-        // console.error('Error fetching movies:', err);
+        console.error('Error fetching movies:', err);
         res.status(500).render('500');
-        // res.status(500).render('500', { message: 'Internal Server Error' });
     }
 };
 
@@ -40,9 +37,8 @@ exports.getMovieDetails = async (req, res) => {
         }
         res.render('movieDetails', { movie });
     } catch (err) {
-        // console.error('Error fetching movie details:', err);
+        console.error('Error fetching movie details:', err);
         res.status(500).render('500');
-        // res.status(500).render('500', { message: 'Internal Server Error' });
     }
 };
 
@@ -52,9 +48,8 @@ exports.getOldestMovies = async (req, res) => {
         const movies = await movieModel.getOldestMovies(50);
         res.render('searchResults', { movies, searchTerm: 'Random Oldest Movies' });
     } catch (err) {
-        // console.error('Error fetching oldest movies:', err);
+        console.error('Error fetching oldest movies:', err);
         res.status(500).render('500');
-        // res.status(500).render('500', { message: 'Internal Server Error' });
     }
 };
 
@@ -64,28 +59,38 @@ exports.getLatestMovies = async (req, res) => {
         const movies = await movieModel.getLatestMovies(50);
         res.render('searchResults', { movies, searchTerm: 'Random Latest Movies' });
     } catch (err) {
-        // console.error('Error fetching latest movies:', err);
+        console.error('Error fetching latest movies:', err);
         res.status(500).render('500');
-        // res.status(500).render('500', { message: 'Internal Server Error' });
     }
 };
 
+// controllers/movieController.js
+exports.searchMovieTitles = async (req, res) => {
+    const searchTerm = req.query.q || '';
 
-// // controllers/movieController.js
-// exports.searchMovieTitles = async (searchTerm) => {
-//     const connection = await initializeConnection();
-//     const query = "SELECT title FROM movies WHERE title LIKE ? LIMIT 10"; // LIMIT ensures no more than 10 results
-//     const pattern = `%${searchTerm}%`;
-    
-//     try {
-//         const [results] = await connection.query(query, [pattern]);
-//         return results.map(movie => movie.title); // This will return all titles found, up to 10
-//     } catch (err) {
-//         console.error('Error fetching movie titles:', err);
-//         throw err;
-//     } finally {
-//         await connection.end();
-//     }
-// };
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const query = "SELECT title FROM movies WHERE title LIKE ? LIMIT 10"; // LIMIT ensures no more than 10 results
+        const pattern = `%${searchTerm}%`;
+        const [results] = await connection.query(query, [pattern]);
+        const titles = results.map(movie => movie.title);
+        res.json(titles); // Send the titles as JSON
+    } catch (err) {
+        console.error('Error fetching movie titles:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        if (connection) connection.release();
+    }
+};
 
-
+// Render 50 random movies on home page
+exports.getRandomMovies = async (req, res) => {
+    try {
+        const movies = await movieModel.getRandomMovies(50);
+        res.render('index', { movies, searchTerm: 'Random Movies' });
+    } catch (err) {
+        console.error('Error fetching random movies:', err);
+        res.status(500).render('500');
+    }
+};

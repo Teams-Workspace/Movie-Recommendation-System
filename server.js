@@ -9,7 +9,7 @@ const moviesRouter = require('./routes/movies');
 const authRoutes = require('./routes/authRoutes');
 const authenticateToken = require('./middleware/authenticateToken');
 const setAuthVariables = require('./middleware/setAuthVariables');
-const initializeConnection = require('./models/dbConnection');  // Import the function
+const pool = require('./models/dbConnection');  // Import the pool
 const app = express();
 
 dotenv.config();
@@ -43,37 +43,35 @@ app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/movies', moviesRouter);
 
+app.use('/', moviesRouter); // Use movieRouter for home page
+
 app.get('/', async (req, res) => {
     try {
         const userId = req.user ? req.user.id : null;
         let user = {};
         if (userId) {
-            const connection = await initializeConnection();
+            const connection = await pool.getConnection();
             const [rows] = await connection.query('SELECT * FROM users WHERE id = ?', [userId]);
             user = rows[0];
-            await connection.end();
+            connection.release();
         }
         const searchTerm = req.query.q || '';
-        // console.log('Index Route:', res.locals, 'User:', user);
-
         res.render('index', { user, searchTerm });
     } catch (err) {
-        // console.error('Database query error:', err);
+        console.error('Database query error:', err);
         res.status(500).render('500');
     }
 });
 
 app.get('/admin', async (req, res) => {
     try {
-        const connection = await initializeConnection();
+        const connection = await pool.getConnection();
         const [users] = await connection.query('SELECT * FROM users');
-        await connection.end();
+        connection.release();
         const adminName = req.user ? req.user.username : 'Admin';
-        // console.log('Admin Route Users:', users);
-
         res.render('adminPanel', { adminName, users });
     } catch (err) {
-        // console.error('Database query error:', err);
+        console.error('Database query error:', err);
         res.status(500).render('500');
     }
 });
@@ -86,7 +84,6 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).render('500');
 });
-
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
