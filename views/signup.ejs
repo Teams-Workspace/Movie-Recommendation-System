@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Login Page</title>
+    <link rel="stylesheet" href="/css/signup.css">
+    <!-- Use an absolute or relative path for the stylesheet -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="account-text">
+            <h1>Create New Account</h1>
+            <p>Already Registered? <a href="/auth/login">Login</a></p>
+        </div>
+        <div class="login-box">
+            <h2>Sign Up</h2>
+            <form id="signupForm" action="/auth/signup" method="POST">
+                <div class="input-field">
+                    <input type="text" name="username" id="name" placeholder="NAME" required>
+                    <small class="error-message" id="nameError"></small>
+                </div>
+                <div class="input-field email">
+                    <input type="email" name="email" id="email" placeholder="EMAIL" required>
+                    <small class="error-message" id="emailError"></small>
+                </div>
+                <div class="input-field">
+                    <input type="password" name="password" id="password" placeholder="PASSWORD" required>
+                    <small class="error-message" id="passwordError"></small>
+                </div>
+                <button type="submit" class="signup-button" disabled>Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+<script src="/js/signup.js"></script> <!-- Use absolute path for the script -->
+
+</html>

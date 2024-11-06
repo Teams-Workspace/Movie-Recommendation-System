@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="account-text">
+            <h1>Login</h1>
+            <p>Don't have an account? <a href="/auth/signup" id="switchToSignup">Sign up</a></p>
+        </div>
+        <div class="login-box" id="loginBox">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="input-field">
+                    <input type="email" name="email" id="loginEmail" placeholder="Email" required>
+                    <small class="error-message" id="emailError"></small>
+                </div>
+                <div class="input-field">
+                    <input type="password" name="password" id="loginPassword" placeholder="Password" required>
+                    <small class="error-message" id="passwordError"></small>
+                </div>
+                <button type="submit" class="submit-button">Login</button>
+                <div id="errorMessage" style="color: red; margin-top: 10px;"></div>
+            </form>
+        </div>
+    </div>
+    
+</body>
+
+<script src="/js/login.js"></script> <!-- Use absolute path for the script -->
+
+</html>

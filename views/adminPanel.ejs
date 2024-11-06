@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/adminPanel.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+
+    <title>Admin Panel</title>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+    <div class="container">
+        <div id="admin-name">Welcome, <%= user.username %>!</div>
+
+        <input class="form-control" id="searchInput" type="text" placeholder="Search..." autocomplete="off">
+
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Profile Picture</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody">
+                <% users.forEach((user, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td> <!-- Index number -->
+                    <td><%= user.username %></td> <!-- Username -->
+                    <td><%= user.email %></td> <!-- Email -->
+                    <td>
+                        <img 
+                            src="<%= user.profile_picture || '/images/default.png' %>" 
+                            alt="Profile Picture" 
+                            class="profile-pic"
+                            onerror="this.onerror=null; this.src='/images/default.png';"
+                        >
+                    </td> <!-- Profile Picture -->
+                    <!-- Profile Picture -->
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <div id="noMatchMessage" style="display: none; color: #1c1c1c; text-align: center; margin-top: 20px;">
+            No matches found.
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function searchUsers() {
+                const input = document.getElementById('searchInput').value.toLowerCase();
+                const tableBody = document.getElementById('tableBody');
+                const rows = tableBody.getElementsByTagName('tr');
+                let hasMatch = false;
+                const noMatchMessage = document.getElementById('noMatchMessage');
+
+                noMatchMessage.style.display = 'none';
+
+                if (input.length === 0) {
+                    for (let i = 0; i < rows.length; i++) {
+                        rows[i].style.display = '';
+                    }
+                    return;
+                }
+
+                for (let i = 0; i < rows.length; i++) {
+                    const username = rows[i].cells[1]?.textContent.toLowerCase();
+                    const email = rows[i].cells[2]?.textContent.toLowerCase();
+
+                    if (username.includes(input) || email.includes(input)) {
+                        rows[i].style.display = '';
+                        hasMatch = true;
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
+                }
+
+                if (!hasMatch) {
+                    noMatchMessage.style.display = '';
+                }
+            }
+
+            document.getElementById('searchInput').addEventListener('input', searchUsers);
+        });
+    </script>
+
+</body>
+
+</html>
