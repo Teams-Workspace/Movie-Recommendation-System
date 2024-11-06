@@ -100,19 +100,67 @@ document.addEventListener('click', (event) => {
 
 /* ========== NAV-ICON DROPDOWN  JS Code END ========== */
 
-// // search bar functionality
+// search bar functionality
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     const forms = [document.getElementById('searchForm'), document.getElementById('responsiveSearchForm')];
+document.addEventListener("DOMContentLoaded", function() {
+    const forms = [document.getElementById('searchForm'), document.getElementById('responsiveSearchForm')];
 
-//     forms.forEach(form => {
-//         form.addEventListener('submit', function(event) {
-//             const searchInput = this.querySelector('.search-box');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            const searchInput = this.querySelector('.search-box');
 
-//             // Check if the input field is empty
-//             if (searchInput.value.trim() === '') {
-//                 event.preventDefault(); // Prevent form submission
-//             }
-//         });
-//     });
-// });
+            // Check if the input field is empty
+            if (searchInput.value.trim() === '') {
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+});
+
+// suggestion  js 
+
+
+function debounce(func, delay) {
+    let debounceTimer;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsContainer = document.getElementById('suggestions');
+
+    async function fetchSuggestions() {
+        const query = searchInput.value.trim();
+        if (query.length > 1) {
+            const response = await fetch(`/movies/search/titles?q=${query}`);
+            const titles = await response.json();
+            displaySuggestions(titles);
+        } else {
+            suggestionsContainer.innerHTML = '';
+        }
+    }
+
+    const debouncedFetchSuggestions = debounce(fetchSuggestions, 300);
+
+    searchInput.addEventListener('input', debouncedFetchSuggestions);
+
+    function displaySuggestions(titles) {
+        suggestionsContainer.innerHTML = '';
+        titles.forEach(title => {
+            const suggestionItem = document.createElement('div');
+            suggestionItem.classList.add('suggestion-item');
+            suggestionItem.textContent = title;
+            suggestionItem.addEventListener('click', function () {
+                searchInput.value = title;
+                suggestionsContainer.innerHTML = '';
+                document.getElementById('searchForm').submit();  // Automatically submit the form
+            });
+            suggestionsContainer.appendChild(suggestionItem);
+        });
+    }
+});

@@ -1237,56 +1237,7 @@
             <!-- ========== slider Section End ========== -->
         </main>
 
-        <%- include('partials/footer.ejs') %>
-
-
-
-            <script>
-                function debounce(func, delay) {
-                    let debounceTimer;
-                    return function () {
-                        const context = this;
-                        const args = arguments;
-                        clearTimeout(debounceTimer);
-                        debounceTimer = setTimeout(() => func.apply(context, args), delay);
-                    };
-                }
-
-                document.addEventListener('DOMContentLoaded', function () {
-                    const searchInput = document.getElementById('searchInput');
-                    const suggestionsContainer = document.getElementById('suggestions');
-
-                    async function fetchSuggestions() {
-                        const query = searchInput.value.trim();
-                        if (query.length > 1) {
-                            const response = await fetch(`/movies/search/titles?q=${query}`);
-                            const titles = await response.json();
-                            displaySuggestions(titles);
-                        } else {
-                            suggestionsContainer.innerHTML = '';
-                        }
-                    }
-
-                    const debouncedFetchSuggestions = debounce(fetchSuggestions, 300);
-
-                    searchInput.addEventListener('input', debouncedFetchSuggestions);
-
-                    function displaySuggestions(titles) {
-                        suggestionsContainer.innerHTML = '';
-                        titles.forEach(title => {
-                            const suggestionItem = document.createElement('div');
-                            suggestionItem.classList.add('suggestion-item');
-                            suggestionItem.textContent = title;
-                            suggestionItem.addEventListener('click', function () {
-                                searchInput.value = title;
-                                suggestionsContainer.innerHTML = '';
-                                document.getElementById('searchForm').submit();  // Automatically submit the form
-                            });
-                            suggestionsContainer.appendChild(suggestionItem);
-                        });
-                    }
-                });
-            </script>
+    <%- include('partials/footer.ejs') %>
 
 
 </body>
