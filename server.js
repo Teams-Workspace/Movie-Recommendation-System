@@ -9,6 +9,7 @@ const moviesRouter = require('./routes/movies');
 const authRoutes = require('./routes/authRoutes');
 const authenticateToken = require('./middleware/authenticateToken');
 const setAuthVariables = require('./middleware/setAuthVariables');
+const movies = require(path.join(__dirname, 'public', 'js', 'movies'));
 const pool = require('./models/dbConnection');  // Import the pool
 const app = express();
 
@@ -44,6 +45,26 @@ app.use('/admin', adminRoutes);
 app.use('/movies', moviesRouter);
 
 app.use('/', moviesRouter); // Use movieRouter for home page
+
+// console.log('Movies array loaded:', movies);  // Log the movies array to verify it's loaded correctly
+
+app.get('/movie/:title', (req, res) => {
+    const movieTitle = decodeURIComponent(req.params.title);
+    // console.log('Requested movie title:', movieTitle);  // Check title being requested
+
+    const movie = movies.find(m => m.title === movieTitle);
+    // console.log('Movie data array:', movies);  // Log the entire movies array to ensure it's loaded
+
+    if (movie) {
+        // console.log('Movie found:', movie);
+        res.render('movie_details', { movie });
+    } else {
+        // console.error('Movie not found');
+        res.status(404).render('404');  // Render a 404 page if the movie is not found
+    }
+});
+
+
 
 app.get('/', async (req, res) => {
     try {

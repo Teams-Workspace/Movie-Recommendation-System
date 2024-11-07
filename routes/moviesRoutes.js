@@ -18,4 +18,6 @@ router.get('/oldest', movieController.getOldestMovies);
 // Route to get a random selection of the latest movies
 router.get('/latest', movieController.getLatestMovies);
 
+
+
 module.exports = router;

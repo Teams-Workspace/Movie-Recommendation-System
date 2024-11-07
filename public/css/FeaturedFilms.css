@@ -1,32 +1,41 @@
-
-.content
-{
+.content {
     margin-top: 70px;
 }
 
-header{
+header {
     z-index: 10;
 }
 
 .suggestion {
+    background: #202020;
     display: flex;
-    justify-content: center;
-    margin: 20px 0;
+    flex-direction: column;
+    align-items: flex-start; /* Align the label to the left */
+    margin: -1px;
+    padding: 20px; /* Add some padding */
     width: 100%;
+}
+
+.featured-label {
+    color: white;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .image-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px; /* Space between images */
+    gap: 12px; /* Space between images */
     width: 100%;
     margin: 0 auto;
 }
+
 .image-item {
     position: relative; /* Position relative to contain absolute children */
     flex: 1 1 calc(20% - 10px); /* Default: five images in a row */
-    max-width: 300px;
+    max-width: 200px; /* Adjust size to make them medium */
     overflow: hidden; /* Ensure overlay is contained */
     border-radius: 10px;
     box-sizing: border-box;
@@ -39,7 +48,6 @@ header{
 
 .image-item img {
     width: 100%; /* Responsive width */
-    max-width: 300px; /* Constrain max width */
     height: auto; /* Maintain aspect ratio */
     border-radius: 10px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
@@ -53,27 +61,25 @@ header{
 
 .overlay {
     position: absolute; /* Overlay on top of image */
-    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
-    bottom: 0; /* Cover the entire area */
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    height: 40%; /* Cover bottom half */
+    background-color: rgba(0, 0, 0, 0.584); /* Semi-transparent background */
     display: flex;
     justify-content: center;
     align-items: flex-end;
     opacity: 0; /* Hide overlay by default */
     transition: opacity 0.3s ease;
-    border-radius: 10px; /* Match image-item’s radius */
+    border-radius: 0 0 10px 10px; /* Match image-item’s radius */
 }
 
 .image-item:hover .overlay {
     opacity: 1; /* Show overlay on hover */
 }
 
-
 .plus-sign {
-    /* font-size: 24px; */
-    color: white;
+    color: white; /* Turn red on hover */
     padding: 10px;
     background: #E50914;
     border-radius: 5px;
@@ -111,10 +117,8 @@ header{
     }
 }
 
-.no-found
-{
+.no-found {
     margin: 70px;
-    color: black;
+    color: white; /* Change text color to white */
     font-size: larger;
-
 }
