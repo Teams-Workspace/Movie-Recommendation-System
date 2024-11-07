@@ -103,64 +103,74 @@ document.addEventListener('click', (event) => {
 // search bar functionality
 
 document.addEventListener("DOMContentLoaded", function() {
+    // Search bar functionality
     const forms = [document.getElementById('searchForm'), document.getElementById('responsiveSearchForm')];
 
     forms.forEach(form => {
-        form.addEventListener('submit', function(event) {
-            const searchInput = this.querySelector('.search-box');
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                const searchInput = this.querySelector('.search-box');
 
-            // Check if the input field is empty
-            if (searchInput.value.trim() === '') {
-                event.preventDefault(); // Prevent form submission
-            }
-        });
+                // Check if the input field is empty
+                if (searchInput.value.trim() === '') {
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+        }
     });
-});
 
-// suggestion  js 
+    // Suggestion functionality
+    const searchInputs = [document.getElementById('searchInput'), document.getElementById('responsiveSearchInput')];
+    const suggestionsContainers = document.querySelectorAll('.suggestions');
 
-
-function debounce(func, delay) {
-    let debounceTimer;
-    return function () {
-        const context = this;
-        const args = arguments;
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => func.apply(context, args), delay);
-    };
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('searchInput');
-    const suggestionsContainer = document.getElementById('suggestions');
-
-    async function fetchSuggestions() {
-        const query = searchInput.value.trim();
+    async function fetchSuggestions(input, container) {
+        const query = input.value.trim();
         if (query.length > 1) {
             const response = await fetch(`/movies/search/titles?q=${query}`);
             const titles = await response.json();
-            displaySuggestions(titles);
+            displaySuggestions(titles, input, container);
         } else {
-            suggestionsContainer.innerHTML = '';
+            container.innerHTML = '';
         }
     }
 
     const debouncedFetchSuggestions = debounce(fetchSuggestions, 300);
 
-    searchInput.addEventListener('input', debouncedFetchSuggestions);
+    searchInputs.forEach((input, index) => {
+        if (input) {
+            const container = suggestionsContainers[index];
+            input.addEventListener('input', () => {
+                // console.log(`Fetching suggestions for: ${input.value}`);
+                debouncedFetchSuggestions(input, container);
+            });
+        }
+    });
 
-    function displaySuggestions(titles) {
-        suggestionsContainer.innerHTML = '';
+    function displaySuggestions(titles, input, container) {
+        // console.log(`Displaying ${titles.length} suggestions for: ${input.value}`);
+        container.innerHTML = '';
         titles.forEach(title => {
             const suggestionItem = document.createElement('div');
             suggestionItem.classList.add('suggestion-item');
             suggestionItem.textContent = title;
             suggestionItem.addEventListener('click', function () {
-                searchInput.value = title;
-                suggestionsContainer.innerHTML = '';
-                document.getElementById('searchForm').submit();  // Automatically submit the form
+                input.value = title;
+                container.innerHTML = '';
+                if (input.value.trim() !== '') {
+                    input.closest('form').submit(); // Submit the form
+                }
             });
-            suggestionsContainer.appendChild(suggestionItem);
+            container.appendChild(suggestionItem);
         });
+    }
+
+    function debounce(func, delay) {
+        let debounceTimer;
+        return function () {
+            const context = this;
+            const args = arguments;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => func.apply(context, args), delay);
+        };
     }
 });

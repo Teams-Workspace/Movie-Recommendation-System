@@ -106,6 +106,10 @@ const initSlider = () => {
         }
     });
 
+    // Pause auto-slide on mouse over, resume on mouse out
+    imageList.addEventListener("mouseover", stopAutoSlide);
+    imageList.addEventListener("mouseout", startAutoSlide);
+
     startAutoSlide();
 };
 
@@ -147,13 +151,10 @@ const stopAutoSlide = () => {
 window.addEventListener("load", initSlider);
 window.addEventListener("resize", initSlider);
 
-
-
 function showMovie(imageSrc) {
     const displayImage = document.getElementById('sliderDisplayImage');
     displayImage.src = imageSrc;
 }
-
 let newAutoSlideInterval;
 let newCurrentIndex = 0;
 const maxVisibleImages = 6; // Show up to 6 images
@@ -202,6 +203,10 @@ const initNewSlider = () => {
         }
     });
 
+    // Pause auto-slide on mouse over, resume on mouse out
+    newImageList.addEventListener("mouseover", stopNewAutoSlide);
+    newImageList.addEventListener("mouseout", startNewAutoSlide);
+
     startNewAutoSlide();
 };
 
@@ -243,6 +248,10 @@ const stopNewAutoSlide = () => {
 window.addEventListener("load", initNewSlider);
 window.addEventListener("resize", initNewSlider);
 
+function showMovie(imageSrc) {
+    const displayImage = document.getElementById('sliderDisplayImage');
+    displayImage.src = imageSrc;
+}
 
 
 // scroll bar slider  js 
