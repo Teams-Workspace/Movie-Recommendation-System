@@ -48,8 +48,8 @@ body {
     color: red;
 }
 
-/* ========== Login Box Styles ========== */
-.login-box {
+/* ========== Login & Signup Box Styles ========== */
+.login-box, .signup-box {
     background: #b8b8b633;
     padding: 20px;
     text-align: center;
@@ -57,7 +57,7 @@ body {
     width: 40%;
 }
 
-.login-box h2 {
+.login-box h2, .signup-box h2 {
     color: white;
     align-self: center;
     font-size: 2rem;
@@ -72,9 +72,10 @@ body {
 }
 
 /* Error style for input fields */
-.error {
-    border: 2px solid red;
-    background-color: #ffe6e6;
+.error-message {
+    /* border: 2px solid red; */
+    color: #E50914;
+    /* background-color: #ffe6e6; */
 }
 
 .input-field input {
@@ -97,69 +98,8 @@ body {
     opacity: 1;
 }
 
-.input-field #sendOTP {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-color: #b8b8b779;
-    border: none;
-    cursor: pointer;
-    width: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-}
-
-.input-field #sendOTP:hover {
-    background-color: #b8b8b7cc;
-}
-
-.input-field #sendOTP img {
-    width: 20px;
-    height: 20px;
-    filter: invert(100%);
-}
-
-.input-field #sendOTP:active img {
-    filter: none;
-}
-
-/* ========== OTP Section Styles ========== */
-.otp-section {
-    margin-top: 30px;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.otp-section label {
-    color: white;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.otp-inputs {
-    display: flex;
-    justify-content: space-between;
-}
-
-.otp-inputs input {
-    width: 16%;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    text-align: center;
-    background-color: #b8b8b779;
-}
-
-/* ========== Hidden Class ========== */
-.hidden {
-    display: none;
-}
-
 /* ========== Signup Button Styles ========== */
-.signup-button {
+.signup-button, .login-button {
     width: 100%;
     padding: 10px;
     border: none;
@@ -169,16 +109,19 @@ body {
     transition: background-color 0.3s, transform 0.2s;
 }
 
-.signup-button:hover {
+.signup-button:hover, .login-button:hover {
     background-color: #f0f0f0;
 }
 
-.signup-button:active {
+.signup-button:active, .login-button:active {
     background-color: #E50914;
     transform: scale(0.95);
 }
 
-
+/* ========== Hidden Class ========== */
+.hidden {
+    display: none;
+}
 
 /* ========== Media Queries ========== */
 
@@ -199,14 +142,13 @@ body {
         margin-bottom: 20px;
     }
 
-    .login-box {
+    .login-box, .signup-box {
         margin-top: 20px;
         width: 85%;
         margin-left: auto;
         margin-right: auto;
     }
 }
-
 
 /* Media query for screens from 500px to 768px (tablets) */
 @media (min-width: 500px) and (max-width: 768px) {
@@ -215,7 +157,7 @@ body {
         align-items: center;
     }
 
-    .login-box {
+    .login-box, .signup-box {
         width: 80%;
         margin-top: 20px;
     }
@@ -228,7 +170,7 @@ body {
         justify-content: space-between;
     }
 
-    .login-box {
+    .login-box, .signup-box {
         width: 40%;
     }
 }
@@ -239,5 +181,32 @@ body {
         flex-direction: row;
         justify-content: space-between;
     }
-
 }
+
+/* Styling for the email and password fields */
+.input-field {
+    position: relative;
+}
+
+/* Positioning the eye icon on the right side of the password input */
+.eye-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #1c1c1c;
+}
+
+/* Active eye icon color */
+.eye-icon i {
+    transition: color 0.3s ease;
+}
+
+/* When password is visible, change the icon color */
+.eye-icon i.bi-eye-fill {
+    color: #1c1c1c;
+}
+
+

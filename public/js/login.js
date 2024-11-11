@@ -58,3 +58,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// eye js 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const passwordField = document.getElementById('loginPassword');
+    const eyeIcon = document.querySelector('.eye-icon');
+    
+    // Toggle password visibility and change the icon
+    eyeIcon.addEventListener('click', function () {
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.innerHTML = '<i class="bi bi-eye-fill"></i>'; // Change to filled eye icon
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.innerHTML = '<i class="bi bi-eye-slash-fill"></i>'; // Change to eye icon
+        }
+    });
+});

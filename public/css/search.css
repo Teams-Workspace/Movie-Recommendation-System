@@ -107,7 +107,7 @@ header{
 /* One image per row */
 @media (max-width: 576px) {
     .image-item {
-        flex: 1 1 100%;
+        flex: 1 1 calc(50% - 10px);
     }
 }
 
@@ -117,4 +117,18 @@ header{
     color: black;
     font-size: larger;
 
+}
+
+@media (max-width: 435px) {
+    .image-item {
+        flex: 1 1 calc(50% - 10px); /* Two images per row */
+        max-width: 150px; /* Adjust max-width for better fit */
+        width: 100%; /* Ensure it uses full width of the container */
+    }
+
+    .image-item img {
+        max-width: 100%; /* Ensure image does not exceed container width */
+        width: 100%; /* Responsive width */
+        height: auto; /* Maintain aspect ratio */
+    }
 }
