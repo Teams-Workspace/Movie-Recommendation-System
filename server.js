@@ -7,10 +7,12 @@ const cookieParser = require('cookie-parser');
 const adminRoutes = require('./routes/adminRoutes');
 const moviesRouter = require('./routes/movies');
 const authRoutes = require('./routes/authRoutes');
-const authenticateToken = require('./middleware/authenticateToken');
 const setAuthVariables = require('./middleware/setAuthVariables');
 const movies = require(path.join(__dirname, 'public', 'js', 'movies'));
 const pool = require('./models/dbConnection');  // Import the pool
+const wishlistRouter = require('./routes/wishlistRouter');
+const authenticateToken = require('./middleware/authenticateToken');  // Import the middleware
+
 const app = express();
 
 dotenv.config();
@@ -37,34 +39,29 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(authenticateToken);
+
+// Apply middleware to set authentication variables
+app.use(authenticateToken);  // Enable the authenticateToken middleware
 app.use(setAuthVariables);
 
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/movies', moviesRouter);
-
+// Apply authentication middleware to the wishlist route 
+app.use('/wishlist', authenticateToken, wishlistRouter);
 app.use('/', moviesRouter); // Use movieRouter for home page
-
-// console.log('Movies array loaded:', movies);  // Log the movies array to verify it's loaded correctly
 
 app.get('/movie/:title', (req, res) => {
     const movieTitle = decodeURIComponent(req.params.title);
-    // console.log('Requested movie title:', movieTitle);  // Check title being requested
 
     const movie = movies.find(m => m.title === movieTitle);
-    // console.log('Movie data array:', movies);  // Log the entire movies array to ensure it's loaded
 
     if (movie) {
-        // console.log('Movie found:', movie);
         res.render('movie_details', { movie });
     } else {
-        // console.error('Movie not found');
-        res.status(404).render('404');  // Render a 404 page if the movie is not found
+        res.status(404).render('404');
     }
 });
-
-
 
 app.get('/', async (req, res) => {
     try {

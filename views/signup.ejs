@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Login Page</title>
+    <title>Signup</title>
     <link rel="stylesheet" href="/css/signup.css">
-    <!-- Use an absolute or relative path for the stylesheet -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -20,23 +20,28 @@
             <form id="signupForm" action="/auth/signup" method="POST">
                 <div class="input-field">
                     <input type="text" name="username" id="name" placeholder="NAME" required>
-                    <small class="error-message" id="nameError"></small>
+                    <small class="error-message hidden" id="nameError">Name is required.</small>
                 </div>
                 <div class="input-field email">
                     <input type="email" name="email" id="email" placeholder="EMAIL" required>
-                    <small class="error-message" id="emailError"></small>
+                    <small class="error-message hidden" id="emailError">Please enter a valid email.</small>
                 </div>
                 <div class="input-field">
                     <input type="password" name="password" id="password" placeholder="PASSWORD" required>
-                    <small class="error-message" id="passwordError"></small>
+                    <span class="eye-icon" onclick="togglePasswordVisibility()"><i class="bi bi-eye-slash-fill"></i></span>
+                    <small class="error-message hidden" id="passwordError">Password must be at least 6 characters long.</small>
                 </div>
+                <% if (typeof errorMessage !== 'undefined') { %>
+                    <div class="error-message" style="color: red; margin-bottom: 10px;">
+                        <%= errorMessage %>
+                    </div>
+                <% } %>
                 <button type="submit" class="signup-button" disabled>Sign Up</button>
             </form>
         </div>
     </div>
 
+    <script src="/js/signup.js"></script>
 </body>
-
-<script src="/js/signup.js"></script> <!-- Use absolute path for the script -->
 
 </html>

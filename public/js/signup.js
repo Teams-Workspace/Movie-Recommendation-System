@@ -1,46 +1,45 @@
+// Grab elements
 const nameInput = document.getElementById('name');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const signUpButton = document.querySelector('.signup-button');
-const errorMessageContainer = document.createElement('div'); // Create an error message container
+const nameError = document.getElementById('nameError');
+const emailError = document.getElementById('emailError');
+const passwordError = document.getElementById('passwordError');
 
-errorMessageContainer.style.color = 'red'; // Style the error message container
-errorMessageContainer.style.marginTop = '10px';
-document.getElementById('signupForm').appendChild(errorMessageContainer); // Append it to the form
-
-// Function to validate fields and manage button state
+// Function to validate individual fields and manage button state
 function validateFields() {
+    // Define validation conditions for each field
     const isNameFilled = nameInput.value.trim() !== '';
-    const isEmailFilled = emailInput.value.includes('@') && emailInput.value.includes('.');
-    const isPasswordFilled = passwordInput.value.trim() !== '' && passwordInput.value.length >= 6; // Ensure password is at least 6 characters
+    const isEmailValid = emailInput.value.includes('@') && emailInput.value.includes('.');
+    const isPasswordValid = passwordInput.value.trim() !== '' && passwordInput.value.length >= 6;
 
-    // Clear previous error messages
-    errorMessageContainer.textContent = '';
-
-    signUpButton.disabled = !(isNameFilled && isEmailFilled && isPasswordFilled);
-
-    // Highlight missing fields
-    nameInput.classList.toggle('error', !isNameFilled);
-    emailInput.classList.toggle('error', !isEmailFilled);
-    passwordInput.classList.toggle('error', !isPasswordFilled);
-
-    // Set error messages
-    if (!isNameFilled) {
-        errorMessageContainer.textContent += 'Name is required. ';
+    // Clear error messages only for valid fields
+    if (isNameFilled) {
+        nameError.textContent = '';
+    } else {
+        nameError.textContent = 'Name is required.';
     }
-    if (!isEmailFilled) {
-        errorMessageContainer.textContent += 'Email is invalid. ';
+
+    if (isEmailValid) {
+        emailError.textContent = '';
+    } else {
+        emailError.textContent = 'Please enter a valid email.';
     }
-    if (!isPasswordFilled) {
-        if (passwordInput.value.length < 6) {
-            errorMessageContainer.textContent += 'Password must be at least 6 characters long. ';
-        } else {
-            errorMessageContainer.textContent += 'Password is required. ';
-        }
+
+    if (isPasswordValid) {
+        passwordError.textContent = '';
+    } else {
+        passwordError.textContent = passwordInput.value.length < 6 
+            ? 'Password must be at least 6 characters long.'
+            : 'Password is required.';
     }
+
+    // Enable/disable the signup button based on overall form validity
+    signUpButton.disabled = !(isNameFilled && isEmailValid && isPasswordValid);
 }
 
-// Add input event listeners for validation
+// Add input event listeners to validate fields as user types
 nameInput.addEventListener('input', validateFields);
 emailInput.addEventListener('input', validateFields);
 passwordInput.addEventListener('input', validateFields);
@@ -49,12 +48,30 @@ passwordInput.addEventListener('input', validateFields);
 document.getElementById('signupForm').addEventListener('submit', (event) => {
     event.preventDefault(); // Prevent default form submission
 
-    // Final validation check before submission
+    // Perform final validation check before submission
     validateFields();
 
     if (!signUpButton.disabled) {
-        // Submit the form if validation passes
+        // Submit the form if all fields are valid
         document.getElementById('signupForm').submit();
     }
 });
 
+
+// eye js 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const passwordField = document.getElementById('password');
+    const eyeIcon = document.querySelector('.eye-icon');
+    
+    // Toggle password visibility and change the icon
+    eyeIcon.addEventListener('click', function () {
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.innerHTML = '<i class="bi bi-eye-fill"></i>'; // Change to filled eye icon
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.innerHTML = '<i class="bi bi-eye-slash-fill"></i>'; // Change to eye icon
+        }
+    });
+});

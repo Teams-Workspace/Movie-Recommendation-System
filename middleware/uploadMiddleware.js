@@ -1,4 +1,3 @@
-// middleware/uploadMiddleware.js
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs'); // Ensure fs is imported
@@ -19,6 +18,24 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage });
+// File filter for validating file type (only images allowed)
+const fileFilter = (req, file, cb) => {
+    const fileTypes = /jpeg|jpg|png/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = fileTypes.test(file.mimetype);
+
+    if (extname && mimetype) {
+        cb(null, true);
+    } else {
+        cb(new Error('Only .png, .jpg, and .jpeg formats are allowed.'));
+    }
+};
+
+// Multer options
+const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter,
+    limits: { fileSize: 2 * 1024 * 1024 } // 2MB limit for file size
+});
 
 module.exports = upload;

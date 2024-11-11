@@ -29,7 +29,8 @@ exports.signup = async (req, res) => {
         // Check if the email already exists
         const [existingUsers] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
         if (existingUsers.length > 0) {
-            return res.status(400).json({ error: 'Email already exists' });
+            // Render signup page with error message
+            return res.render('signup', { errorMessage: 'Please try another email.' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -51,6 +52,7 @@ exports.signup = async (req, res) => {
         if (connection) connection.release();
     }
 };
+
 
 exports.login = async (req, res) => {
     const { email, password } = req.body;
@@ -123,7 +125,24 @@ exports.updateProfilePicture = async (req, res) => {
         // Update the req.user object directly if it's available.
         req.user.profile_picture = profilePicturePath;
 
-        res.redirect('/'); // Redirect to the profile or home page
+        // Reload the user data from the database
+        try {
+            connection = await pool.getConnection();
+            const [rows] = await connection.query('SELECT * FROM users WHERE id = ?', [userId]);
+            const user = rows[0];
+
+            // Generate a new token with updated profile picture
+            const token = jwt.sign({ id: user.id, email: user.email, username: user.username, profile_picture: user.profile_picture }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+            res.cookie('token', token, { httpOnly: true });
+
+            res.redirect('/'); // Redirect to the profile or home page
+        } catch (err) {
+            console.error('Error reloading user data:', err);
+            res.status(500).render('500');
+        } finally {
+            if (connection) connection.release();
+        }
     } catch (err) {
         console.error('Error during profile picture update:', err);
         res.status(500).render('500');

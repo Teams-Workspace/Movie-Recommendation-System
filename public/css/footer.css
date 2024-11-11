@@ -13,7 +13,9 @@ main {
 /* ========== Footer Styles ========== */
 .footer {
     z-index: -1;
-    background-color: #202020;
+    background: linear-gradient(to right,
+            rgba(20, 20, 20, 0.950),
+            rgba(20, 20, 20, 0.850));
     padding: 70px 0 20px; /* Adjust padding to push content down */
     color: white;
     position:-ms-page;  /* Sticky position keeps it at the bottom */
