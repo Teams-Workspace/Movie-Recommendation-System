@@ -8,10 +8,10 @@ const adminRoutes = require('./routes/adminRoutes');
 const moviesRouter = require('./routes/movies');
 const authRoutes = require('./routes/authRoutes');
 const setAuthVariables = require('./middleware/setAuthVariables');
-const movies = require(path.join(__dirname, 'public', 'js', 'movies'));
-const pool = require('./models/dbConnection');  // Import the pool
+const pool = require('./models/dbConnection');
 const wishlistRouter = require('./routes/wishlistRouter');
-const authenticateToken = require('./middleware/authenticateToken');  // Import the middleware
+const authenticateToken = require('./middleware/authenticateToken');
+const { initializeData } = require('./utils/initializeData');
 
 const app = express();
 
@@ -39,60 +39,17 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-
 // Apply middleware to set authentication variables
-app.use(authenticateToken);  // Enable the authenticateToken middleware
+app.use(authenticateToken);
 app.use(setAuthVariables);
 
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/movies', moviesRouter);
-// Apply authentication middleware to the wishlist route 
 app.use('/wishlist', authenticateToken, wishlistRouter);
 app.use('/', moviesRouter); // Use movieRouter for home page
 
-app.get('/movie/:title', (req, res) => {
-    const movieTitle = decodeURIComponent(req.params.title);
-
-    const movie = movies.find(m => m.title === movieTitle);
-
-    if (movie) {
-        res.render('movie_details', { movie });
-    } else {
-        res.status(404).render('404');
-    }
-});
-
-app.get('/', async (req, res) => {
-    try {
-        const userId = req.user ? req.user.id : null;
-        let user = {};
-        if (userId) {
-            const connection = await pool.getConnection();
-            const [rows] = await connection.query('SELECT * FROM users WHERE id = ?', [userId]);
-            user = rows[0];
-            connection.release();
-        }
-        const searchTerm = req.query.q || '';
-        res.render('index', { user, searchTerm });
-    } catch (err) {
-        console.error('Database query error:', err);
-        res.status(500).render('500');
-    }
-});
-
-app.get('/admin', async (req, res) => {
-    try {
-        const connection = await pool.getConnection();
-        const [users] = await connection.query('SELECT * FROM users');
-        connection.release();
-        const adminName = req.user ? req.user.username : 'Admin';
-        res.render('adminPanel', { adminName, users });
-    } catch (err) {
-        console.error('Database query error:', err);
-        res.status(500).render('500');
-    }
-});
+initializeData().catch(err => console.error('Error initializing data:', err));
 
 app.use((req, res, next) => {
     res.status(404).render('404');
