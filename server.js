@@ -8,15 +8,13 @@ const adminRoutes = require('./routes/adminRoutes');
 const moviesRouter = require('./routes/movies');
 const authRoutes = require('./routes/authRoutes');
 const setAuthVariables = require('./middleware/setAuthVariables');
-const pool = require('./models/dbConnection');
 const wishlistRouter = require('./routes/wishlistRouter');
 const authenticateToken = require('./middleware/authenticateToken');
 const { initializeData } = require('./utils/initializeData');
 
-const app = express();
-
 dotenv.config();
 
+const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(session({
@@ -47,7 +45,7 @@ app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/movies', moviesRouter);
 app.use('/wishlist', authenticateToken, wishlistRouter);
-app.use('/', moviesRouter); // Use movieRouter for home page
+app.use('/', moviesRouter); // Use moviesRouter for home page
 
 initializeData().catch(err => console.error('Error initializing data:', err));
 
