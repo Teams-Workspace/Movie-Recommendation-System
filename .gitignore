@@ -14,3 +14,5 @@ sendotp.js
 movies.txt
 
 scripts/
+
+fetchMovies.js
