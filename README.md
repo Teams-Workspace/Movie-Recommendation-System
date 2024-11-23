@@ -16,28 +16,38 @@
     │   │   └── scripts.js          # Main JavaScript file
     │   |── images/                 # Images (e.g., logos, movie posters)
     │   |   └── logo.png            # Example logo file
+    |   |-- pictures/
+    |   |   |__ staticPictures      # All static pictures folder
     |   |── uploads/                # Directory for user-uploaded files
     |   |   └── profile_pics/       # Subdirectory for profile pictures uploaded by users
     |   |       └── example.jpg     # Example profile picture
     ├── routes/                     # Route definitions
     │   ├── authRoutes.js           # Routes for authentication (login/signup)
     │   ├── adminRoutes.js          # Routes for admin functionality
-    │   └── userRoutes.js           # Routes for user functionality (profile, wishlist)
+    |   |-- auth.js                 # Routes for upload profileif authorized user
+    |   |-- movies.js               # All movies routes here (movies routes)
+    │   └── wishlistRoutes.js       # Routes for user wishlist (wishlist)
     ├── controllers/                # Controllers for handling logic
     │   ├── authController.js       # Logic for authentication (login/signup)
     │   ├── adminController.js      # Logic for admin operations
-    │   └── userController.js       # Logic for user operations (preferences, wishlist)
+    │   └── moiveController.js      # Logic for movie operations (searchmovie, searchDeatils etc)
+    |   |__ wishlistController.js   # Logic for wishlist operations ( add movies in user wishlist or delete )
     ├── models/                     # Data models (if using ORM or plain SQL)
     │   ├── dbConnection.js         # Database connection setup
-    │   ├── userModel.js            # User model (for SQL queries)
+    │   ├── searchModel.js          # User search History model (for SQL queries)
     │   ├── movieModel.js           # Movie model (for SQL queries)
     │   └── wishlistModel.js        # Wishlist model (for managing user wishlists)
     ├── middleware/                 # Middleware functions
-    │   ├── authMiddleware.js       # Middleware for checking authentication
-    │   └── roleMiddleware.js       # Middleware for checking user roles
+    │   ├── authenticateToken.js    # Middleware for checking authentication user Token
+    │   └── authMiddleware.js       # Middleware for checking user is unauthorized
+    |   |__ setAuthVariable.js      # Middleware for set the Token if unathorized to authorized
+    |   |__ uploadMiddleware.js     # Middleware for uploading the profile
     ├── utils/                      # Utility functions
-    │   ├── movieRecommendations.js  # Functions for recommending movies (hash maps, graphs)
-    │   └── emailService.js         # Functions for sending emails (Nodemailer)
+    │   ├── recommendations.js      # Functions for recommending movies (hash maps, graphs)
+    │   └── initializeData.js       # Functions for get user search history and wishlist and bulid graph
+    |   |__ movieGraph.js           # Function to bulid Graph form movie data
+    |   |__ searchUtils.js          # Function to search the movie data with DFS
+    |   |__ sortUtils.js            # Function to sort data with using QuickSort Algo
     ├── views/                      # EJS templates
     │   ├── partials/               # Partial EJS templates (header, footer)
     │   │   ├── header.ejs          # Header template
@@ -45,9 +55,13 @@
     │   ├── index.ejs               # Home page
     │   ├── login.ejs               # Login page
     │   ├── signup.ejs              # Signup page
-    │   ├── admin.ejs               # Admin panel page
+    │   ├── adminPanel.ejs          # Admin panel page
     |   ├── 404.ejs                 # Not found page
-    │   └── userDashboard.ejs       # User dashboard page
+    |   |__ 500.ejs                 # Server not Respond
+    │   |__ movie_details.ejs       # for static movie data
+    |   |__ movieDetails.ejs        # for render dynamic movies data
+    |   |__ SearchResults.ejs       # for search result data
+    |   |__ wishlist.ejs            # for users wishlist data 
     ├── config/                     # Configuration files
     │   └── dbConfig.js             # Database configuration (MySQL/PostgreSQL)
     ├── .env                        # Environment variables (e.g., database credentials, API keys)
@@ -113,17 +127,6 @@ npm install jsonwebtoken
 
 ```
 
-### Nodemailer
-- **Description**: A module for Node.js applications to allow easy email sending.
-- **Usage**: Used for sending emails from your application, including OTPs for user verification.
-- **Documentation**: [Nodemailer Documentation](https://nodemailer.com/)
-
-- **Installation**: 
-```
-npm install nodemailer
-
-```
-
 ### MySQL (or PostgreSQL)
 - **Description**: A relational database management system based on SQL. MySQL is known for its speed and reliability, while PostgreSQL is praised for its advanced features.
 - **Usage**: Used to store user data, movie details, and manage the wishlist.
@@ -139,28 +142,6 @@ npm install mysql
 - **Installation**: for PostgreSQL
 ```
 npm install pg
-
-```
-
-### Splide
-- **Description**: A lightweight, flexible slider and carousel library for modern web applications.
-- **Usage**: Used for creating carousels in the movie recommendation system.
-- **Documentation**: [Splide Documentation](https://splidejs.com/)
-
-- **Installation**: 
-```
-npm install @splidejs/splide
-
-```
-
-### Swiper
-- **Description**: A modern mobile touch slider with hardware-accelerated transitions.
-- **Usage**: Used for implementing responsive touch sliders in your application.
-- **Documentation**: [Swiper Documentation](https://swiperjs.com/)
-
-- **Installation**: 
-```
-npm install swiper
 
 ```
 
@@ -184,17 +165,6 @@ npm install node-fetch
 
 ```
 
-### cors
-- **Description**: Middleware for enabling Cross-Origin Resource Sharing (CORS).
-- **Usage**: Used to allow your web applications to interact with resources from different origins.
-- **Documentation**: [CORS Documentation](https://www.npmjs.com/package/cors)
-
-- **Installation**:
-```
-npm install cors
-
-```
-
 ### express-session
 - **Description**: Middleware for managing user sessions in Express applications.
 - **Usage**: Used to create and manage user sessions, allowing you to store user data across requests.
@@ -206,16 +176,6 @@ npm install express-session
 
 ```
 
-### Helmet
-- **Description**: A collection of middleware functions that help secure Express apps by setting various HTTP headers.
-- **Usage**: Used to protect your application from well-known web vulnerabilities by setting HTTP headers appropriately.
-- **Documentation**: [Helmet Documentation](https://helmetjs.github.io/)
-
-- **Installation**:
-```
-npm install helmet
-
-```
 ### Nodemon
 - **Description**: A utility that automatically monitors for any changes in your source and restarts your server.
 - **Usage**: Used to streamline the development process by automatically restarting the server when file changes are detected.
