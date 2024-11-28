@@ -1,11 +1,8 @@
-const path = require('path');
-const movies = require(path.join(__dirname, '..', 'public', 'js', 'movies'));
 const movieModel = require('../models/movieModel');
 const pool = require('../models/dbConnection');
 const { saveUserSearch } = require('../models/searchHistory');
 const { initializeData } = require('../utils/initializeData');
 const { recommendMovies, recommendGeneralMovies } = require('../utils/recommendation');
-
 
 // Get all movies
 exports.getAllMovies = async (req, res) => {
@@ -41,25 +38,7 @@ exports.searchMovies = async (req, res) => {
     }
 };
 
-// Get movie details by title
-exports.getMovieDetailsByTitle = async (req, res) => {
-    const movieTitle = decodeURIComponent(req.params.title);
-
-    try {
-        const movie = movies.find(m => m.title === movieTitle);
-
-        if (movie) {
-            res.render('movie_details', { movie });
-        } else {
-            res.status(404).render('404');
-        }
-    } catch (err) {
-        console.error('Error fetching movie details by title:', err);
-        res.status(500).render('500');
-    }
-};
-
-// Get movie details by ID
+// Get movie details
 exports.getMovieDetails = async (req, res) => {
     const movieId = req.params.id;
 
@@ -117,26 +96,20 @@ exports.searchMovieTitles = async (req, res) => {
     }
 };
 
-// const { recommendMovies, recommendGeneralMovies } = require('../utils/recommendation');
+// Render 50 random movies on home page
+// exports.getRandomMovies = async (req, res) => {
+//     try {
+//         const movies = await movieModel.getRandomMovies(50);
+//         res.render('index', { movies, searchTerm: 'Random Movies' });
+//     } catch (err) {
+//         console.error('Error fetching random movies:', err);
+//         res.status(500).render('500');
+//     }
+// };
 
-exports.getRandomMovies = async (req, res) => {
-    try {
-        const movies = await movieModel.getRandomMovies(50);
-        let recommendations = [];
 
-        // Check if the user is logged in and has an id
-        if (req.user && req.user.id) {
-            recommendations = recommendMovies(req.user.id).slice(0, 14); // Get recommendations for the user
-        } else {
-            recommendations = recommendGeneralMovies().slice(0, 14); // Get general recommendations
-        }
 
-        res.render('index', { movies, recommendations, searchTerm: 'Random Movies' });
-    } catch (err) {
-        console.error('Error fetching random movies:', err);
-        res.status(500).render('500');
-    }
-};
+
 exports.getMovies = async (req, res) => {
     try {
         // Initialize data
@@ -148,9 +121,9 @@ exports.getMovies = async (req, res) => {
 
         // Check if the user is logged in and has an id
         if (req.user && req.user.id) {
-            recommendations = recommendMovies(req.user.id).slice(0, 14); // Limit recommendations to 14
+            recommendations = recommendMovies(req.user.id).slice(0, 14); // Limit recommendations to 10
         } else {
-            recommendations = recommendGeneralMovies().slice(0, 14); // Limit general recommendations to 14
+            recommendations = recommendGeneralMovies().slice(0, 14); // Limit general recommendations to 10
         }
 
         // Fetch 30 random movies
@@ -163,3 +136,4 @@ exports.getMovies = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
