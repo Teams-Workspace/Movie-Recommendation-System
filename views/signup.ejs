@@ -28,15 +28,17 @@
                 </div>
                 <div class="input-field">
                     <input type="password" name="password" id="password" placeholder="PASSWORD" required>
-                    <span class="eye-icon" onclick="togglePasswordVisibility()"><i class="bi bi-eye-slash-fill"></i></span>
-                    <small class="error-message hidden" id="passwordError">Password must be at least 6 characters long.</small>
+                    <span class="eye-icon" onclick="togglePasswordVisibility()"><i
+                            class="bi bi-eye-slash-fill"></i></span>
+                    <small class="error-message hidden" id="passwordError">Password must be at least 6 characters
+                        long.</small>
                 </div>
-                <% if (typeof errorMessage !== 'undefined') { %>
+                <% if (typeof errorMessage !=='undefined' ) { %>
                     <div class="error-message" style="color: red; margin-bottom: 10px;">
                         <%= errorMessage %>
                     </div>
-                <% } %>
-                <button type="submit" class="signup-button" disabled>Sign Up</button>
+                    <% } %>
+                        <button type="submit" class="signup-button" disabled>Sign Up</button>
             </form>
         </div>
     </div>
