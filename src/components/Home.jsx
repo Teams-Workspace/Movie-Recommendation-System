@@ -1,42 +1,18 @@
-import { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import MovieCarousel from './moviecoursel';
+import CustomLoader from './cusloader';
 
 function Home() {
-  const { user } = useContext(AuthContext);
+  const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
-  return (
-    <>
-    <div className="min-h-screen bg-light-gray flex flex-col items-center justify-center p-4">
-      <h1 className="text-4xl font-bold mb-4 text-dark">
-        Welcome to the Movie Recommendation System
-      </h1>
-      {user ? (
-        <p className="text-lg text-dark">
-          Hello, {user.username}! Start exploring movies now.
-        </p>
-      ) : (
-        <p className="text-lg text-dark">
-          Please log in to get personalized movie recommendations.
-        </p>
-      )}
-    </div>
-    <div className="min-h-screen bg-light-gray flex flex-col items-center justify-center p-4">
-      <h1 className="text-4xl font-bold mb-4 text-dark">
-        Welcome to the Movie Recommendation System
-      </h1>
-      {user ? (
-        <p className="text-lg text-dark">
-          Hello, {user.username}! Start exploring movies now.
-        </p>
-      ) : (
-        <p className="text-lg text-dark">
-          Please log in to get personalized movie recommendations.
-        </p>
-      )}
-    </div>
-    </>
-    
-  );
+  if (!API_KEY) {
+    return (
+      <div className="min-h-screen bg-light-gray flex items-center justify-center">
+        <p className="text-red-500 text-center">Error: TMDB API key is not defined in the .env file.</p>
+      </div>
+    );
+  }
+
+  return <MovieCarousel apiKey={API_KEY} />;
 }
 
 export default Home;
