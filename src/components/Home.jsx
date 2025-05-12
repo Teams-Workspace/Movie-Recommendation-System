@@ -24,24 +24,34 @@ function Home() {
         <MovieCarousel apiKey={API_KEY} />
       </div>
 
-       {/* Second Section: Full-Screen Hero Grid */}
-      <div className="relative h-screen w-full">
-        {/* "Featured Movies" Header */}
-        <h2 className="absolute -top-2 left-16 text-3xl md:text-4xl font-bold  text-white z-10">
-          Featured Movies
-        </h2>
-        <HeroGrid apiKey={API_KEY} />
-      </div>
+{/* Second Section: Full-Screen Hero Grid */}
+<div className="relative h-screen w-full mt-2">
+  {/* "Featured Movies" Header */}
+  <div className="absolute -top-11 md:top-0 w-full px-4 md:px-0 md:w-auto md:left-16 z-10 ">
+    <h2 className="text-2xl md:text-3xl font-bold text-white text-center md:text-left mt-2">
+      Featured Movies
+    </h2>
+  </div>
+  <HeroGrid apiKey={API_KEY} />
+</div>
 
       {/* Third Section: Horizontal Scroll */}
-      <div className="relative w-full">
-        <h2 className="text-2xl md:text-3xl font-bold text-white  mb-4 pl-16">Action Movies</h2>
+      <div className="relative w-full z-10 -mt-40 md:mt-0 ">
+         <div className="mb-6 w-full md:w-auto text-center md:text-left  z-10">
+        <h2 className="text-2xl md:text-3xl font-bold text-white md:pl-16">
+          Popular Movies
+        </h2>
+      </div>
         <HorizontalScroll apiKey={API_KEY} />
       </div>
 
       {/* Fourth Section: Featured Spotlight */}
-      <div className="relative w-full  p-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 -mt-2 ">New Movies</h2>
+      <div className="relative w-full p-6">
+         <div className="mb-6 w-full md:w-auto text-center md:text-left  z-10">
+        <h2 className="text-2xl md:text-3xl font-bold text-white md:pl-16">
+          Popular Movies
+        </h2>
+      </div>
         <FeaturedSpotlight apiKey={API_KEY} />
       </div>
 

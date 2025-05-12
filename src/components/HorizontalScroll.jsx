@@ -69,14 +69,14 @@ function HorizontalScroll({ apiKey }) {
   }
 
   return (
-    <div className="relative group py-4 p-16">
+    <div className="relative group py-4 px-4 md:px-16">
       {/* Left Arrow */}
       {showLeftArrow && (
         <button
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/70 rounded-full w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-10 bg-black/70 rounded-full w-8 h-8 md:w-10 md:h-10 opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={() => scroll('left')}
         >
-          <LuCircleArrowOutDownLeft className="h-6 w-6 text-white" />
+           <LuCircleArrowOutDownLeft className="h-5 w-5 md:h-6 md:w-6 text-white" />
           <span className="sr-only">Scroll left</span>
         </button>
       )}
@@ -84,10 +84,10 @@ function HorizontalScroll({ apiKey }) {
       {/* Right Arrow */}
       {showRightArrow && (
         <button
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/70 rounded-full w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity"
+           className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-10 bg-black/70 rounded-full w-8 h-8 md:w-10 md:h-10 opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={() => scroll('right')}
         >
-          <LuCircleArrowOutDownRight className="h-6 w-6 text-white" />
+            <LuCircleArrowOutDownRight className="h-5 w-5 md:h-6 md:w-6 text-white" />
           <span className="sr-only">Scroll right</span>
         </button>
       )}
@@ -95,7 +95,7 @@ function HorizontalScroll({ apiKey }) {
       {/* Scrollable Container */}
       <div
         ref={scrollContainerRef}
-        className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide px-4"
+        className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide px-2 md:px-4" 
         onScroll={() => {
           if (!scrollContainerRef.current) return;
           setShowLeftArrow(scrollContainerRef.current.scrollLeft > 0);

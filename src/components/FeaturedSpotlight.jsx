@@ -16,11 +16,10 @@ function FeaturedSpotlight({ apiKey }) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        setMovie(data.results[0] || null); // Use the first movie from the current popular list
+        setMovie(data.results[0] || null);
       } catch (err) {
         console.error('Error fetching movie:', err);
-      }
-      finally {
+      } finally {
         setLoading(false);
       }
     }
@@ -28,15 +27,15 @@ function FeaturedSpotlight({ apiKey }) {
     fetchMovie();
   }, [apiKey]);
 
-   if (loading) {
-      return <CustomLoader />;
-    }
+  if (loading) {
+    return <CustomLoader />;
+  }
 
   if (!movie) return null;
 
   return (
     <div
-      className="relative h-[500px] rounded-xl overflow-hidden "
+      className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -57,38 +56,39 @@ function FeaturedSpotlight({ apiKey }) {
 
       {/* Content */}
       <div className="absolute inset-0 flex items-center">
-        <div className="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {/* Left side - Text content */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             <div className="space-y-2">
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="bg-red-main px-2 py-0.5 text-xs font-semibold rounded text-white">NEW RELEASE</span>
                 <span className="text-sm text-gray-300">
                   {new Date(movie.release_date).getFullYear() || 'N/A'}
                 </span>
-                <span className="text-sm text-gray-300">N/A</span> {/* Placeholder for duration */}
+                <span className="text-sm text-gray-300">N/A</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold">{movie.title}</h1>
-              <div className="flex items-center space-x-3 text-sm">
+              <h1 className="text-3xl md:text-5xl font-bold">{movie.title}</h1>
+              <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
                 <span className="text-yellow-400 font-medium">{movie.vote_average.toFixed(1)}/10</span>
-                <span className="text-gray-300">Action, Adventure</span> {/* Placeholder genres */}
+                <span className="text-gray-300">Action, Adventure</span>
               </div>
             </div>
 
-            <p className="text-gray-300 text-lg max-w-xl line-clamp-4 md:line-clamp-none">{movie.overview}</p>
+            <p className="text-gray-300 text-base md:text-lg max-w-xl line-clamp-3 md:line-clamp-4">
+              {movie.overview}
+            </p>
 
-            <div className="flex flex-col md:flex-row gap-3">
-              <button className="border-white/20 hover:bg-white/10 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                
+            <div className="flex flex-wrap gap-2 md:gap-3">
+              <button className="border-white/20 hover:bg-white/10 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg flex items-center gap-2 text-sm md:text-base">
                 More Info
               </button>
-              <button className="border-white/20 hover:bg-white/10 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+              <button className="border-white/20 hover:bg-white/10 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg flex items-center gap-2 text-sm md:text-base">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  className="w-5 h-5"
+                  className="w-4 h-4 md:w-5 md:h-5"
                 >
                   <path
                     strokeLinecap="round"
@@ -97,15 +97,15 @@ function FeaturedSpotlight({ apiKey }) {
                     d="M12 4v16m8-8H4"
                   />
                 </svg>
-                Add to Watchlist
+                Watchlist
               </button>
-              <button className="border-white/20 hover:bg-white/10 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+              <button className="border-white/20 hover:bg-white/10 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg flex items-center gap-2 text-sm md:text-base">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  className="w-5 h-5"
+                  className="w-4 h-4 md:w-5 md:h-5"
                 >
                   <path
                     strokeLinecap="round"
@@ -119,7 +119,7 @@ function FeaturedSpotlight({ apiKey }) {
             </div>
           </div>
 
-          {/* Right side - Poster with animation */}
+          {/* Right side - Poster (hidden on mobile) */}
           <div className="hidden md:flex justify-end items-center">
             <div
               className="relative w-[220px] h-[330px] rounded-lg overflow-hidden shadow-2xl transform transition-all duration-500"
