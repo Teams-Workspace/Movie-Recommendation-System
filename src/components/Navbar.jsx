@@ -152,7 +152,7 @@ function Navbar() {
                 <Link to="/likes" className="border-2 border-dark rounded-full p-1">
                   <FaHeart className="text-red-main hover:scale-110 transition-transform" size={16} />
                 </Link>
-                <button onClick={handleLogout} className="border-2 border-dark rounded-full p-1">
+                <button onClick={handleLogout} className="cursor-pointer border-2 border-dark rounded-full p-1">
                   <FaSignOutAlt className="text-red-main hover:scale-110 transition-transform" size={16} />
                 </button>
               </>

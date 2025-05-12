@@ -166,13 +166,13 @@ function MovieCarousel({ apiKey }) {
         <div className="flex items-center justify-between">
           <div className="flex space-x-4">
             <button
-              className="h-10 w-10 rounded-full bg-black/20 text-white backdrop-blur-sm hover:bg-black/30 border border-white/20"
+              className="cursor-pointer h-10 w-10 rounded-full bg-black/20 text-white backdrop-blur-sm hover:bg-black/30 border border-white/20"
               onClick={prev}
             >
               ←
             </button>
             <button
-              className="h-10 w-10 rounded-full bg-black/20 text-white backdrop-blur-sm hover:bg-black/30 border border-white/20"
+              className="cursor-pointer h-10 w-10 rounded-full bg-black/20 text-white backdrop-blur-sm hover:bg-black/30 border border-white/20"
               onClick={next}
             >
               →
