@@ -4,7 +4,7 @@ import MovieCarousel from './moviecoursel';
 import HeroGrid from './HeroGrid';
 import HorizontalScroll from './HorizontalScroll';
 import FeaturedSpotlight from './FeaturedSpotlight';
-import GenreCategories from './GenreCategories';
+
 
 function Home() {
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -45,11 +45,7 @@ function Home() {
         <FeaturedSpotlight apiKey={API_KEY} />
       </div>
 
-      {/* Fifth Section: Genre Categories */}
-      <div className="relative w-full p-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-white -mt-12 pl-4 mb-4">Browse by Genre</h2>
-        <GenreCategories apiKey={API_KEY} />
-      </div>
+      
     </div>
   );
 }

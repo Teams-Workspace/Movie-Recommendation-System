@@ -79,6 +79,10 @@ function FeaturedSpotlight({ apiKey }) {
 
             <div className="flex flex-col md:flex-row gap-3">
               <button className="border-white/20 hover:bg-white/10 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                
+                More Info
+              </button>
+              <button className="border-white/20 hover:bg-white/10 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
