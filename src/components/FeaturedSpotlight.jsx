@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
+import CustomLoader from './cusloader';
 
 function FeaturedSpotlight({ apiKey }) {
   const [isHovered, setIsHovered] = useState(false);
   const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchMovie() {
       try {
+        setLoading(true);
         const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`;
         const response = await fetch(API_URL);
         if (!response.ok) {
@@ -17,10 +20,17 @@ function FeaturedSpotlight({ apiKey }) {
       } catch (err) {
         console.error('Error fetching movie:', err);
       }
+      finally {
+        setLoading(false);
+      }
     }
 
     fetchMovie();
   }, [apiKey]);
+
+   if (loading) {
+      return <CustomLoader />;
+    }
 
   if (!movie) return null;
 

@@ -46,7 +46,7 @@ function HeroGrid({ apiKey }) {
   const gridMovies = movies.slice(1, 5);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-screen w-full p-20">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-screen w-full p-16 mt-3">
       {/* Main Feature - Takes up 2 columns */}
       <div
         className="relative md:col-span-2 rounded-xl overflow-hidden h-[300px] md:h-full"

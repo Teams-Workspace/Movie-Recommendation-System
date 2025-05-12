@@ -69,7 +69,7 @@ function HorizontalScroll({ apiKey }) {
   }
 
   return (
-    <div className="relative group py-4 p-18">
+    <div className="relative group py-4 p-16">
       {/* Left Arrow */}
       {showLeftArrow && (
         <button
