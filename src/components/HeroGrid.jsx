@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import CustomLoader from './cusloader';
 
 function HeroGrid({ apiKey }) {
   const [movies, setMovies] = useState([]);
@@ -35,12 +36,8 @@ function HeroGrid({ apiKey }) {
     );
   }
 
-  if (loading) {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <p className="text-gray-500 text-center">Loading movies...</p>
-      </div>
-    );
+   if (loading) {
+    return <CustomLoader />;
   }
 
   if (!movies || movies.length < 5) return null;
@@ -55,6 +52,8 @@ function HeroGrid({ apiKey }) {
         className="relative md:col-span-2 rounded-xl overflow-hidden h-[300px] md:h-full"
         onClick={() => setSelectedMovie(null)} // Reset to default on click
       >
+        
+
         <img
           src={`https://image.tmdb.org/t/p/w1920${mainFeature.backdrop_path}`}
           alt={mainFeature.title}
