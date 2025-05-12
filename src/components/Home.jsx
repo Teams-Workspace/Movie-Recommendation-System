@@ -3,6 +3,7 @@
 import MovieCarousel from './moviecoursel';
 import HeroGrid from './HeroGrid';
 import HorizontalScroll from './HorizontalScroll';
+import FeaturedSpotlight from './FeaturedSpotlight';
 
 function Home() {
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -35,6 +36,12 @@ function Home() {
       <div className="relative w-full">
         <h2 className="text-2xl md:text-3xl font-bold text-white  mb-4 pl-20">Action Movies</h2>
         <HorizontalScroll apiKey={API_KEY} />
+      </div>
+
+      {/* Fourth Section: Featured Spotlight */}
+      <div className="relative w-full  p-18">
+        <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 ">New Movies</h2>
+        <FeaturedSpotlight apiKey={API_KEY} />
       </div>
     </div>
   );

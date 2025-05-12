@@ -63,7 +63,7 @@ function HeroGrid({ apiKey }) {
 
         <div className="absolute bottom-0 left-0 p-6 w-full">
           <div className="flex items-center space-x-2 mb-2">
-            <span className="bg-primary px-2 py-0.5 text-xs font-semibold rounded text-white bg-red-700">FEATURED</span>
+            <span className="bg-primary px-2 py-0.5 text-xs font-semibold rounded text-white bg-red-main">FEATURED</span>
             <div className="flex items-center text-yellow-400">
               <span className="text-sm">{mainFeature.vote_average.toFixed(1)}</span>
             </div>
