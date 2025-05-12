@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { FaHeartCirclePlus } from 'react-icons/fa6';
 import { LuCircleArrowOutDownLeft } from 'react-icons/lu';
 import { LuCircleArrowOutDownRight } from 'react-icons/lu';
+import CustomLoader from './cusloader';
 
 function HorizontalScroll({ apiKey }) {
   const scrollContainerRef = useRef(null);
@@ -57,26 +58,22 @@ function HorizontalScroll({ apiKey }) {
 
   if (error) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-[350px] flex items-center justify-center bg-gray-900">
         <p className="text-red-500 text-center">Error fetching movies: {error}</p>
       </div>
     );
   }
 
   if (loading) {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <p className="text-gray-500 text-center">Loading movies...</p>
-      </div>
-    );
+    return <CustomLoader />;
   }
 
   return (
-    <div className="relative group h-[300px] md:h-[400px] p-16 ">
+    <div className="relative group py-4 p-18">
       {/* Left Arrow */}
       {showLeftArrow && (
         <button
-          className="absolute left-20 top-1/2 -translate-y-1/2 z-10 bg-black/70 rounded-full w-10 h-10 -ml-5 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/70 rounded-full w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={() => scroll('left')}
         >
           <LuCircleArrowOutDownLeft className="h-6 w-6 text-white" />
@@ -87,7 +84,7 @@ function HorizontalScroll({ apiKey }) {
       {/* Right Arrow */}
       {showRightArrow && (
         <button
-          className="absolute right-20 top-1/2 -translate-y-1/2 z-10 bg-black/70 rounded-full w-10 h-10 -mr-5 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/70 rounded-full w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={() => scroll('right')}
         >
           <LuCircleArrowOutDownRight className="h-6 w-6 text-white" />
@@ -98,7 +95,7 @@ function HorizontalScroll({ apiKey }) {
       {/* Scrollable Container */}
       <div
         ref={scrollContainerRef}
-        className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide"
+        className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide px-4"
         onScroll={() => {
           if (!scrollContainerRef.current) return;
           setShowLeftArrow(scrollContainerRef.current.scrollLeft > 0);
@@ -108,19 +105,11 @@ function HorizontalScroll({ apiKey }) {
           );
         }}
       >
-        <style>
-          {`.scrollbar-hide {
-            -ms-overflow-style: none; /* IE and Edge */
-            scrollbar-width: none; /* Firefox */
-          }
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, and Opera */
-          }`}
-        </style>
+        
         {movies.map((movie, index) => (
           <div
             key={movie.id}
-            className="flex-shrink-0 w-[180px] relative group/item cursor-pointer mt-2"
+            className="flex-shrink-0 w-[180px] relative group/item cursor-pointer"
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >

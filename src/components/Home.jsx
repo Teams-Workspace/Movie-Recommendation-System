@@ -1,3 +1,5 @@
+
+
 import MovieCarousel from './moviecoursel';
 import HeroGrid from './HeroGrid';
 import HorizontalScroll from './HorizontalScroll';
@@ -20,7 +22,7 @@ function Home() {
         <MovieCarousel apiKey={API_KEY} />
       </div>
 
-      {/* Second Section: Full-Screen Hero Grid */}
+       {/* Second Section: Full-Screen Hero Grid */}
       <div className="relative h-screen w-full">
         {/* "Featured Movies" Header */}
         <h2 className="absolute top-4 left-20 text-3xl md:text-4xl font-bold  text-white z-10">
@@ -30,14 +32,10 @@ function Home() {
       </div>
 
       {/* Third Section: Horizontal Scroll */}
-      <div className="relative h-screen w-full ">
-        {/* "Featured Movies" Header */}
-        <h2 className="absolute top-4 left-20 text-3xl md:text-4xl font-bold  text-white z-10">
-          Action Movies
-        </h2>
+      <div className="relative w-full">
+        <h2 className="text-2xl md:text-3xl font-bold text-white  mb-4 pl-20">Action Movies</h2>
         <HorizontalScroll apiKey={API_KEY} />
       </div>
-
     </div>
   );
 }
