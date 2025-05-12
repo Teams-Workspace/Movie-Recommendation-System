@@ -30,20 +30,12 @@ function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-    window.addEventListener('scroll', handleScroll);
+    // Only add scroll listener for desktop (md and above)
+    if (window.innerWidth >= 768) {
+      window.addEventListener('scroll', handleScroll);
+    }
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useEffect(() => {
-    if (isSearchActive) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isSearchActive]);
 
   const handleLogout = () => {
     logout();
@@ -108,11 +100,14 @@ function Navbar() {
   return (
     <>
       <nav
-        className={`fixed z-50 px-4 transition-all duration-700 left-1/2 transform -translate-x-1/2 ${
-          isScrolled
-            ? 'top-4 w-[80%] shadow-md bg-dark/80 backdrop-blur-md rounded-full border-2 border-white-custom'
-            : 'top-0 w-full bg-transparent'
-        }`}
+        className={`
+          fixed z-50 px-4 transition-all duration-700 w-full
+          md:left-1/2 md:transform md:-translate-x-1/2
+          ${isScrolled
+            ? 'md:top-4 md:w-[80%] md:shadow-md md:bg-dark/80 md:backdrop-blur-md md:rounded-full md:border-2 md:border-white-custom'
+            : 'md:top-0 md:w-full md:bg-transparent'}
+          bg-dark/80  top-0
+        `}
       >
         <div className="w-full flex items-center justify-between py-2">
           <div className="flex items-center gap-4">

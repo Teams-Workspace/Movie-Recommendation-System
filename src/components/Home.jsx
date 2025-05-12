@@ -48,8 +48,8 @@ function Home() {
       {/* Fourth Section: Featured Spotlight */}
       <div className="relative w-full p-6">
          <div className="mb-6 w-full md:w-auto text-center md:text-left  z-10">
-        <h2 className="text-2xl md:text-3xl font-bold text-white md:pl-16">
-          Popular Movies
+        <h2 className="text-2xl md:text-3xl font-bold text-white md:pl-10">
+          New Release
         </h2>
       </div>
         <FeaturedSpotlight apiKey={API_KEY} />
