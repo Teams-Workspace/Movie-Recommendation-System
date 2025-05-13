@@ -17,7 +17,7 @@ function Home() {
   }
 
   return (
-    <main cla="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-black text-white overflow-hidden">
     
       {/* First Section: Full-Screen Carousel */}
 
@@ -39,25 +39,27 @@ function Home() {
       {/* Second Section End */}
 
       {/* Third Section: Horizontal Scroll */}
-      <div className="relative w-full z-10 -mt-40 md:mt-0 ">
-        <div className="mb-6 w-full md:w-auto text-center md:text-left  z-10">
-          <h2 className="text-2xl md:text-3xl font-bold text-white md:pl-16">
-            Popular Movies
-          </h2>
-        </div>
+
+      <section className="py-8 bg-gradient-to-r from-gray-900 to-black">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">New Releases</h2>
         <HorizontalScroll apiKey={API_KEY} />
-      </div>
+        </div>
+      </section>
+
+      {/* Third Section is end */}
+
 
       {/* Fourth Section: Featured Spotlight */}
-      <div className="relative w-full p-6">
-        <div className="mb-6 w-full md:w-auto text-center md:text-left  z-10">
-          <h2 className="text-2xl md:text-3xl font-bold text-white md:pl-10">
-            New Release
-          </h2>
-        </div>
+
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Spotlight</h2>
         <FeaturedSpotlight apiKey={API_KEY} />
-      </div>
-    
+        </div>
+      </section>
+
+      {/* Fourth Section end */}
     </main>
   );
 }

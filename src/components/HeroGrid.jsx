@@ -72,7 +72,7 @@ function HeroGrid({ apiKey }) {
               </span>
             </div>
           </div>
-          <h3 className="text-2xl md:text-3xl font-bold mb-2 text-red-600">
+          <h3 className="text-2xl md:text-3xl font-bold mb-2 ">
             {mainFeature.title}
           </h3>
           <p className="text-sm text-gray-300 mb-4 line-clamp-2 md:line-clamp-3">
@@ -115,7 +115,7 @@ function HeroGrid({ apiKey }) {
                   </span>
                 </div>
               </div>
-              <h3 className="text-sm font-bold text-red-600">{movie.title}</h3>
+              <h3 className="text-sm font-bold">{movie.title}</h3>
             </div>
           </div>
         ))}

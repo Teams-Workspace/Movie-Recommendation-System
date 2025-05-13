@@ -69,14 +69,16 @@ function HorizontalScroll({ apiKey }) {
   }
 
   return (
-    <div className="relative group py-4 px-4 md:px-16">
+    <div className="relative group">
       {/* Left Arrow */}
       {showLeftArrow && (
         <button
-          className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-10 bg-black/70 rounded-full w-8 h-8 md:w-10 md:h-10 opacity-0 group-hover:opacity-100 transition-opacity"
+        variant="outline"
+          size="icon"
+          className="cursor-pointer absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/70 border-none rounded-full w-10 h-10 -ml-5 opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={() => scroll('left')}
         >
-           <LuCircleArrowOutDownLeft className="h-5 w-5 md:h-6 md:w-6 text-white" />
+           <LuCircleArrowOutDownLeft className="h-6 w-6 text-white" />
           <span className="sr-only">Scroll left</span>
         </button>
       )}
@@ -84,10 +86,12 @@ function HorizontalScroll({ apiKey }) {
       {/* Right Arrow */}
       {showRightArrow && (
         <button
-           className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-10 bg-black/70 rounded-full w-8 h-8 md:w-10 md:h-10 opacity-0 group-hover:opacity-100 transition-opacity"
+        variant="outline"
+          size="icon"
+           className="cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/70 border-none rounded-full w-10 h-10 -mr-5 opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={() => scroll('right')}
         >
-            <LuCircleArrowOutDownRight className="h-5 w-5 md:h-6 md:w-6 text-white" />
+            <LuCircleArrowOutDownRight className="h-6 w-6 text-white" />
           <span className="sr-only">Scroll right</span>
         </button>
       )}
@@ -95,7 +99,7 @@ function HorizontalScroll({ apiKey }) {
       {/* Scrollable Container */}
       <div
         ref={scrollContainerRef}
-        className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide px-2 md:px-4" 
+        className="flex overflow-x-auto scrollbar-hide gap-4 pb-4" 
         onScroll={() => {
           if (!scrollContainerRef.current) return;
           setShowLeftArrow(scrollContainerRef.current.scrollLeft > 0);
@@ -109,7 +113,7 @@ function HorizontalScroll({ apiKey }) {
         {movies.map((movie, index) => (
           <div
             key={movie.id}
-            className="flex-shrink-0 w-[180px] relative group/item cursor-pointer"
+            className="flex-shrink-0 w-[180px] relative group/item"
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
@@ -117,8 +121,8 @@ function HorizontalScroll({ apiKey }) {
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
-                className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ${
-                  hoveredIndex === index ? 'scale-110 brightness-110' : ''
+                className={`object-cover transition-all duration-500 ${
+                  hoveredIndex === index ? "scale-110 brightness-110" : ""
                 }`}
               />
 
@@ -128,7 +132,7 @@ function HorizontalScroll({ apiKey }) {
                   hoveredIndex === index ? 'opacity-100' : 'opacity-0'
                 }`}
               >
-                <div className="transform translate-y-4 opacity-0 group-hover/item:translate-y-0 group-hover/item:opacity-100 transition-all duration-300">
+                <div className="cursor-pointer transform translate-y-4 opacity-0 group-hover/item:translate-y-0 group-hover/item:opacity-100 transition-all duration-300">
                   <FaHeartCirclePlus className="w-8 h-8 text-red-600" />
                 </div>
               </div>
@@ -147,21 +151,19 @@ function HorizontalScroll({ apiKey }) {
                   </svg>
                   <span className="text-xs">{movie.vote_average.toFixed(1)}</span>
                 </div>
+
                 <span className="text-xs text-gray-400">
                   {new Date(movie.release_date).getFullYear() || 'N/A'}
                 </span>
               </div>
-              <h3 className="text-sm font-medium line-clamp-1 text-red-main">{movie.title}</h3>
+              <h3 className="text-sm font-medium line-clamp-1 ">{movie.title}</h3>
               <p className="text-xs text-gray-400 mt-1">
                 {movie.genre_ids.length > 0 ? 'Action, Drama' : 'N/A'} {/* Placeholder genres */}
               </p>
             </div>
           </div>
         ))}
-        {/* "See More" Text/Button */}
-        <div className="text-red-main flex-shrink-0 w-[180px] flex items-center justify-center h-[270px] text-white text-lg font-semibold">
-          See More
-        </div>
+      
       </div>
     </div>
   );

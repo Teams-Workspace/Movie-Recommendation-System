@@ -35,7 +35,7 @@ function FeaturedSpotlight({ apiKey }) {
 
   return (
     <div
-      className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden"
+      className="relative h-[500px] rounded-xl overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -49,36 +49,36 @@ function FeaturedSpotlight({ apiKey }) {
         <img
           src={`https://image.tmdb.org/t/p/w1920${movie.backdrop_path}`}
           alt={movie.title}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover" 
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+        <div className="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-8" />
       </div>
 
       {/* Content */}
       <div className="absolute inset-0 flex items-center">
-        <div className="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        <div className="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left side - Text content */}
-          <div className="space-y-4 md:space-y-6">
+          <div className="space-y-6">
             <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center space-x-2">
                 <span className="bg-red-main px-2 py-0.5 text-xs font-semibold rounded text-white">NEW RELEASE</span>
                 <span className="text-sm text-gray-300">
                   {new Date(movie.release_date).getFullYear() || 'N/A'}
                 </span>
                 <span className="text-sm text-gray-300">N/A</span>
               </div>
-              <h1 className="text-3xl md:text-5xl font-bold">{movie.title}</h1>
-              <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
+              <h1 className="text-4xl md:text-5xl font-bold">{movie.title}</h1>
+              <div className="flex items-center space-x-3 text-sm">
                 <span className="text-yellow-400 font-medium">{movie.vote_average.toFixed(1)}/10</span>
                 <span className="text-gray-300">Action, Adventure</span>
               </div>
             </div>
 
-            <p className="text-gray-300 text-base md:text-lg max-w-xl line-clamp-3 md:line-clamp-4">
+            <p className="text-gray-300 text-lg max-w-xl line-clamp-4 md:line-clamp-none">
               {movie.overview}
             </p>
 
-            <div className="flex flex-wrap gap-2 md:gap-3">
+            <div className="flex flex-wrap gap-3">
               <button className="border-white/20 hover:bg-white/10 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg flex items-center gap-2 text-sm md:text-base">
                 More Info
               </button>
