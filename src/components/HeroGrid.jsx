@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import CustomLoader from './cusloader';
+import { useState, useEffect } from "react";
+import CustomLoader from "./cusloader";
 
 function HeroGrid({ apiKey }) {
   const [movies, setMovies] = useState([]);
@@ -31,12 +31,14 @@ function HeroGrid({ apiKey }) {
   if (error) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <p className="text-red-500 text-center">Error fetching movies: {error}</p>
+        <p className="text-red-500 text-center">
+          Error fetching movies: {error}
+        </p>
       </div>
     );
   }
 
-   if (loading) {
+  if (loading) {
     return <CustomLoader />;
   }
 
@@ -46,14 +48,12 @@ function HeroGrid({ apiKey }) {
   const gridMovies = movies.slice(1, 5);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-auto md:h-screen w-full p-4 md:p-16 md:mt-3 mt-16">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[600px]">
       {/* Main Feature - Takes up 2 columns */}
       <div
         className="relative md:col-span-2 rounded-xl overflow-hidden h-[300px] md:h-full"
         onClick={() => setSelectedMovie(null)} // Reset to default on click
       >
-        
-
         <img
           src={`https://image.tmdb.org/t/p/w1920${mainFeature.backdrop_path}`}
           alt={mainFeature.title}
@@ -63,13 +63,21 @@ function HeroGrid({ apiKey }) {
 
         <div className="absolute bottom-0 left-0 p-6 w-full">
           <div className="flex items-center space-x-2 mb-2">
-            <span className="bg-primary px-2 py-0.5 text-xs font-semibold rounded text-white bg-red-main">FEATURED</span>
+            <span className="bg-primary px-2 py-0.5 text-xs font-semibold rounded text-white bg-red-main">
+              FEATURED
+            </span>
             <div className="flex items-center text-yellow-400">
-              <span className="text-sm">{mainFeature.vote_average.toFixed(1)}</span>
+              <span className="text-sm">
+                {mainFeature.vote_average.toFixed(1)}
+              </span>
             </div>
           </div>
-          <h3 className="text-2xl md:text-3xl font-bold mb-2 text-red-600">{mainFeature.title}</h3>
-          <p className="text-sm text-gray-300 mb-4 line-clamp-2 md:line-clamp-3">{mainFeature.overview}</p>
+          <h3 className="text-2xl md:text-3xl font-bold mb-2 text-red-600">
+            {mainFeature.title}
+          </h3>
+          <p className="text-sm text-gray-300 mb-4 line-clamp-2 md:line-clamp-3">
+            {mainFeature.overview}
+          </p>
           <div className="flex space-x-3">
             <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
               Like
@@ -85,8 +93,7 @@ function HeroGrid({ apiKey }) {
       </div>
 
       {/* Grid of 4 movies - Takes up 1 column, scrollable without scrollbar */}
-      <div className="grid grid-cols-2 md:grid-cols-1 gap-4 h-[300px] md:h-full ">
-      
+      <div className="grid grid-cols-2 md:grid-cols-1 gap-4 h-[300px] md:h-full">
         {gridMovies.map((movie, index) => (
           <div
             key={movie.id}
@@ -103,7 +110,9 @@ function HeroGrid({ apiKey }) {
             <div className="absolute bottom-0 left-0 p-3 w-full">
               <div className="flex items-center space-x-2 mb-1">
                 <div className="flex items-center text-yellow-400">
-                  <span className="text-xs">{movie.vote_average.toFixed(1)}</span>
+                  <span className="text-xs">
+                    {movie.vote_average.toFixed(1)}
+                  </span>
                 </div>
               </div>
               <h3 className="text-sm font-bold text-red-600">{movie.title}</h3>
@@ -111,6 +120,7 @@ function HeroGrid({ apiKey }) {
           </div>
         ))}
       </div>
+
     </div>
   );
 }
