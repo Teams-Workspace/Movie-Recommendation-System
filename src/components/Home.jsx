@@ -6,6 +6,8 @@ import MasonryLayout from "./MasonryLayout";
 import TrendingCarousel from "./TrendingCarousel";
 import TopRatedSection from "./TopRatedSection";
 import ComingSoonTimeline from "./ComingSoonTimeline";
+import InteractivePosterGallery from "./InteractivePosterGallery";
+import SiteFooter from "./SiteFooter";
 
 function Home() {
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -108,6 +110,25 @@ function Home() {
       </section>
 
       {/* Eighth Section End */}
+
+      {/* Ninth Section Start */}
+
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Featured Collection</h2>
+          <InteractivePosterGallery apiKey={API_KEY}  />
+        </div>
+      </section>
+
+      {/* Ninth Section End */}
+
+      {/* Final Section: Site Footer */}
+      <div className="relative w-full">
+        <SiteFooter />
+      </div>
+
+
+      
 
     </main>
   );
