@@ -2,6 +2,7 @@ import MovieCarousel from "./moviecoursel";
 import HeroGrid from "./HeroGrid";
 import HorizontalScroll from "./HorizontalScroll";
 import FeaturedSpotlight from "./FeaturedSpotlight";
+import MasonryLayout from "./MasonryLayout";
 
 function Home() {
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -60,6 +61,18 @@ function Home() {
       </section>
 
       {/* Fourth Section end */}
+
+      {/* Fifth Section start */}
+
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Popular This Week</h2>
+          <MasonryLayout apiKey={API_KEY} />
+        </div>
+      </section>
+
+      {/* Fifth Section End */}
+
     </main>
   );
 }
