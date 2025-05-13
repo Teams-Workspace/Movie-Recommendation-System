@@ -3,6 +3,7 @@ import HeroGrid from "./HeroGrid";
 import HorizontalScroll from "./HorizontalScroll";
 import FeaturedSpotlight from "./FeaturedSpotlight";
 import MasonryLayout from "./MasonryLayout";
+import TrendingCarousel from "./TrendingCarousel";
 
 function Home() {
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -72,6 +73,17 @@ function Home() {
       </section>
 
       {/* Fifth Section End */}
+
+
+      {/* Sixth Section start */}
+      <section className="py-8 bg-gradient-to-r from-gray-900 to-black">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Trending Now</h2>
+          <TrendingCarousel apiKey={API_KEY}/>
+        </div>
+      </section>
+
+      {/* Sixth section end */}
 
     </main>
   );

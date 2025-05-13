@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
+import CustomLoader from './cusloader';
 
 function MasonryLayout({ apiKey }) {
   const [movies, setMovies] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchMovies() {
       try {
+        setIsLoading(true);
         const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=5`;
         const response = await fetch(API_URL);
         if (!response.ok) {
@@ -16,11 +19,15 @@ function MasonryLayout({ apiKey }) {
         setMovies(data.results || []);
       } catch (err) {
         console.error('Error fetching movies:', err);
+      }finally{
+        setIsLoading(false);
       }
     }
 
     fetchMovies();
   }, [apiKey]);
+
+    if (isLoading) return <CustomLoader />;
 
   if (!movies || movies.length < 9) return null;
 
