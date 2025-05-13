@@ -5,6 +5,7 @@ import FeaturedSpotlight from "./FeaturedSpotlight";
 import MasonryLayout from "./MasonryLayout";
 import TrendingCarousel from "./TrendingCarousel";
 import TopRatedSection from "./TopRatedSection";
+import ComingSoonTimeline from "./ComingSoonTimeline";
 
 function Home() {
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -96,6 +97,18 @@ function Home() {
       </section>
 
       {/* Seventh Section End */}
+
+      {/* Eighth Section Start */}
+
+      <section className="py-8 bg-gradient-to-b from-gray-900 to-black">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Coming Soon</h2>
+          <ComingSoonTimeline apiKey={API_KEY}  />
+        </div>
+      </section>
+
+      {/* Eighth Section End */}
+
     </main>
   );
 }

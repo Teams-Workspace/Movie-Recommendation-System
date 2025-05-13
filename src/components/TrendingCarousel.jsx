@@ -175,20 +175,20 @@ function TrendingCard({ movie, movies }) {
           <h3 className="text-sm font-bold line-clamp-1">{movie.title}</h3>
           <p className="text-xs text-gray-300 mt-1">Action, Drama</p> {/* Placeholder genres */}
 
-          <button
-            className=" mt-2 w-full bg-red-600/90 hover:bg-red-600 text-white px-3 py-1 rounded text-sm flex items-center justify-center gap-1"
-          >
-            Explore More
-          </button>
+          
         </div>
 
         <div
           className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
-            isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            isHovered ? 'opacity-100' : 'opacity-0 '
           }`}
         >
           <div className="transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-100">
-            
+            <button
+            className="cursor-pointer mt-2 w-full bg-red-600/90 hover:bg-red-600 text-white px-3 py-1 rounded text-sm flex items-center justify-center gap-1"
+          >
+            Explore More
+          </button>  
           </div>
         </div>
       </div>
