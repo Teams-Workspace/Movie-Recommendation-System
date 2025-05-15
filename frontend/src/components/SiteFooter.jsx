@@ -10,56 +10,98 @@ function SiteFooter() {
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-white">MRS</h3>
             <p className="text-gray-400 text-sm">
-              Your ultimate destination for discovering, exploring, and enjoying the best movies from around the world.
+              Your ultimate destination for discovering, exploring, and enjoying
+              the best movies from around the world.
             </p>
             <div className="flex items-center space-x-4 pt-2">
-  <span className="text-red-main font-medium">Saad Ali</span>
-  <div className="flex space-x-4">
-    <a
-      href="https://github.com/yourusername"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-gray-400 hover:text-red-600 transition-colors"
-    >
-      <FaGithub className="h-5 w-5" />
-      <span className="sr-only">GitHub</span>
-    </a>
-    <a
-      href="https://linkedin.com/in/yourusername"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-gray-400 hover:text-red-600 transition-colors"
-    >
-      <FaLinkedin className="h-5 w-5" />
-      <span className="sr-only">LinkedIn</span>
-    </a>
-    <a
-      href="https://instagram.com/yourusername"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-gray-400 hover:text-red-600 transition-colors"
-    >
-      <FaSquareInstagram className="h-5 w-5" />
-      <span className="sr-only">Instagram</span>
-    </a>
-    <a
-      href="mailto:your.email@example.com"
-      className="text-gray-400 hover:text-red-600 transition-colors"
-    >
-      <MdAttachEmail className="h-5 w-5" />
-      <span className="sr-only">Email</span>
-    </a>
-  </div>
-</div>
-
+              <span className="text-red-main font-medium">Saad Ali</span>
+              <div className="flex space-x-4">
+                <a
+                  href="https://github.com/yourusername"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-red-600 transition-colors"
+                >
+                  <FaGithub className="h-5 w-5" />
+                  <span className="sr-only">GitHub</span>
+                </a>
+                <a
+                  href="https://linkedin.com/in/yourusername"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-red-600 transition-colors"
+                >
+                  <FaLinkedin className="h-5 w-5" />
+                  <span className="sr-only">LinkedIn</span>
+                </a>
+                <a
+                  href="https://instagram.com/yourusername"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-red-600 transition-colors"
+                >
+                  <FaSquareInstagram className="h-5 w-5" />
+                  <span className="sr-only">Instagram</span>
+                </a>
+                <a
+                  href="mailto:your.email@example.com"
+                  className="text-gray-400 hover:text-red-600 transition-colors"
+                >
+                  <MdAttachEmail className="h-5 w-5" />
+                  <span className="sr-only">Email</span>
+                </a>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4 pt-2">
+              <span className="text-red-main font-medium">Abrar Ali</span>
+              <div className="flex space-x-4">
+                <a
+                  href="https://github.com/yourusername"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-red-600 transition-colors"
+                >
+                  <FaGithub className="h-5 w-5" />
+                  <span className="sr-only">GitHub</span>
+                </a>
+                <a
+                  href="https://linkedin.com/in/yourusername"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-red-600 transition-colors"
+                >
+                  <FaLinkedin className="h-5 w-5" />
+                  <span className="sr-only">LinkedIn</span>
+                </a>
+                <a
+                  href="https://instagram.com/yourusername"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-red-600 transition-colors"
+                >
+                  <FaSquareInstagram className="h-5 w-5" />
+                  <span className="sr-only">Instagram</span>
+                </a>
+                <a
+                  href="mailto:your.email@example.com"
+                  className="text-gray-400 hover:text-red-600 transition-colors"
+                >
+                  <MdAttachEmail className="h-5 w-5" />
+                  <span className="sr-only">Email</span>
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Movie Recommendation System */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-white">Movie Recommendations</h3>
+            <h3 className="text-xl font-bold text-white">
+              Movie Recommendations
+            </h3>
             <p className="text-gray-400 text-sm">
-              Our DSA-powered recommendation system analyzes your viewing history, Likes, watchlist and preferences to suggest movies
-              you'll love.
+              Our DSA-powered recommendation system analyzes your viewing
+              history, Likes, watchlist and preferences to suggest movies you'll
+              love.
             </p>
             <ul className="space-y-2 text-sm text-gray-400">
               <li className="flex items-center">
@@ -114,16 +156,16 @@ function SiteFooter() {
                 <span>Powered by DSA</span>
               </li>
             </ul>
-            <button
-              className="mt-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded"
-            >
+            <button className="mt-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded">
               Try Recommendations
             </button>
           </div>
 
           {/* GitHub Organization */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-white">Our GitHub Organization</h3>
+            <h3 className="text-xl font-bold text-white">
+              Our GitHub Organization
+            </h3>
             <div className="flex items-center space-x-3 mb-3">
               <div className="relative h-10 w-10 top-2  overflow-hidden ">
                 <img
@@ -134,12 +176,14 @@ function SiteFooter() {
               </div>
               <div>
                 <h4 className="font-medium text-white">Team Workspace</h4>
-                <p className="text-xs text-gray-400">Open Source Team Projects</p>
+                <p className="text-xs text-gray-400">
+                  Open Source Team Projects
+                </p>
               </div>
             </div>
             <p className="text-gray-400 text-sm">
-              We're passionate about open source development. Join our community of developers building the future of
-              film technology.
+              We're passionate about open source development. Join our community
+              of developers building the future of film technology.
             </p>
             <div className="pt-2">
               <a
@@ -169,15 +213,26 @@ function SiteFooter() {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500 text-sm">© {new Date().getFullYear()} MRS. All rights reserved.</p>
+          <p className="text-gray-500 text-sm">
+            © {new Date().getFullYear()} MRS. All rights reserved.
+          </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="/terms" className="text-gray-500 hover:text-gray-300 text-sm">
+            <a
+              href="/terms"
+              className="text-gray-500 hover:text-gray-300 text-sm"
+            >
               Terms
             </a>
-            <a href="/privacy" className="text-gray-500 hover:text-gray-300 text-sm">
+            <a
+              href="/privacy"
+              className="text-gray-500 hover:text-gray-300 text-sm"
+            >
               Privacy
             </a>
-            <a href="/cookies" className="text-gray-500 hover:text-gray-300 text-sm">
+            <a
+              href="/cookies"
+              className="text-gray-500 hover:text-gray-300 text-sm"
+            >
               Cookies
             </a>
           </div>
