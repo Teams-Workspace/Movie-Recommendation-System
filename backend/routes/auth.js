@@ -1,0 +1,240 @@
+require('dotenv').config()
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const User = require('../models/User');
+const router = express.Router();
+
+// Generate OTP
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+// Email transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+// Middleware to verify JWT
+const authenticate = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  if (!token) return res.status(401).json({ message: 'No token provided' });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.id;
+    next();
+  } catch (err) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
+// Signup
+router.post('/signup', async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    let user = await User.findOne({ email });
+    if (user) return res.status(400).json({ message: 'User already exists' });
+
+    user = new User({ name, email, password });
+    const otp = generateOTP();
+    user.otp = otp;
+    user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+    await user.save();
+
+    // Send OTP email
+    await transporter.sendMail({
+      to: email,
+      subject: 'Verify Your Email',
+      text: `Your OTP is ${otp}. It expires in 10 minutes.`,
+    });
+
+    res.status(201).json({ message: 'User created. OTP sent to email.' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Verify OTP
+router.post('/verify-otp', async (req, res) => {
+  const { email, otp } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: 'User not found' });
+    if (user.isVerified) return res.status(400).json({ message: 'User already verified' });
+    if (user.otp !== otp || user.otpExpires < Date.now()) {
+      return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
+
+    user.isVerified = true;
+    user.otp = undefined;
+    user.otpExpires = undefined;
+    await user.save();
+
+    res.status(200).json({ message: 'Email verified' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Login
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!user.isVerified) return res.status(400).json({ message: 'Email not verified' });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.status(200).json({ token, user: { name: user.name, email: user.email } });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Forgot Password
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: 'User not found' });
+
+    const otp = generateOTP();
+    user.resetPasswordToken = otp;
+    user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+    await user.save();
+
+    // Send OTP email
+    await transporter.sendMail({
+      to: email,
+      subject: 'Password Reset OTP',
+      text: `Your OTP for password reset is ${otp}. It expires in 10 minutes.`,
+    });
+
+    res.status(200).json({ message: 'OTP sent to email' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Reset Password
+router.post('/reset-password', async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: 'User not found' });
+    if (user.resetPasswordToken !== otp || user.resetPasswordExpires < Date.now()) {
+      return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
+
+    user.password = newPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.status(200).json({ message: 'Password reset successful' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Add to Watchlist
+router.post('/watchlist', authenticate, async (req, res) => {
+  const { movieId } = req.body;
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user.watchlist.includes(movieId)) {
+      user.watchlist.push(movieId);
+      await user.save();
+    }
+    res.status(200).json({ message: 'Added to watchlist' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get Watchlist
+router.get('/watchlist', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.status(200).json({ watchlist: user.watchlist });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Add to Likes
+router.post('/likes', authenticate, async (req, res) => {
+  const { movieId } = req.body;
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user.likes.includes(movieId)) {
+      user.likes.push(movieId);
+      await user.save();
+    }
+    res.status(200).json({ message: 'Added to likes' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get Likes
+router.get('/likes', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.status(200).json({ likes: user.likes });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update Profile
+router.put('/update-profile', authenticate, async (req, res) => {
+  const { name, email, currentPassword, newPassword } = req.body;
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // Update name and email
+    if (name) user.name = name;
+    if (email && email !== user.email) {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) return res.status(400).json({ message: 'Email already in use' });
+      user.email = email;
+    }
+
+    // Update password if provided
+    if (currentPassword && newPassword) {
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) return res.status(400).json({ message: 'Current password is incorrect' });
+      user.password = newPassword;
+    }
+
+    await user.save();
+    res.status(200).json({ message: 'Profile updated successfully', user: { name: user.name, email: user.email } });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get User Profile
+router.get('/profile', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('name email');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.status(200).json({ name: user.name, email: user.email });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+module.exports = router;
