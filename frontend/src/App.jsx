@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route , Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
@@ -10,10 +11,22 @@ import ResetPassword from './components/auth/ResetPassword';
 import Watchlist from './components/Watchlist';
 import Likes from './components/Likes';
 import Profile from './components/Profile';
+import SplashScreen from './components/SplashScreen';
 
 function App() {
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+  };
+
+
   return (
     <AuthProvider>
+      {isLoading ? (
+        <SplashScreen onLoadingComplete={handleLoadingComplete} />
+      ) : (
       <Router>
         <Navbar />
         <Routes>
@@ -29,6 +42,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
+      )}
     </AuthProvider>
   );
 }
