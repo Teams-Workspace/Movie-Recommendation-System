@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import CustomLoader from './cusloader';
+import { FiInfo } from "react-icons/fi";
 
 function FeaturedSpotlight({ apiKey }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -80,6 +81,7 @@ function FeaturedSpotlight({ apiKey }) {
 
             <div className="flex flex-wrap gap-3">
               <button className="border-white/20 hover:bg-white/10 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg flex items-center gap-2 text-sm md:text-base">
+              <FiInfo className="w-4 h-4 md:w-5 md:h-5"/>
                 More Info
               </button>
               <button className="border-white/20 hover:bg-white/10 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg flex items-center gap-2 text-sm md:text-base">

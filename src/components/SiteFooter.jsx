@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { FaGithub, FaLinkedin, FaSquareInstagram } from "react-icons/fa6";
+import { MdAttachEmail } from "react-icons/md";
 
 function SiteFooter() {
   return (
@@ -11,101 +12,53 @@ function SiteFooter() {
             <p className="text-gray-400 text-sm">
               Your ultimate destination for discovering, exploring, and enjoying the best movies from around the world.
             </p>
-            <div className="flex space-x-4 pt-2">
-              <a
-                href="https://github.com/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-red-600 transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-                  />
-                </svg>
-                <span className="sr-only">GitHub</span>
-              </a>
-              <a
-                href="https://linkedin.com/in/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-red-600 transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 20h-6a2 2 0 01-2-2V8a2 2 0 012-2h6m2 0V6a2 2 0 00-2-2H9a2 2 0 00-2 2v12a2 2 0 002 2h8m2-2v-4a2 2 0 00-2-2h-4m2 4v2m0 0l-3-3m3 3l3-3"
-                  />
-                </svg>
-                <span className="sr-only">LinkedIn</span>
-              </a>
-              <a
-                href="https://instagram.com/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-red-600 transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 8V4a2 2 0 012-2h12a2 2 0 012 2v4m-6 6v-6m-2 6v-6m2 6v-6m-6 6v-6m2 6v-6m-2-6h12m-6 6h6m-2 6h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4"
-                  />
-                </svg>
-                <span className="sr-only">Instagram</span>
-              </a>
-              <a
-                href="mailto:your.email@example.com"
-                className="text-gray-400 hover:text-red-600 transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-                <span className="sr-only">Email</span>
-              </a>
-            </div>
+            <div className="flex items-center space-x-4 pt-2">
+  <span className="text-red-main font-medium">Saad Ali</span>
+  <div className="flex space-x-4">
+    <a
+      href="https://github.com/yourusername"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-gray-400 hover:text-red-600 transition-colors"
+    >
+      <FaGithub className="h-5 w-5" />
+      <span className="sr-only">GitHub</span>
+    </a>
+    <a
+      href="https://linkedin.com/in/yourusername"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-gray-400 hover:text-red-600 transition-colors"
+    >
+      <FaLinkedin className="h-5 w-5" />
+      <span className="sr-only">LinkedIn</span>
+    </a>
+    <a
+      href="https://instagram.com/yourusername"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-gray-400 hover:text-red-600 transition-colors"
+    >
+      <FaSquareInstagram className="h-5 w-5" />
+      <span className="sr-only">Instagram</span>
+    </a>
+    <a
+      href="mailto:your.email@example.com"
+      className="text-gray-400 hover:text-red-600 transition-colors"
+    >
+      <MdAttachEmail className="h-5 w-5" />
+      <span className="sr-only">Email</span>
+    </a>
+  </div>
+</div>
+
           </div>
 
           {/* Movie Recommendation System */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-white">Movie Recommendations</h3>
             <p className="text-gray-400 text-sm">
-              Our AI-powered recommendation system analyzes your viewing history and preferences to suggest movies
+              Our DSA-powered recommendation system analyzes your viewing history, Likes, watchlist and preferences to suggest movies
               you'll love.
             </p>
             <ul className="space-y-2 text-sm text-gray-400">
@@ -158,7 +111,7 @@ function SiteFooter() {
                     d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
                   />
                 </svg>
-                <span>Powered by machine learning</span>
+                <span>Powered by DSA</span>
               </li>
             </ul>
             <button
@@ -181,7 +134,7 @@ function SiteFooter() {
               </div>
               <div>
                 <h4 className="font-medium text-white">Team Workspace</h4>
-                <p className="text-xs text-gray-400">Open Source Film Projects</p>
+                <p className="text-xs text-gray-400">Open Source Team Projects</p>
               </div>
             </div>
             <p className="text-gray-400 text-sm">
@@ -216,7 +169,7 @@ function SiteFooter() {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500 text-sm">© {new Date().getFullYear()} CineVerse. All rights reserved.</p>
+          <p className="text-gray-500 text-sm">© {new Date().getFullYear()} MRS. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="/terms" className="text-gray-500 hover:text-gray-300 text-sm">
               Terms

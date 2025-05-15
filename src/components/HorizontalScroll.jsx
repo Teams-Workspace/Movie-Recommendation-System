@@ -156,7 +156,7 @@ function HorizontalScroll({ apiKey }) {
                   {new Date(movie.release_date).getFullYear() || 'N/A'}
                 </span>
               </div>
-              <h3 className="text-sm font-medium line-clamp-1 ">{movie.title}</h3>
+              <h3 className="text-sm font-medium line-clamp-1 cursor-pointer ">{movie.title}</h3>
               <p className="text-xs text-gray-400 mt-1">
                 {movie.genre_ids.length > 0 ? 'Action, Drama' : 'N/A'} {/* Placeholder genres */}
               </p>
