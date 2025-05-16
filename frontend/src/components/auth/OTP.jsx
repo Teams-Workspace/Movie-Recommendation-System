@@ -141,7 +141,7 @@ function OTP() {
                 <div>
                   <button
                     type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
+                    className="cursor-pointer w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
                     disabled={isLoading || otp.some((digit) => !digit)}
                   >
                     {isLoading ? 'Verifying...' : 'Verify code'}
@@ -154,7 +154,7 @@ function OTP() {
                   {timeLeft > 0 ? (
                     <span className="text-gray-500">Resend in {formatTime(timeLeft)}</span>
                   ) : (
-                    <button type="button" className="text-red-600 hover:text-red-500" onClick={handleResend}>
+                    <button type="button" className="cursor-pointer text-red-600 hover:text-red-500" onClick={handleResend}>
                       Resend code
                     </button>
                   )}
@@ -179,7 +179,7 @@ function OTP() {
                 {isForgotPassword ? 'You can now reset your password.' : 'Your email has been verified. Please log in.'}
               </p>
               <Link to={isForgotPassword ? '/reset-password' : '/login'} state={{ email }}>
-                <button className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">
+                <button className="cursor-pointer w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">
                   {isForgotPassword ? 'Reset password' : 'Log in'}
                 </button>
               </Link>

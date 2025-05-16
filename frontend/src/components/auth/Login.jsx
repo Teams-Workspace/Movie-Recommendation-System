@@ -114,7 +114,7 @@ function Login() {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-main hover:bg-red-main focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
+                className="cursor-pointer w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-main hover:bg-red-main focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
                 disabled={isLoading}
               >
                 {isLoading ? 'Signing in...' : 'Sign in'}
