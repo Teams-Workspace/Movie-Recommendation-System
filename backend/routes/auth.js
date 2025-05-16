@@ -18,6 +18,75 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Email template function
+const generateEmailTemplate = (otp, type) => {
+  const isVerification = type === 'verify';
+  const subject = isVerification ? 'Verify Your Email' : 'Password Reset OTP';
+  const title = isVerification ? 'Email Verification' : 'Reset Your Password';
+  const message = isVerification
+    ? 'Please use the OTP below to verify your email address.'
+    : 'Please use the OTP below to reset your password.';
+
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${subject}</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #121212; color: #F5F5F5;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #121212;">
+        <!-- Header -->
+        <tr>
+          <td style="padding: 20px 0; text-align: center; background-color: #E50914;">
+            <img
+              src="http://localhost:5000/public/Logo.png"
+              alt="Movie Recommendation System Logo"
+              style="max-width: 200px; height: auto; display: block; margin: 0 auto;"
+            >
+          </td>
+        </tr>
+        <!-- Body -->
+        <tr>
+          <td style="padding: 40px 20px; text-align: center;">
+            <h1 style="font-size: 24px; font-weight: bold; color: #F5F5F5; margin: 0 0 20px;">
+              ${title}
+            </h1>
+            <p style="font-size: 16px; color: #F5F5F5; margin: 0 0 20px;">
+              ${message}
+            </p>
+            <div style="display: inline-block; padding: 15px 30px; background-color: #E50914; color: #F5F5F5; font-size: 32px; font-weight: bold; border-radius: 8px; margin: 20px 0;">
+              ${otp}
+            </div>
+            <p style="font-size: 14px; color: #4B4B4B; margin: 0 0 20px;">
+              This OTP expires in 10 minutes.
+            </p>
+            <a
+              href="http://localhost:5173/${isVerification ? 'otp' : 'reset-password'}"
+              style="display: inline-block; padding: 12px 24px; background-color: #E50914; color: #F5F5F5; font-size: 16px; font-weight: bold; text-decoration: none; border-radius: 8px;"
+            >
+              ${isVerification ? 'Verify Now' : 'Reset Password'}
+            </a>
+          </td>
+        </tr>
+        <!-- Footer -->
+        <tr>
+          <td style="padding: 20px; text-align: center; background-color: #1A1A1A;">
+            <p style="font-size: 12px; color: #4B4B4B; margin: 0;">
+              &copy; 2025 Movie Recommendation System. All rights reserved.
+            </p>
+            <p style="font-size: 12px; color: #4B4B4B; margin: 10px 0 0;">
+              Need help? Contact us at <a href="mailto:support@mrs.com" style="color: #E50914; text-decoration: none;">support@mrs.com</a>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+};
+
 // Middleware to verify JWT
 const authenticate = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -48,7 +117,7 @@ router.post('/signup', async (req, res) => {
     await transporter.sendMail({
       to: email,
       subject: 'Verify Your Email',
-      text: `Your OTP is ${otp}. It expires in 10 minutes.`,
+      html: generateEmailTemplate(otp, 'verify'),
     });
 
     res.status(201).json({ message: 'User created. OTP sent to email.' });
@@ -109,11 +178,11 @@ router.post('/forgot-password', async (req, res) => {
     user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
     await user.save();
 
-    // Send OTP email
+   // Send OTP email
     await transporter.sendMail({
       to: email,
       subject: 'Password Reset OTP',
-      text: `Your OTP for password reset is ${otp}. It expires in 10 minutes.`,
+      html: generateEmailTemplate(otp, 'reset'),
     });
 
     res.status(200).json({ message: 'OTP sent to email' });

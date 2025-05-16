@@ -12,6 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve static files (e.g., Logo.png)
+app.use('/public', express.static('public'));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/', (req, res) => {
