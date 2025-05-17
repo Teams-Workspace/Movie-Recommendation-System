@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { AuthProvider } from './context/AuthContext';
 import Home from './components/Home';
@@ -12,6 +12,7 @@ import Likes from './components/Likes';
 import Profile from './components/Profile';
 import SearchPage from './components/SearchPage';
 import MovieDetail from './components/MovieDetail';
+import NotFound from './components/NotFound';
 import Preloader from './components/Preloader';
 
 function App() {
@@ -39,7 +40,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/movie/:id" element={<MovieDetail />} /> {/* MovieDetail page route */}
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       )}
