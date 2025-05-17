@@ -81,6 +81,48 @@ function Navbar() {
     }
   }, [selectedIndex]);
 
+  // Handle body overflow when search is active
+  useEffect(() => {
+    if (isSearchActive) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isSearchActive]);
+
+  // Handle Ctrl + K shortcut globally
+  useEffect(() => {
+    const handleGlobalKeyDown = (e) => {
+      if (e.ctrlKey && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchActive((prev) => {
+          if (!prev) {
+            // Opening search: focus input after state update
+            setTimeout(() => {
+              if (searchInputRef.current) {
+                searchInputRef.current.focus();
+              }
+            }, 0);
+            return true;
+          } else {
+            // Closing search: reset state
+            setSearchTerm('');
+            setSelectedIndex(-1);
+            setSearchResults([]);
+            setIsLoading(false);
+            return false;
+          }
+        });
+      }
+    };
+
+    document.addEventListener('keydown', handleGlobalKeyDown);
+    return () => document.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
+
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -88,6 +130,12 @@ function Navbar() {
 
   const handleSearchFocus = () => {
     setIsSearchActive(true);
+    // Focus input after state update
+    setTimeout(() => {
+      if (searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+    }, 0);
   };
 
   const closeSearchOverlay = () => {
@@ -122,9 +170,10 @@ function Navbar() {
     }
   };
 
+  // Keyboard navigation for search results
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
-    return () => document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isSearchActive, selectedIndex, searchResults]);
 
   // Search term result
@@ -134,7 +183,7 @@ function Navbar() {
     const parts = text.split(regex);
     return parts.map((part, index) =>
       regex.test(part) ? (
-        <span key={index} >{part}</span>
+        <span key={index} className="font-bold">{part}</span>
       ) : (
         part
       )
@@ -216,7 +265,7 @@ function Navbar() {
             className="bg-white-custom rounded-lg px-6 py-3 shadow-lg w-4/5 md:w-2/3 lg:w-1/2 flex flex-col gap-2 fixed top-20"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center gap-2 ">
+            <div className="flex items-center gap-2">
               <FaSearch className="text-red-main" size={18} />
               <input
                 ref={searchInputRef}
@@ -230,7 +279,7 @@ function Navbar() {
             </div>
 
             <div className="text-xs text-gray-500 mb-2">
-              Use ↑/↓ to navigate, Enter to select, Esc to close
+              Use ↑/↓ to navigate, Enter to select, Esc or Ctrl + K to close
             </div>
 
             {isLoading ? (
