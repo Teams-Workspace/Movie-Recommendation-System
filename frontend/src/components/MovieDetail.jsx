@@ -115,7 +115,7 @@ export default function MovieDetail() {
         };
 
         // Map cast data (limit to 4)
-        const castFormatted = creditsData.cast.slice(0, 4).map((member) => ({
+        const castFormatted = creditsData.cast.slice(0, 6).map((member) => ({
           name: member.name,
           role: member.character || "N/A",
           image: member.profile_path
@@ -428,7 +428,7 @@ export default function MovieDetail() {
                     />
                     <div className="absolute inset-0 bg-black/40"></div>
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <button className="rounded-full h-16 w-16 bg-red-main hover:bg-red-main/90 group-hover:scale-110 transition-transform duration-300">
+                      <button className="rounded-full h-16 w-16  hover:bg-red-main/90 group-hover:scale-110 transition-transform duration-300">
                         <FaRegCirclePlay className="h-8 w-8 fill-current ml-1" />
                         <span className="sr-only">FaRegCirclePlay trailer</span>
                       </button>
