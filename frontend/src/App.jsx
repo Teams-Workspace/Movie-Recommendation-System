@@ -11,7 +11,7 @@ import ResetPassword from './components/auth/ResetPassword';
 import Watchlist from './components/Watchlist';
 import Likes from './components/Likes';
 import Profile from './components/Profile';
-import SplashScreen from './components/SplashScreen';
+import Preloader from './components/Preloader';
 
 function App() {
 
@@ -25,7 +25,7 @@ function App() {
   return (
     <AuthProvider>
       {isLoading ? (
-        <SplashScreen onLoadingComplete={handleLoadingComplete} />
+        <Preloader onLoadingComplete={handleLoadingComplete} />
       ) : (
       <Router>
         <Navbar />
