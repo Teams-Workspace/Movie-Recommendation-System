@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Star } from 'lucide-react';
 import CustomLoader from './cusloader';
 
 function MasonryLayout({ apiKey }) {
+  const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchMovies() {
       try {
         setIsLoading(true);
+        setError(null);
         const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=5`;
         const response = await fetch(API_URL);
         if (!response.ok) {
@@ -18,8 +23,8 @@ function MasonryLayout({ apiKey }) {
         const data = await response.json();
         setMovies(data.results || []);
       } catch (err) {
-        console.error('Error fetching movies:', err);
-      }finally{
+        setError(err.message);
+      } finally {
         setIsLoading(false);
       }
     }
@@ -27,7 +32,15 @@ function MasonryLayout({ apiKey }) {
     fetchMovies();
   }, [apiKey]);
 
-    if (isLoading) return <CustomLoader />;
+  if (isLoading) return <CustomLoader />;
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <p className="text-red-500 text-center">Error fetching movies: {error}</p>
+      </div>
+    );
+  }
 
   if (!movies || movies.length < 9) return null;
 
@@ -48,6 +61,7 @@ function MasonryLayout({ apiKey }) {
             onHover={() => setHoveredIndex(index)}
             onLeave={() => setHoveredIndex(null)}
             height={index === 0 ? 'h-[300px]' : 'h-[200px]'}
+            navigate={navigate}
           />
         ))}
       </div>
@@ -62,6 +76,7 @@ function MasonryLayout({ apiKey }) {
             onHover={() => setHoveredIndex(index + 3)}
             onLeave={() => setHoveredIndex(null)}
             height={index === 1 ? 'h-[300px]' : 'h-[200px]'}
+            navigate={navigate}
           />
         ))}
       </div>
@@ -76,6 +91,7 @@ function MasonryLayout({ apiKey }) {
             onHover={() => setHoveredIndex(index + 6)}
             onLeave={() => setHoveredIndex(null)}
             height={index === 2 ? 'h-[300px]' : 'h-[200px]'}
+            navigate={navigate}
           />
         ))}
       </div>
@@ -83,7 +99,20 @@ function MasonryLayout({ apiKey }) {
   );
 }
 
-function MasonryItem({ movie, isHovered, onHover, onLeave, height }) {
+function MasonryItem({ movie, isHovered, onHover, onLeave, height, navigate }) {
+  // Map TMDB genre_ids to genre names (partial mapping for demo)
+  const genres = movie.genre_ids.map((id) => {
+    const genreMap = {
+      28: 'Action',
+      35: 'Comedy',
+      18: 'Drama',
+      878: 'Sci-Fi',
+      10749: 'Romance',
+      53: 'Thriller',
+    };
+    return genreMap[id] || 'Other';
+  }).slice(0, 2).join(', ') || 'N/A';
+
   return (
     <div
       className={`relative ${height} rounded-lg overflow-hidden group`}
@@ -96,6 +125,7 @@ function MasonryItem({ movie, isHovered, onHover, onLeave, height }) {
         className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
           isHovered ? 'scale-110 brightness-75' : 'brightness-90'
         }`}
+        loading="lazy"
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
@@ -103,22 +133,15 @@ function MasonryItem({ movie, isHovered, onHover, onLeave, height }) {
       <div className="absolute bottom-0 left-0 p-4 w-full">
         <div className="flex items-center space-x-2 mb-1">
           <div className="flex items-center text-yellow-400">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              className="w-3 h-3 fill-yellow-400 mr-1"
-            >
-              <path d="M12 .587l3.668 7.431 8.332 1.151-6.001 5.852 1.417 8.257L12 18.893l-7.416 3.385 1.417-8.257-6.001-5.852 8.332-1.151z" />
-            </svg>
+            <Star className="w-3 h-3 fill-yellow-400 mr-1" />
             <span className="text-xs">{movie.vote_average.toFixed(1)}</span>
           </div>
           <span className="text-xs text-gray-300">
             {new Date(movie.release_date).getFullYear() || 'N/A'}
           </span>
         </div>
-        <h3 className="text-sm md:text-base font-bold">{movie.title}</h3>
-        <p className="text-xs text-gray-300 mt-1 line-clamp-1">Action, Drama</p> {/* Placeholder genres */}
+        <h3 className="text-sm md:text-base font-bold text-white-custom">{movie.title}</h3>
+        <p className="text-xs text-gray-300 mt-1 line-clamp-1">{genres}</p>
       </div>
 
       <div
@@ -126,7 +149,10 @@ function MasonryItem({ movie, isHovered, onHover, onLeave, height }) {
           isHovered ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <button className="cursor-pointer bg-red-main p-1 rounded-2xl" size="sm">
+        <button
+          className="cursor-pointer bg-red-main text-white-custom px-4 py-2 rounded-md hover:bg-red-main/90"
+          onClick={() => navigate(`/movie/${movie.id}`)}
+        >
           Explore More
         </button>
       </div>

@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CustomLoader from './cusloader';
 
 function MovieCarousel({ apiKey }) {
+  const navigate = useNavigate();
   const [movieData, setMovieData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -59,7 +61,7 @@ function MovieCarousel({ apiKey }) {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-light-gray flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <p className="text-red-500 text-center">Error fetching movies: {error}</p>
       </div>
     );
@@ -71,8 +73,8 @@ function MovieCarousel({ apiKey }) {
 
   if (!movieData.length) {
     return (
-      <div className="min-h-screen bg-light-gray flex items-center justify-center">
-        <p className="text-gray-500 text-center">No movies available.</p>
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <p className="text-gray-400 text-center">No movies available.</p>
       </div>
     );
   }
@@ -106,7 +108,7 @@ function MovieCarousel({ apiKey }) {
 
       <div className="absolute inset-0 flex items-center justify-center z-20">
         <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between">
-          <div className="w-full md:w-1/2 text-white space-y-6 mb-8 md:mb-0">
+          <div className="w-full md:w-1/2 text-white-custom space-y-6 mb-8 md:mb-0">
             {movieData.map((slide, index) => (
               <div
                 key={`content-${slide.id}`}
@@ -118,10 +120,10 @@ function MovieCarousel({ apiKey }) {
                 }}
               >
                 <h2 className="text-4xl md:text-6xl font-bold mb-4">{slide.title}</h2>
-                <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-xl">{slide.overview}</p>
+                <p className="text-xl md:text-2xl text-white-custom/80 mb-8 max-w-xl">{slide.overview}</p>
                 <button
-                  className="bg-white text-dark px-6 py-2 rounded-lg hover:bg-gray-200"
-                  onClick={() => alert(`Explore ${slide.title}`)}
+                  className="cursor-pointer bg-red-main text-white-custom px-6 py-2 rounded-md hover:bg-red-main/90"
+                  onClick={() => navigate(`/movie/${slide.id}`)}
                 >
                   Explore Movie
                 </button>
@@ -154,6 +156,7 @@ function MovieCarousel({ apiKey }) {
                     src={`https://image.tmdb.org/t/p/w500${slide.poster_path}`}
                     alt={slide.title}
                     className="object-cover w-full h-full"
+                    loading="lazy"
                   />
                 </div>
               </div>
@@ -166,20 +169,20 @@ function MovieCarousel({ apiKey }) {
         <div className="flex items-center justify-between">
           <div className="flex space-x-4">
             <button
-              className="cursor-pointer h-10 w-10 rounded-full bg-black/20 text-white backdrop-blur-sm hover:bg-black/30 border border-white/20"
+              className="cursor-pointer h-10 w-10 rounded-full bg-black/20 text-white-custom backdrop-blur-sm hover:bg-black/30 border border-white-custom/20"
               onClick={prev}
             >
               ←
             </button>
             <button
-              className="cursor-pointer h-10 w-10 rounded-full bg-black/20 text-white backdrop-blur-sm hover:bg-black/30 border border-white/20"
+              className="cursor-pointer h-10 w-10 rounded-full bg-black/20 text-white-custom backdrop-blur-sm hover:bg-black/30 border border-white-custom/20"
               onClick={next}
             >
               →
             </button>
           </div>
 
-          <div className="text-white text-sm font-medium">
+          <div className="text-white-custom text-sm font-medium">
             {current + 1}/{movieData.length}
           </div>
         </div>

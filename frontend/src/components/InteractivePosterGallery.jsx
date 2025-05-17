@@ -1,37 +1,57 @@
 import { useState, useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
+import { Info } from 'lucide-react';
+import CustomLoader from './cusloader';
 
 function InteractivePosterGallery({ apiKey }) {
+  const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchPopularMovies() {
       try {
-   
+        setIsLoading(true);
+        setError(null);
         const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=8`;
         const response = await fetch(API_URL);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        // Limit to 5 movies for the gallery
-        setMovies(data.results.slice(0, 5));
+        const topMovies = data.results.slice(0, 5); // Limit to 5 movies
+
+        // Fetch details for genres and duration
+        const moviesWithDetails = await Promise.all(
+          topMovies.map(async (movie) => {
+            const detailResponse = await fetch(
+              `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}&language=en-US`
+            );
+            if (!detailResponse.ok) {
+              throw new Error(`Failed to fetch details for movie ${movie.id}`);
+            }
+            const detailData = await detailResponse.json();
+            return {
+              ...movie,
+              runtime: detailData.runtime || 0,
+              genre_ids: detailData.genres.map((g) => g.id), // TMDB /movie/:id uses genres
+            };
+          })
+        );
+
+        setMovies(moviesWithDetails);
       } catch (err) {
-        console.error('Error fetching popular movies:', err);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     fetchPopularMovies();
   }, [apiKey]);
-
-   
-  
-    
-
-  const activeMovie = movies[activeIndex];
 
   // Auto-rotate when not hovering
   useEffect(() => {
@@ -44,7 +64,40 @@ function InteractivePosterGallery({ apiKey }) {
     return () => clearInterval(interval);
   }, [isHovering, movies.length]);
 
+  if (isLoading) return <CustomLoader />;
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <p className="text-red-500 text-center">Error fetching movies: {error}</p>
+      </div>
+    );
+  }
+
   if (!movies || !movies.length) return null;
+
+  const activeMovie = movies[activeIndex];
+
+  // Map genres
+  const genres = activeMovie.genre_ids
+    .map((id) => {
+      const genreMap = {
+        28: 'Action',
+        35: 'Comedy',
+        18: 'Drama',
+        878: 'Sci-Fi',
+        10749: 'Romance',
+        53: 'Thriller',
+      };
+      return genreMap[id] || 'Other';
+    })
+    .slice(0, 2)
+    .join(', ') || 'N/A';
+
+  // Format duration
+  const duration = activeMovie.runtime
+    ? `${Math.floor(activeMovie.runtime / 60)}h ${activeMovie.runtime % 60}m`
+    : 'N/A';
 
   return (
     <div
@@ -64,8 +117,9 @@ function InteractivePosterGallery({ apiKey }) {
             src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent" />
         </div>
       ))}
 
@@ -83,46 +137,35 @@ function InteractivePosterGallery({ apiKey }) {
               >
                 <div className="space-y-4">
                   <div className="flex items-center space-x-2">
-                    <span className="bg-red-600 px-2 py-0.5 text-xs font-semibold rounded">FEATURED</span>
-                    <span className="text-sm text-gray-300">
+                    <span className="bg-red-main px-2 py-0.5 text-xs font-semibold rounded text-white-custom">
+                      FEATURED
+                    </span>
+                    <span className="text-sm text-gray-400">
                       {new Date(movie.release_date).getFullYear() || 'N/A'}
                     </span>
-                    <span className="text-sm text-gray-300">N/A</span> {/* Placeholder for duration */}
+                    <span className="text-sm text-gray-400">{duration}</span>
                   </div>
 
-                  <h1 className="text-3xl md:text-4xl font-bold">{movie.title}</h1>
+                  <h1 className="text-3xl md:text-4xl font-bold text-white-custom">{movie.title}</h1>
 
                   <div className="flex items-center space-x-3 text-sm">
                     <span className="text-yellow-400 font-medium">{movie.vote_average.toFixed(1)}/10</span>
-                    <span className="text-gray-300">Action, Drama</span> {/* Placeholder for genres */}
+                    <span className="text-gray-400">{genres}</span>
                   </div>
 
                   <p className="text-gray-300 text-lg max-w-xl line-clamp-4">{movie.overview}</p>
 
                   <div className="flex flex-wrap gap-3 pt-2">
                     <button
-                      className="cursor-pointer bg-red-600 hover:bg-red-600/90 text-white px-4 py-2 rounded flex items-center gap-2"
+                      className="bg-red-main hover:bg-red-main/90 text-white-custom px-4 py-2 rounded-md flex items-center gap-2"
                     >
-                      
                       Add to Watchlist
                     </button>
                     <button
-                      className="cursor-pointer border-white/20 hover:bg-white/10 text-white px-4 py-2 rounded flex items-center gap-2"
+                      className="border-gray-700 hover:bg-gray-800 text-white-custom px-4 py-2 rounded-md flex items-center gap-2"
+                      onClick={() => navigate(`/movie/${movie.id}`)}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        className="w-5 h-5 mr-2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
+                      <Info className="w-5 h-5" />
                       More Info
                     </button>
                   </div>
@@ -179,6 +222,7 @@ function InteractivePosterGallery({ apiKey }) {
                         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                         alt={movie.title}
                         className="object-cover"
+                        loading="lazy"
                       />
                     </div>
                   </div>
@@ -195,7 +239,7 @@ function InteractivePosterGallery({ apiKey }) {
           <button
             key={index}
             className={`w-2 h-2 rounded-full transition-all ${
-              index === activeIndex ? 'bg-red-600 w-6' : 'bg-white/50'
+              index === activeIndex ? 'bg-red-main w-6' : 'bg-gray-600'
             }`}
             onClick={() => setActiveIndex(index)}
           >

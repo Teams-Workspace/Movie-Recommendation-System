@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CustomLoader from './cusloader';
 import { FiInfo } from "react-icons/fi";
 
 function FeaturedSpotlight({ apiKey }) {
+  const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -80,7 +82,8 @@ function FeaturedSpotlight({ apiKey }) {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <button className="border-white/20 hover:bg-white/10 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg flex items-center gap-2 text-sm md:text-base">
+              <button className="border-white/20 hover:bg-white/10 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg flex items-center gap-2 text-sm md:text-base"
+                onClick={() => navigate(`/movie/${movie.id}`)}>
               <FiInfo className="w-4 h-4 md:w-5 md:h-5"/>
                 More Info
               </button>
