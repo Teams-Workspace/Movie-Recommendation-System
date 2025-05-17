@@ -2,14 +2,12 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-  name: { type: String },
+  name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
   otp: { type: String },
   otpExpires: { type: Date },
-  resetPasswordToken: { type: String },
-  resetPasswordExpires: { type: Date },
   watchlist: [{ type: String }], // Store TMDB movie IDs
   likes: [{ type: String }], // Store TMDB movie IDs
 });

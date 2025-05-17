@@ -9,6 +9,16 @@ const router = express.Router();
 // Generate OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
+// Generate random 8-character password (mixed alphanumeric)
+const generateRandomPassword = () => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let password = '';
+  for (let i = 0; i < 8; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return password;
+};
+
 // Email transporter
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -18,14 +28,16 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
 // Email template function
-const generateEmailTemplate = (otp, type) => {
+const generateEmailTemplate = (value, type) => {
   const isVerification = type === 'verify';
-  const subject = isVerification ? 'Verify Your Email' : 'Password Reset OTP';
-  const title = isVerification ? 'Email Verification' : 'Reset Your Password';
+  const isPasswordReset = type === 'reset';
+  const subject = isVerification ? 'Verify Your Email' : 'Your New Password';
+  const title = isVerification ? 'Email Verification' : 'New Password Generated';
   const message = isVerification
     ? 'Please use the OTP below to verify your email address.'
-    : 'Please use the OTP below to reset your password.';
+    : 'Your password has been reset. Use the new password below to log in.';
 
   return `
     <!DOCTYPE html>
@@ -36,14 +48,14 @@ const generateEmailTemplate = (otp, type) => {
       <title>${subject}</title>
     </head>
     <body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #121212; color: #F5F5F5;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #121212;">
-        <!-- Header -->
-        <tr>
-          <td style="padding: 20px 0; text-align: center; background-color: #E50914;">
-            <img
-              src="http://localhost:5000/public/Logo.png"
-              alt="Movie Recommendation System Logo"
-              style="max-width: 200px; height: auto; display: block; margin: 0 auto;"
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #121212;">
+    <!-- Header -->
+    <tr>
+    <td style="padding: 20px 0; text-align: center; background-color: #E50914;">
+    <img
+          src="http://localhost:5000/public/Logo.png"
+          alt="Movie Recommendation System Logo"
+          style="max-width: 200px; height: auto; display: block; margin: 0 auto;"
             >
           </td>
         </tr>
@@ -57,16 +69,16 @@ const generateEmailTemplate = (otp, type) => {
               ${message}
             </p>
             <div style="display: inline-block; padding: 15px 30px; background-color: #E50914; color: #F5F5F5; font-size: 32px; font-weight: bold; border-radius: 8px; margin: 20px 0;">
-              ${otp}
+              ${value}
             </div>
             <p style="font-size: 14px; color: #4B4B4B; margin: 0 0 20px;">
-              This OTP expires in 10 minutes.
+              ${isVerification ? 'This OTP expires in 10 minutes.' : 'Please change your password after logging in.'}
             </p>
             <a
-              href="http://localhost:5173/${isVerification ? 'otp' : 'reset-password'}"
+              href="http://localhost:5173/${isVerification ? 'otp' : 'login'}"
               style="display: inline-block; padding: 12px 24px; background-color: #E50914; color: #F5F5F5; font-size: 16px; font-weight: bold; text-decoration: none; border-radius: 8px;"
             >
-              ${isVerification ? 'Verify Now' : 'Reset Password'}
+              ${isVerification ? 'Verify Now' : 'Log In Now'}
             </a>
           </td>
         </tr>
@@ -74,7 +86,7 @@ const generateEmailTemplate = (otp, type) => {
         <tr>
           <td style="padding: 20px; text-align: center; background-color: #1A1A1A;">
             <p style="font-size: 12px; color: #4B4B4B; margin: 0;">
-              &copy; 2025 Movie Recommendation System. All rights reserved.
+              © 2025 Movie Recommendation System. All rights reserved.
             </p>
             <p style="font-size: 12px; color: #4B4B4B; margin: 10px 0 0;">
               Need help? Contact us at <a href="mailto:support@mrs.com" style="color: #E50914; text-decoration: none;">support@mrs.com</a>
@@ -173,19 +185,19 @@ router.post('/forgot-password', async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: 'User not found' });
 
-    const otp = generateOTP();
-    user.resetPasswordToken = otp;
-    user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+    // Generate random password
+    const newPassword = generateRandomPassword();
+    user.password = newPassword; // Will be hashed by pre-save hook
     await user.save();
 
-   // Send OTP email
+    // Send new password email
     await transporter.sendMail({
       to: email,
-      subject: 'Password Reset OTP',
-      html: generateEmailTemplate(otp, 'reset'),
+      subject: 'Your New Password',
+      html: generateEmailTemplate(newPassword, 'reset'),
     });
 
-    res.status(200).json({ message: 'OTP sent to email' });
+    res.status(200).json({ message: 'New password sent to email.' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
