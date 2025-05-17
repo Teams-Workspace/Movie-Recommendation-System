@@ -7,7 +7,6 @@ import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import OTP from './components/auth/OTP';
 import ForgotPassword from './components/auth/ForgotPassword';
-import ResetPassword from './components/auth/ResetPassword';
 import Watchlist from './components/Watchlist';
 import Likes from './components/Likes';
 import Profile from './components/Profile';
@@ -35,7 +34,6 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/otp" element={<OTP />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/likes" element={<Likes />} />
           <Route path="/profile" element={<Profile />} />

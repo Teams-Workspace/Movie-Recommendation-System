@@ -9,7 +9,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (token) {
       localStorage.setItem('token', token);
-      // Fetch user profile on token change
       getProfile();
     } else {
       localStorage.removeItem('token');
@@ -70,21 +69,6 @@ export function AuthProvider({ children }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
-      return true;
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  const resetPassword = async (email, otp, newPassword) => {
-    try {
-      const response = await fetch('http://localhost:5000/api/auth/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp, newPassword }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
@@ -204,7 +188,6 @@ export function AuthProvider({ children }) {
         signup,
         verifyOTP,
         forgotPassword,
-        resetPassword,
         addToWatchlist,
         getWatchlist,
         addToLikes,
