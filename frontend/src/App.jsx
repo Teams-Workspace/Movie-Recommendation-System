@@ -10,6 +10,7 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import Watchlist from './components/Watchlist';
 import Likes from './components/Likes';
 import Profile from './components/Profile';
+import SearchPage from './components/SearchPage';
 import Preloader from './components/Preloader';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/likes" element={<Likes />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
