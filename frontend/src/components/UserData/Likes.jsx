@@ -3,11 +3,11 @@ import React from "react";
 import { useState, useEffect, useRef, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
-import { Play, Star, Clock ,BookmarkCheck, Trash2 } from 'lucide-react';
-import { AuthContext } from '../context/AuthContext';
-import SiteFooter from './SiteFooter';
+import { Play, Star,  Heart, Trash2 } from 'lucide-react';
+import { AuthContext } from '../../context/AuthContext';
+import SiteFooter from '../SiteFooter';
 
-function Watchlist() {
+function Likes() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
@@ -23,30 +23,30 @@ function Watchlist() {
   const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p';
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
-  // Fetch mock watchlist movies (top-rated movies from TMDB)
+  // Fetch mock liked movies (popular movies from TMDB)
   useEffect(() => {
     if (!user) {
       navigate('/login');
       return;
     }
 
-    const fetchWatchlistMovies = async () => {
+    const fetchLikedMovies = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await fetch(`${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`);
+        const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`);
         if (!response.ok) throw new Error(`Error fetching movies: ${response.status}`);
         const data = await response.json();
 
-        // Map to Movie type (limit to 10)
-        const watchlistMovies = data.results.slice(0, 10).map((m) => ({
+        // Map to Movie type with mock userRating (limit to 15)
+        const likedMovies = data.results.slice(0, 15).map((m) => ({
           id: m.id,
           title: m.title,
           posterUrl: m.poster_path ? `${IMAGE_BASE_URL}/w500${m.poster_path}` : '/placeholder.svg',
           backdropUrl: m.backdrop_path ? `${IMAGE_BASE_URL}/w1280${m.backdrop_path}` : '/placeholder.svg',
           year: m.release_date ? m.release_date.split('-')[0] : 'N/A',
-          duration: m.runtime ? `${Math.floor(m.runtime / 60)}h ${m.runtime % 60}m` : 'N/A',
+          duration: 'N/A',
           genre: m.genre_ids.map((id) => {
             const genres = {
               28: 'Action',
@@ -58,9 +58,10 @@ function Watchlist() {
           }),
           description: m.overview || 'No description available.',
           rating: m.vote_average ? m.vote_average.toFixed(1) : 'N/A',
+          userRating: Math.floor(Math.random() * 5) + 1, // Mock rating 1–5
         }));
 
-        setMovies(watchlistMovies);
+        setMovies(likedMovies);
       } catch (err) {
         setError(err.message);
         setMovies([]);
@@ -69,7 +70,7 @@ function Watchlist() {
       }
     };
 
-    fetchWatchlistMovies();
+    fetchLikedMovies();
   }, [user, navigate, API_KEY]);
 
   // GSAP animations
@@ -98,8 +99,14 @@ function Watchlist() {
     }
   }, [isLoading, movies.length]);
 
-  const removeFromWatchlist = (id) => {
+  const removeFromLiked = (id) => {
     setMovies((prev) => prev.filter((movie) => movie.id !== id));
+  };
+
+  const updateRating = (id, rating) => {
+    setMovies((prev) =>
+      prev.map((movie) => (movie.id === id ? { ...movie, userRating: rating } : movie))
+    );
   };
 
   if (isLoading) {
@@ -130,15 +137,13 @@ function Watchlist() {
         <div className="max-w-2xl mx-auto text-center">
           <div className="mb-6 flex justify-center">
             <div className="relative h-32 w-32 opacity-30">
-              <BookmarkCheck className="h-full w-full" />
+              <Heart className="h-full w-full" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold mb-4">Your watchlist is empty</h1>
-          <p className="text-gray-400 mb-8">
-            Add movies and TV shows to your watchlist to keep track of what you want to watch.
-          </p>
+          <h1 className="text-3xl font-bold mb-4">Your liked movies list is empty</h1>
+          <p className="text-gray-400 mb-8">Start exploring and liking movies to build your personalized collection.</p>
           <button className="bg-red-main text-white-custom px-6 py-2 rounded-md hover:bg-red-main/90">
-            <Link to="/">Browse Movies</Link>
+            <Link to="/">Discover Movies</Link>
           </button>
         </div>
       </div>
@@ -149,7 +154,7 @@ function Watchlist() {
     <main className="min-h-screen bg-black text-white overflow-hidden">
     <div className="min-h-screen bg-black text-white-custom pb-16">
       {/* Background gradient */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-b from-gray-900/50 to-black"></div>
+      <div className="fixed inset-0 z-0 bg-gradient-to-b from-red-main/20 via-black/50 to-black"></div>
 
       <div className="relative z-10 container mx-auto px-4 py-16 mt-8">
         <div
@@ -157,10 +162,10 @@ function Watchlist() {
           className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4"
         >
           <div>
-            <h1 className="text-3xl font-bold">My Watchlist</h1>
-            <p className="text-gray-400 mt-1">{movies.length} movies saved to watch later</p>
+            <h1 className="text-3xl font-bold">My Liked Movies</h1>
+            <p className="text-gray-400 mt-1">{movies.length} movies in your collection</p>
           </div>
-         
+          
         </div>
 
         <div ref={contentRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -175,14 +180,14 @@ function Watchlist() {
                 />
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
-                    className="h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 text-white-custom"
+                    className="h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 text-red-500"
                     onClick={(e) => {
                       e.preventDefault();
-                      removeFromWatchlist(movie.id);
+                      removeFromLiked(movie.id);
                     }}
                   >
                     <Trash2 className="h-4 w-4 m-2" />
-                    <span className="sr-only">Remove from watchlist</span>
+                    <span className="sr-only">Remove from liked</span>
                   </button>
                 </div>
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -192,19 +197,33 @@ function Watchlist() {
                     </button>
                   </Link>
                 </div>
-                <div className="absolute bottom-2 left-2 flex items-center space-x-1 bg-black/60 rounded px-1.5 py-0.5">
-                  <Clock className="w-3 h-3 text-gray-300" />
-                  <span className="text-xs">{movie.duration}</span>
-                </div>
               </div>
               <div className="mt-2">
                 <Link to={`/movie/${movie.id}`} className="block">
-                  <div className="flex items-center space-x-2 mb-1">
+                  <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center text-yellow-400">
                       <Star className="w-3 h-3 fill-yellow-400 mr-1" />
                       <span className="text-xs">{movie.rating}</span>
                     </div>
-                    <span className="text-xs text-gray-400">{movie.year}</span>
+                    <div className="flex">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          className="p-0.5"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            updateRating(movie.id, star);
+                          }}
+                        >
+                          <Star
+                            className={`w-3 h-3 ${
+                              star <= movie.userRating ? 'fill-red-500 text-red-500' : 'text-gray-500'
+                            }`}
+                          />
+                          <span className="sr-only">Rate {star} stars</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                   <h3 className="text-sm font-medium line-clamp-1">{movie.title}</h3>
                   <p className="text-xs text-gray-400 mt-1">{movie.genre.slice(0, 2).join(', ')}</p>
@@ -215,12 +234,11 @@ function Watchlist() {
         </div>
       </div>
     </div>
-     <div className="relative w-full">
-                 <SiteFooter />
-               </div>
-               
-
-    </main>
+    <div className="relative w-full">
+            <SiteFooter />
+          </div>
+          </main>
   );
 }
-export default Watchlist;
+
+export default Likes;

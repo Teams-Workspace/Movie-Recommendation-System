@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function Preloader({ onLoadingComplete, minimumDisplayTime = 2500 }) {
+function SplashScreen({ onLoadingComplete, minimumDisplayTime = 2500 }) {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [showSplash, setShowSplash] = useState(true);
 
@@ -108,4 +108,4 @@ function Preloader({ onLoadingComplete, minimumDisplayTime = 2500 }) {
   );
 }
 
-export default Preloader;
+export default SplashScreen;

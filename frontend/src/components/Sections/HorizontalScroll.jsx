@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaHeartCirclePlus } from "react-icons/fa6";
 import { LuCircleArrowOutDownLeft } from "react-icons/lu";
 import { LuCircleArrowOutDownRight } from "react-icons/lu";
-import CustomLoader from "./cusloader";
+import CustomLoader from "../cusloader";
 
 function HorizontalScroll({ apiKey }) {
   const navigate = useNavigate();

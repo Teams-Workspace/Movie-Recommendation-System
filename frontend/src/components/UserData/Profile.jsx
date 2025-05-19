@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import { FaArrowLeft, FaEye, FaEyeSlash, FaSave, FaUserCircle } from 'react-icons/fa';
-import SiteFooter from './SiteFooter';
+import SiteFooter from '../SiteFooter';
 
 function Profile() {
   const { user, updateProfile, getProfile } = useContext(AuthContext);

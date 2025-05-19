@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import MovieCard from './MovieCard';
 import SearchNotFound from './SearchNotFound';
-import SiteFooter from './SiteFooter';
+import SiteFooter from '../SiteFooter';
 import axios from 'axios';
 
 // Grid Layout

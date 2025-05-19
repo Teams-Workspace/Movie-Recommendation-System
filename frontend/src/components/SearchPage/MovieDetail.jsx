@@ -8,8 +8,8 @@ import { FaClock } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa6";
 import { IoBookmarkOutline } from "react-icons/io5";
-import { AuthContext } from "../context/AuthContext";
-import SiteFooter from "./SiteFooter";
+import { AuthContext } from "../../context/AuthContext";
+import SiteFooter from "../SiteFooter";
 
 // Register ScrollTrigger plugin
 if (typeof window !== "undefined") {

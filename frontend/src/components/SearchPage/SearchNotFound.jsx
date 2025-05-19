@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
-import SiteFooter from "./SiteFooter";
+import SiteFooter from "../SiteFooter";
 
 function SearchNotFound({ query }) {
   return (

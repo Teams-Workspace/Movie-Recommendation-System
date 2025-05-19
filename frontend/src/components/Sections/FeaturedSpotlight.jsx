@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CustomLoader from './cusloader';
+import CustomLoader from '../cusloader';
 import { FiInfo } from "react-icons/fi";
 
 function FeaturedSpotlight({ apiKey }) {

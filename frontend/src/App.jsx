@@ -7,13 +7,13 @@ import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import OTP from './components/auth/OTP';
 import ForgotPassword from './components/auth/ForgotPassword';
-import Watchlist from './components/Watchlist';
-import Likes from './components/Likes';
-import Profile from './components/Profile';
-import SearchPage from './components/SearchPage';
-import MovieDetail from './components/MovieDetail';
+import Watchlist from './components/UserData/Watchlist';
+import Likes from './components/UserData/Likes';
+import Profile from './components/UserData/Profile';
+import SearchPage from './components/SearchPage/SearchPage';
+import MovieDetail from './components/SearchPage/MovieDetail';
 import NotFound from './components/NotFound';
-import Preloader from './components/Preloader';
+import SplashScreen from './components/SplashScreen';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +25,7 @@ function App() {
   return (
     <AuthProvider>
       {isLoading ? (
-        <Preloader onLoadingComplete={handleLoadingComplete} />
+        <SplashScreen onLoadingComplete={handleLoadingComplete} />
       ) : (
         <Router>
           <Navbar />

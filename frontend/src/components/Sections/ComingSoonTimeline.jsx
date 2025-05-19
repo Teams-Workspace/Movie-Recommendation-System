@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'lucide-react';
-import CustomLoader from './cusloader';
+import CustomLoader from '../cusloader';
 
 function ComingSoonTimeline({ apiKey }) {
   const navigate = useNavigate();

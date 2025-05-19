@@ -1,12 +1,12 @@
-import MovieCarousel from "./moviecoursel";
-import HeroGrid from "./HeroGrid";
-import HorizontalScroll from "./HorizontalScroll";
-import FeaturedSpotlight from "./FeaturedSpotlight";
-import MasonryLayout from "./MasonryLayout";
-import TrendingCarousel from "./TrendingCarousel";
-import TopRatedSection from "./TopRatedSection";
-import ComingSoonTimeline from "./ComingSoonTimeline";
-import InteractivePosterGallery from "./InteractivePosterGallery";
+import MovieCarousel from "./Sections/moviecoursel";
+import HeroGrid from "./Sections/HeroGrid";
+import HorizontalScroll from "./Sections/HorizontalScroll";
+import FeaturedSpotlight from "./Sections/FeaturedSpotlight";
+import MasonryLayout from "./Sections/MasonryLayout";
+import TrendingCarousel from "./Sections/TrendingCarousel";
+import TopRatedSection from "./Sections/TopRatedSection";
+import ComingSoonTimeline from "./Sections/ComingSoonTimeline";
+import InteractivePosterGallery from "./Sections/InteractivePosterGallery";
 import SiteFooter from "./SiteFooter";
 
 function Home() {
@@ -24,7 +24,6 @@ function Home() {
 
   return (
     <main className="min-h-screen bg-black text-white overflow-hidden">
-    
       {/* First Section: Full-Screen Carousel */}
 
       <div className="relative h-screen w-full">
@@ -37,7 +36,9 @@ function Home() {
 
       <section className="py-8">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">Featured Movies</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">
+            Featured Movies
+          </h2>
           <HeroGrid apiKey={API_KEY} />
         </div>
       </section>
@@ -49,19 +50,18 @@ function Home() {
       <section className="py-8 bg-gradient-to-r from-gray-900 to-black">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">New Releases</h2>
-        <HorizontalScroll apiKey={API_KEY} />
+          <HorizontalScroll apiKey={API_KEY} />
         </div>
       </section>
 
       {/* Third Section is end */}
-
 
       {/* Fourth Section: Featured Spotlight */}
 
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">Spotlight</h2>
-        <FeaturedSpotlight apiKey={API_KEY} />
+          <FeaturedSpotlight apiKey={API_KEY} />
         </div>
       </section>
 
@@ -71,19 +71,20 @@ function Home() {
 
       <section className="py-8">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">Popular This Week</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">
+            Popular This Week
+          </h2>
           <MasonryLayout apiKey={API_KEY} />
         </div>
       </section>
 
       {/* Fifth Section End */}
 
-
       {/* Sixth Section start */}
       <section className="py-8 bg-gradient-to-r from-gray-900 to-black">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">Trending Now</h2>
-          <TrendingCarousel apiKey={API_KEY}/>
+          <TrendingCarousel apiKey={API_KEY} />
         </div>
       </section>
 
@@ -105,7 +106,7 @@ function Home() {
       <section className="py-8 bg-gradient-to-b from-gray-900 to-black">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">Coming Soon</h2>
-          <ComingSoonTimeline apiKey={API_KEY}  />
+          <ComingSoonTimeline apiKey={API_KEY} />
         </div>
       </section>
 
@@ -115,8 +116,10 @@ function Home() {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">Featured Collection</h2>
-          <InteractivePosterGallery apiKey={API_KEY}  />
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">
+            Featured Collection
+          </h2>
+          <InteractivePosterGallery apiKey={API_KEY} />
         </div>
       </section>
 
@@ -126,10 +129,6 @@ function Home() {
       <div className="relative w-full">
         <SiteFooter />
       </div>
-
-
-      
-
     </main>
   );
 }

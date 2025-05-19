@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CustomLoader from './cusloader';
+import CustomLoader from '../cusloader';
 
 function MovieCarousel({ apiKey }) {
   const navigate = useNavigate();

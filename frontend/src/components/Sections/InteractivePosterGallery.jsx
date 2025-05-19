@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Info } from 'lucide-react';
-import CustomLoader from './cusloader';
+import CustomLoader from '../cusloader';
 
 function InteractivePosterGallery({ apiKey }) {
   const navigate = useNavigate();
