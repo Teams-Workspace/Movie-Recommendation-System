@@ -1,23 +1,15 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { FaRegCalendarAlt, FaClock } from "react-icons/fa";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { TiStarFullOutline } from "react-icons/ti";
-import { FaClock } from "react-icons/fa";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { FaRegHeart } from "react-icons/fa6";
-import { IoBookmarkOutline } from "react-icons/io5";
+import { Heart, BookmarkCheck } from "lucide-react";
 import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 import SiteFooter from "../SiteFooter";
 
-// Register ScrollTrigger plugin
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 export default function MovieDetail() {
-  const { user } = useContext(AuthContext);
+  const { user, addToWatchlist, getWatchlist, addToLikes, getLikes, removeFromLikes } = useContext(AuthContext);
   const { id } = useParams();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -27,29 +19,20 @@ export default function MovieDetail() {
   const [cast, setCast] = useState([]);
   const [trailer, setTrailer] = useState(null);
   const [similarMovies, setSimilarMovies] = useState([]);
+  const [watchlist, setWatchlist] = useState([]);
+  const [likedMovies, setLikedMovies] = useState([]);
+  const [isLiking, setIsLiking] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
-
-  // Refs for GSAP animations
-  const containerRef = useRef(null);
-  const backdropRef = useRef(null);
-  const contentRef = useRef(null);
-  const posterRef = useRef(null);
-  const infoRef = useRef(null);
-  const descriptionRef = useRef(null);
-  const castRef = useRef(null);
-  const similarRef = useRef(null);
 
   const BASE_URL = "https://api.themoviedb.org/3";
   const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
-  // Fetch movie data
+  // Fetch movie data, watchlist, and liked movies
   useEffect(() => {
-    const fetchMovieData = async () => {
+    const fetchData = async () => {
       setIsLoading(true);
       setError(null);
 
@@ -86,6 +69,15 @@ export default function MovieDetail() {
           throw new Error(`Similar error! Status: ${similarResponse.status}`);
         const similarData = await similarResponse.json();
 
+        // Fetch watchlist
+        const watchlistIds = await getWatchlist();
+        setWatchlist(Array.isArray(watchlistIds) ? watchlistIds.map(id => String(id)) : []);
+
+        // Fetch liked movies
+        const likedIds = await getLikes();
+        console.log('MovieDetail likedIds:', likedIds);
+        setLikedMovies(Array.isArray(likedIds) ? likedIds.map(id => String(id)) : []);
+
         // Map movie data
         const movieFormatted = {
           id: movieData.id,
@@ -100,9 +92,7 @@ export default function MovieDetail() {
             ? movieData.release_date.split("-")[0]
             : "N/A",
           duration: movieData.runtime
-            ? `${Math.floor(movieData.runtime / 60)}h ${
-                movieData.runtime % 60
-              }m`
+            ? `${Math.floor(movieData.runtime / 60)}h ${movieData.runtime % 60}m`
             : "N/A",
           genre: movieData.genres.map((g) => g.name),
           description: movieData.overview || "No description available.",
@@ -114,7 +104,7 @@ export default function MovieDetail() {
             "Unknown Director",
         };
 
-        // Map cast data (limit to 4)
+        // Map cast data (limit to 6)
         const castFormatted = creditsData.cast.slice(0, 6).map((member) => ({
           name: member.name,
           role: member.character || "N/A",
@@ -170,83 +160,106 @@ export default function MovieDetail() {
       }
     };
 
-    fetchMovieData();
-  }, [id, API_KEY]);
+    fetchData();
+  }, [id, API_KEY, getWatchlist, getLikes]);
 
-  // GSAP animations
-  useEffect(() => {
-    if (isLoading || !movie) return;
+  const handleAddToWatchlist = async (movieId) => {
+    if (!user) {
+      toast.error("Please log in to add to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+      return;
+    }
+    try {
+      const result = await addToWatchlist(movieId);
+      setWatchlist((prev) => [...prev, String(movieId)]);
+      toast.success(result.message || "Movie added to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+    } catch (err) {
+      toast.error(err.message || "Failed to add to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+    }
+  };
 
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+  const handleToggleLike = async (movieId) => {
+    if (!user) {
+      toast.error("Please log in to like", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+      return;
+    }
 
-    tl.fromTo(
-      backdropRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 1.2 }
-    )
-      .fromTo(
-        posterRef.current,
-        { x: -100, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8 },
-        "-=0.8"
-      )
-      .fromTo(
-        infoRef.current,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8 },
-        "-=0.6"
-      )
-      .fromTo(
-        descriptionRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6 },
-        "-=0.4"
-      );
+    const isLiked = likedMovies.includes(String(movieId));
+    setIsLiking(true);
 
-    gsap.fromTo(
-      castRef.current,
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: castRef.current,
-          start: "top 80%",
-        },
+    try {
+      if (isLiked) {
+        // Unlike
+        const result = await removeFromLikes(String(movieId));
+        setLikedMovies((prev) => prev.filter((id) => id !== String(movieId)));
+        toast.success(result.message || "Movie removed from likes", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "dark",
+        });
+      } else {
+        // Like
+        const result = await addToLikes(String(movieId));
+        setLikedMovies((prev) => [...prev, String(movieId)]);
+        toast.success(result.message || "Added to likes", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "dark",
+        });
       }
-    );
-
-    gsap.fromTo(
-      similarRef.current?.querySelectorAll(".movie-card"),
-      { y: 30, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: similarRef.current,
-          start: "top 80%",
-        },
-      }
-    );
-
-    gsap.to(backdropRef.current, {
-      y: "30%",
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, [isLoading, movie]);
+    } catch (err) {
+      toast.error(err.message || `Failed to ${isLiked ? 'remove from' : 'add to'} likes`, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+    } finally {
+      setIsLiking(false);
+    }
+  };
 
   // Search results (filtered from similar movies)
   const searchResults = searchQuery
@@ -271,7 +284,7 @@ export default function MovieDetail() {
 
   if (error || !movie) {
     return (
-      <div className="container mx-auto px-4 py-16 mt-8 bg-black">
+      <div className="container mx-auto px-4 py-16 bg-black">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4 text-white-custom">
             {error || "Movie not found"}
@@ -291,59 +304,47 @@ export default function MovieDetail() {
 
   return (
     <>
-      <div ref={containerRef} className="relative bg-black text-white-custom">
-        {/* Backdrop */}
-        <div ref={backdropRef} className="fixed inset-0 z-0">
+      <div className="bg-black text-white-custom min-h-screen">
+        {/* Hero Section */}
+        <div className="relative bg-black">
           <img
             src={movie.backdropUrl}
-            alt=""
-            className="object-cover w-full h-full opacity-30"
+            alt={movie.title}
+            className="absolute inset-0 w-full h-full object-cover opacity-30"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black" />
-        </div>
-
-        {/* Main Content */}
-        <div ref={contentRef} className="relative  z-10 pt-8 pb-16">
-          <div className="container mx-auto px-4 mt-10">
-            {/* Movie Header */}
-            <div className="flex flex-col md:flex-row gap-8 mb-12">
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="container mx-auto px-4 py-12 relative z-10">
+            <div className="flex flex-col md:flex-row gap-8 items-center">
               {/* Poster */}
-              <div
-                ref={posterRef}
-                className="w-full md:w-1/3 lg:w-1/4 flex-shrink-0"
-              >
-                <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-2xl">
+              <div className="w-full md:w-1/3 lg:w-1/4 flex-shrink-0">
+                <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-lg">
                   <img
                     src={movie.posterUrl}
                     alt={movie.title}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
                 </div>
               </div>
 
               {/* Movie Info */}
-              <div ref={infoRef} className="flex-1">
-                <div className="flex flex-wrap gap-2 mb-3">
+              <div className="flex-1">
+                <h1 className="text-3xl md:text-4xl font-bold mb-4">{movie.title}</h1>
+                <div className="flex flex-wrap gap-2 mb-4">
                   {movie.genre.map((genre, index) => (
                     <span
                       key={index}
-                      className="bg-white/10 text-white-custom px-3 py-1 text-xs rounded-full"
+                      className="bg-red-main text-white-custom px-3 py-1 text-xs rounded-full"
                     >
                       {genre}
                     </span>
                   ))}
                 </div>
-
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                  {movie.title}
-                </h1>
-
-                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300 mb-6">
+                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-6">
                   <div className="flex items-center">
-                    <TiStarFullOutline className="w-5 h-5 text-yellow-500 fill-yellow-500 mr-1" />
-                    <span className="font-medium">{movie.rating}/10</span>
+                    <TiStarFullOutline className="w-5 h-5 text-yellow-400 fill-yellow-400 mr-1" />
+                    <span>{movie.rating}/10</span>
                   </div>
                   <div className="flex items-center">
                     <FaClock className="w-4 h-4 mr-1" />
@@ -353,213 +354,204 @@ export default function MovieDetail() {
                     <FaRegCalendarAlt className="w-4 h-4 mr-1" />
                     <span>{movie.year}</span>
                   </div>
+                  <div className="flex items-center">
+                    <span>Director: {movie.director}</span>
+                  </div>
                 </div>
-
-                <div ref={descriptionRef} className="mb-6">
-                  <p className="text-gray-300 leading-relaxed">
-                    {showFullDescription
-                      ? movie.description
-                      : `${movie.description.substring(0, 200)}${
-                          movie.description.length > 200 ? "..." : ""
-                        }`}
-                  </p>
-                  {movie.description.length > 200 && (
-                    <button
-                      className="text-red-main mt-2 hover:underline"
-                      onClick={() =>
-                        setShowFullDescription(!showFullDescription)
-                      }
-                    >
-                      {showFullDescription ? "Show Less" : "Read More"}
-                    </button>
-                  )}
-                </div>
-
+                <p className="text-gray-400 mb-6">
+                  {showFullDescription
+                    ? movie.description
+                    : `${movie.description.substring(0, 200)}${
+                        movie.description.length > 200 ? "..." : ""
+                      }`}
+                </p>
+                {movie.description.length > 200 && (
+                  <button
+                    className="text-red-main hover:underline mb-4"
+                    onClick={() => setShowFullDescription(!showFullDescription)}
+                  >
+                    {showFullDescription ? "Show Less" : "Read More"}
+                  </button>
+                )}
                 <div className="flex flex-wrap gap-3">
                   <button
-                    className={`border border-gray-700 hover:bg-gray-800 text-white-custom px-6 py-2 rounded-md ${
-                      isLiked ? "text-red-500" : ""
+                    className={`bg-red-main hover:bg-red-main/90 text-white-custom px-6 py-2 rounded-md flex items-center gap-2 ${
+                      likedMovies.includes(String(movie.id)) ? "bg-red-600 hover:bg-red-700" : ""
                     }`}
-                    onClick={() => setIsLiked(!isLiked)}
-                    disabled={!user}
+                    onClick={() => handleToggleLike(movie.id)}
+                    disabled={isLiking || !user}
                   >
-                    <FaRegHeart
-                      className={`w-5 h-5 mr-2 inline ${
-                        isLiked ? "fill-current" : ""
-                      }`}
-                    />
-                    {isLiked ? "Liked" : "Like"}
+                    {isLiking ? (
+                      <div className="w-5 h-5 border-2 border-white-custom border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
+                      <Heart
+                        className={`w-5 h-5 ${
+                          likedMovies.includes(String(movie.id)) ? "fill-red-500" : "fill-none"
+                        }`}
+                      />
+                    )}
+                    {likedMovies.includes(String(movie.id)) ? "Liked" : "Like"}
                   </button>
                   <button
-                    className={`border border-gray-700 hover:bg-gray-800 text-white-custom px-6 py-2 rounded-md ${
-                      isBookmarked ? "text-red-main" : ""
+                    className={`flex items-center gap-2 px-6 py-2 rounded-md text-white-custom ${
+                      watchlist.includes(String(movie.id))
+                        ? "bg-green-600 hover:bg-green-700"
+                        : "border-gray-700 hover:bg-gray-800 border"
                     }`}
-                    onClick={() => setIsBookmarked(!isBookmarked)}
-                    disabled={!user}
+                    onClick={() => handleAddToWatchlist(movie.id)}
+                    disabled={watchlist.includes(String(movie.id)) || !user}
                   >
-                    <IoBookmarkOutline className="w-5 h-5 mr-2 inline" />
-                    {isBookmarked ? "Saved" : "Watchlist"}
+                    {watchlist.includes(String(movie.id)) ? (
+                      <>
+                        <BookmarkCheck className="w-5 h-5" />
+                        Added
+                      </>
+                    ) : (
+                      <>
+                        <BookmarkCheck className="w-5 h-5" />
+                        Watchlist
+                      </>
+                    )}
                   </button>
                 </div>
-              </div>
-            </div>
-
-            {/* Trailer */}
-            <div className="mb-16">
-              <h2 className="text-2xl font-bold mb-6 text-white-custom">
-                Trailer
-              </h2>
-              <div className="relative aspect-video bg-gray-900 rounded-xl overflow-hidden group">
-                {trailer ? (
-                  <iframe
-                    src={`https://www.youtube.com/embed/${trailer.key}`}
-                    frameBorder="0"
-                    allow="accelerometer; autoFaRegCirclePlay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  ></iframe>
-                ) : (
-                  <>
-                    <img
-                      src={movie.backdropUrl}
-                      alt={`${movie.title} trailer`}
-                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-black/40"></div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <button className="rounded-full h-16 w-16  hover:bg-red-main/90 group-hover:scale-110 transition-transform duration-300">
-                        <FaRegCirclePlay className="h-8 w-8 fill-current ml-1" />
-                        <span className="sr-only">FaRegCirclePlay trailer</span>
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* Cast */}
-            <div ref={castRef} className="mb-16">
-              <h2 className="text-2xl font-bold mb-6 text-white-custom">
-                Cast
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                {cast.map((person, index) => (
-                  <div key={index} className="group cursor-pointer">
-                    <div className="relative aspect-square rounded-xl overflow-hidden mb-2">
-                      <img
-                        src={person.image}
-                        alt={person.name}
-                        className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    <h3 className="font-medium text-white-custom">
-                      {person.name}
-                    </h3>
-                    <p className="text-sm text-gray-400">{person.role}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Search Results (if coming from search) */}
-            {searchResults.length > 0 && (
-              <div className="mb-16">
-                <h2 className="text-2xl font-bold mb-6 text-white-custom">
-                  More Results for "{searchQuery}"
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {searchResults.map((movie) => (
-                    <Link
-                      to={`/movie/${movie.id}?q=${encodeURIComponent(
-                        searchQuery
-                      )}`}
-                      key={movie.id}
-                    >
-                      <div className="flex bg-white/5 rounded-xl overflow-hidden hover:bg-white/10 transition-colors">
-                        <div className="relative h-24 w-16 flex-shrink-0">
-                          <img
-                            src={movie.posterUrl}
-                            alt={movie.title}
-                            className="object-cover w-full h-full"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div className="p-3 flex-1">
-                          <h3 className="font-medium text-white-custom line-clamp-1">
-                            {movie.title}
-                          </h3>
-                          <div className="flex items-center text-xs text-gray-400 mt-1">
-                            <span>{movie.year}</span>
-                            <span className="mx-1">•</span>
-                            <span>{movie.duration}</span>
-                          </div>
-                          <div className="flex items-center mt-1">
-                            <TiStarFullOutline className="w-3 h-3 text-yellow-500 fill-yellow-500 mr-1" />
-                            <span className="text-xs">{movie.rating}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                  <button className="w-full border border-gray-700 hover:bg-gray-800 text-white-custom px-4 py-2 rounded-md">
-                    <Link to={`/search?q=${encodeURIComponent(searchQuery)}`}>
-                      View All Results
-                    </Link>
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Similar Movies */}
-            <div ref={similarRef}>
-              <h2 className="text-2xl font-bold mb-6 text-white-custom">
-                You May Also Like
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                {similarMovies.map((movie) => (
-                  <Link
-                    to={`/movie/${movie.id}`}
-                    key={movie.id}
-                    className="movie-card"
-                  >
-                    <div className="group">
-                      <div className="relative aspect-[2/3] rounded-lg overflow-hidden mb-2">
-                        <img
-                          src={movie.posterUrl}
-                          alt={movie.title}
-                          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <button className="bg-red-main hover:bg-red-main/90 text-white-custom px-4 py-1 rounded-md">
-                            <FaRegCirclePlay className="h-4 w-4 fill-current mr-1 inline" />{" "}
-                            Watch
-                          </button>
-                        </div>
-                      </div>
-                      <h3 className="font-medium text-sm text-white-custom line-clamp-1">
-                        {movie.title}
-                      </h3>
-                      <div className="flex items-center text-xs text-gray-400">
-                        <TiStarFullOutline className="w-3 h-3 text-yellow-500 fill-yellow-500 mr-1" />
-                        <span>{movie.rating}</span>
-                        <span className="mx-1">•</span>
-                        <span>{movie.year}</span>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
               </div>
             </div>
           </div>
         </div>
+
+        {/* Trailer */}
+        <div className="container mx-auto px-4 py-12">
+          <h2 className="text-2xl font-bold mb-6 text-white-custom">Trailer</h2>
+          <div className="relative aspect-video bg-gray-900 rounded-xl overflow-hidden">
+            {trailer ? (
+              <iframe
+                src={`https://www.youtube.com/embed/${trailer.key}`}
+                title={`${movie.title} trailer`}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              ></iframe>
+            ) : (
+              <div className="relative w-full h-full group">
+                <img
+                  src={movie.backdropUrl}
+                  alt={`${movie.title} trailer`}
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition-opacity"></div>
+                <button className="absolute inset-0 flex items-center justify-center">
+                  <FaRegCirclePlay className="h-12 w-12 text-white-custom group-hover:scale-110 transition-transform duration-300" />
+                  <span className="sr-only">Play trailer</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Cast */}
+        <div className="container mx-auto px-4 py-12">
+          <h2 className="text-2xl font-bold mb-6 text-white-custom">Cast</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {cast.map((person, index) => (
+              <div key={index} className="group">
+                <div className="relative aspect-square rounded-xl overflow-hidden mb-2">
+                  <img
+                    src={person.image}
+                    alt={person.name}
+                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
+                <h3 className="font-medium text-white-custom">{person.name}</h3>
+                <p className="text-sm text-gray-400">{person.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Search Results (if coming from search) */}
+        {searchResults.length > 0 && (
+          <div className="container mx-auto px-4 py-12">
+            <h2 className="text-2xl font-bold mb-6 text-white-custom">
+              More Results for "{searchQuery}"
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {searchResults.map((movie) => (
+                <Link
+                  to={`/movie/${movie.id}?q=${encodeURIComponent(searchQuery)}`}
+                  key={movie.id}
+                >
+                  <div className="bg-gray-900 rounded-xl overflow-hidden hover:bg-gray-800 transition-colors">
+                    <div className="relative aspect-[2/3]">
+                      <img
+                        src={movie.posterUrl}
+                        alt={movie.title}
+                        className="object-cover w-full h-full"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="p-3">
+                      <h3 className="font-medium text-white-custom line-clamp-1">{movie.title}</h3>
+                      <div className="flex items-center text-xs text-gray-400 mt-1">
+                        <span>{movie.year}</span>
+                        کمیسیون
+                        <span className="mx-1">•</span>
+                        <span>{movie.duration}</span>
+                      </div>
+                      <div className="flex items-center mt-1">
+                        <TiStarFullOutline className="w-3 h-3 text-yellow-400 fill-yellow-400 mr-1" />
+                        <span className="text-xs">{movie.rating}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+              <button className="w-full border border-gray-700 hover:bg-gray-800 text-white-custom px-4 py-2 rounded-md">
+                <Link to={`/search?q=${encodeURIComponent(searchQuery)}`}>
+                  View All Results
+                </Link>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Similar Movies */}
+        <div className="container mx-auto px-4 py-12">
+          <h2 className="text-2xl font-bold mb-6 text-white-custom">You May Also Like</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {similarMovies.map((movie) => (
+              <Link to={`/movie/${movie.id}`} key={movie.id}>
+                <div className="group rounded-lg overflow-hidden">
+                  <div className="relative aspect-[2/3]">
+                    <img
+                      src={movie.posterUrl}
+                      alt={movie.title}
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <button className="bg-red-main hover:bg-red-main/90 text-white-custom px-4 py-1 rounded-md flex items-center gap-2">
+                        <FaRegCirclePlay className="h-4 w-4" />
+                        Watch
+                      </button>
+                    </div>
+                  </div>
+                  <h3 className="font-medium text-sm text-white-custom mt-2 line-clamp-1">{movie.title}</h3>
+                  <div className="flex items-center text-xs text-gray-400">
+                    <TiStarFullOutline className="w-3 h-3 text-yellow-400 fill-yellow-400 mr-1" />
+                    <span>{movie.rating}</span>
+                    <span className="mx-1">•</span>
+                    <span>{movie.year}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
-      <div className="relative w-full">
-        <SiteFooter />
-      </div>
+      <SiteFooter />
     </>
   );
 }

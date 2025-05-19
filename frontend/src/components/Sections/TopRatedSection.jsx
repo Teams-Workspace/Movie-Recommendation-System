@@ -1,20 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star } from 'lucide-react';
+import { Star, BookmarkCheck } from 'lucide-react';
+import { AuthContext } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
 import CustomLoader from '../cusloader';
 
 function TopRatedSection({ apiKey }) {
   const navigate = useNavigate();
+  const { addToWatchlist, getWatchlist } = useContext(AuthContext);
   const [movies, setMovies] = useState([]);
+  const [watchlist, setWatchlist] = useState([]); // Track watchlist movie IDs
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch movies and watchlist
   useEffect(() => {
-    async function fetchMovies() {
+    async function fetchData() {
       try {
         setIsLoading(true);
         setError(null);
+
+        // Fetch top-rated movies
         const API_URL = `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=en-US&page=1`;
         const response = await fetch(API_URL);
         if (!response.ok) {
@@ -40,6 +47,9 @@ function TopRatedSection({ apiKey }) {
           })
         );
 
+        // Fetch watchlist
+        const watchlistIds = await getWatchlist();
+        setWatchlist(watchlistIds.map(id => String(id))); // Ensure IDs are strings
         setMovies(moviesWithDetails);
       } catch (err) {
         setError(err.message);
@@ -48,8 +58,24 @@ function TopRatedSection({ apiKey }) {
       }
     }
 
-    fetchMovies();
-  }, [apiKey]);
+    fetchData();
+  }, [apiKey, getWatchlist]);
+
+  const handleAddToWatchlist = async (movieId) => {
+    try {
+      const result = await addToWatchlist(movieId);
+      setWatchlist((prev) => [...prev, String(movieId)]); // Add movieId to watchlist
+      toast.success(result.message || "Movie added to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+    } catch (err) {
+      toast.error(err.message || "Failed to add to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+    }
+  };
 
   if (isLoading) return <CustomLoader />;
 
@@ -128,13 +154,30 @@ function TopRatedSection({ apiKey }) {
 
             <div className="mt-4 flex space-x-2">
               <button
-                className="cursor-pointer flex-1 bg-red-main hover:bg-red-main/90 text-white-custom px-3 py-1 rounded-md text-sm"
+                className="flex-1 bg-red-main hover:bg-red-main/90 text-white-custom px-3 py-1 rounded-md text-sm"
                 onClick={() => navigate(`/movie/${movie.id}`)}
               >
                 Explore More
               </button>
-              <button className="flex-1 border-gray-700 hover:bg-gray-800 text-white-custom px-3 py-1 rounded-md text-sm">
-                Add to List
+              <button
+                className={`flex-1 flex items-center justify-center gap-2 px-3 py-1 rounded-md text-sm text-white-custom ${
+                  watchlist.includes(String(movie.id))
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : 'border-gray-700 hover:bg-gray-800'
+                }`}
+                onClick={() => handleAddToWatchlist(movie.id)}
+                disabled={watchlist.includes(String(movie.id))}
+              >
+                {watchlist.includes(String(movie.id)) ? (
+                  <>
+                    <BookmarkCheck className="w-4 h-4" />
+                    Added
+                  </>
+                ) : (
+                  <>
+                    Add to Watchlist
+                  </>
+                )}
               </button>
             </div>
           </div>

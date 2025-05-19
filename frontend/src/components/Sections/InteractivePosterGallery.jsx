@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Info } from 'lucide-react';
-import CustomLoader from '../cusloader';
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { Info, BookmarkCheck } from "lucide-react";
+import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
+import CustomLoader from "../cusloader";
 
 function InteractivePosterGallery({ apiKey }) {
   const navigate = useNavigate();
+  const { addToWatchlist, getWatchlist } = useContext(AuthContext);
   const [movies, setMovies] = useState([]);
+  const [watchlist, setWatchlist] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +37,7 @@ function InteractivePosterGallery({ apiKey }) {
             if (!detailResponse.ok) {
               throw new Error(`Failed to fetch details for movie ${movie.id}`);
             }
-            const detailData = await detailResponse.json();
+            const detailData = await detailResponse.json(); // Fixed: Use detailResponse
             return {
               ...movie,
               runtime: detailData.runtime || 0,
@@ -42,6 +46,9 @@ function InteractivePosterGallery({ apiKey }) {
           })
         );
 
+        // Fetch watchlist
+        const watchlistIds = await getWatchlist();
+        setWatchlist(watchlistIds.map((id) => String(id)));
         setMovies(moviesWithDetails);
       } catch (err) {
         setError(err.message);
@@ -51,7 +58,7 @@ function InteractivePosterGallery({ apiKey }) {
     }
 
     fetchPopularMovies();
-  }, [apiKey]);
+  }, [apiKey, getWatchlist]);
 
   // Auto-rotate when not hovering
   useEffect(() => {
@@ -64,12 +71,30 @@ function InteractivePosterGallery({ apiKey }) {
     return () => clearInterval(interval);
   }, [isHovering, movies.length]);
 
+  const handleAddToWatchlist = async (movieId) => {
+    try {
+      const result = await addToWatchlist(movieId);
+      setWatchlist((prev) => [...prev, String(movieId)]); // Add movieId to watchlist
+      toast.success(result.message || "Movie added to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+    } catch (err) {
+      toast.error(err.message || "Failed to add to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+    }
+  };
+
   if (isLoading) return <CustomLoader />;
 
   if (error) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <p className="text-red-500 text-center">Error fetching movies: {error}</p>
+        <p className="text-red-500 text-center">
+          Error fetching movies: {error}
+        </p>
       </div>
     );
   }
@@ -79,25 +104,26 @@ function InteractivePosterGallery({ apiKey }) {
   const activeMovie = movies[activeIndex];
 
   // Map genres
-  const genres = activeMovie.genre_ids
-    .map((id) => {
-      const genreMap = {
-        28: 'Action',
-        35: 'Comedy',
-        18: 'Drama',
-        878: 'Sci-Fi',
-        10749: 'Romance',
-        53: 'Thriller',
-      };
-      return genreMap[id] || 'Other';
-    })
-    .slice(0, 2)
-    .join(', ') || 'N/A';
+  const genres =
+    activeMovie.genre_ids
+      .map((id) => {
+        const genreMap = {
+          28: "Action",
+          35: "Comedy",
+          18: "Drama",
+          878: "Sci-Fi",
+          10749: "Romance",
+          53: "Thriller",
+        };
+        return genreMap[id] || "Other";
+      })
+      .slice(0, 2)
+      .join(", ") || "N/A";
 
   // Format duration
   const duration = activeMovie.runtime
     ? `${Math.floor(activeMovie.runtime / 60)}h ${activeMovie.runtime % 60}m`
-    : 'N/A';
+    : "N/A";
 
   return (
     <div
@@ -110,7 +136,7 @@ function InteractivePosterGallery({ apiKey }) {
         <div
           key={`bg-${movie.id}`}
           className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === activeIndex ? 'opacity-100' : 'opacity-0'
+            index === activeIndex ? "opacity-100" : "opacity-0"
           }`}
         >
           <img
@@ -132,7 +158,9 @@ function InteractivePosterGallery({ apiKey }) {
               <div
                 key={`content-${movie.id}`}
                 className={`transition-all duration-700 ${
-                  index === activeIndex ? 'opacity-100 translate-y-0' : 'absolute opacity-0 translate-y-8'
+                  index === activeIndex
+                    ? "opacity-100 translate-y-0"
+                    : "absolute opacity-0 translate-y-8"
                 }`}
               >
                 <div className="space-y-4">
@@ -141,25 +169,44 @@ function InteractivePosterGallery({ apiKey }) {
                       FEATURED
                     </span>
                     <span className="text-sm text-gray-400">
-                      {new Date(movie.release_date).getFullYear() || 'N/A'}
+                      {new Date(movie.release_date).getFullYear() || "N/A"}
                     </span>
                     <span className="text-sm text-gray-400">{duration}</span>
                   </div>
 
-                  <h1 className="text-3xl md:text-4xl font-bold text-white-custom">{movie.title}</h1>
+                  <h1 className="text-3xl md:text-4xl font-bold text-white-custom">
+                    {movie.title}
+                  </h1>
 
                   <div className="flex items-center space-x-3 text-sm">
-                    <span className="text-yellow-400 font-medium">{movie.vote_average.toFixed(1)}/10</span>
+                    <span className="text-yellow-400 font-medium">
+                      {movie.vote_average.toFixed(1)}/10
+                    </span>
                     <span className="text-gray-400">{genres}</span>
                   </div>
 
-                  <p className="text-gray-300 text-lg max-w-xl line-clamp-4">{movie.overview}</p>
+                  <p className="text-gray-300 text-lg max-w-xl line-clamp-4">
+                    {movie.overview}
+                  </p>
 
                   <div className="flex flex-wrap gap-3 pt-2">
                     <button
-                      className="bg-red-main hover:bg-red-main/90 text-white-custom px-4 py-2 rounded-md flex items-center gap-2"
+                      className={`flex items-center gap-2 px-4 py-2 rounded-md text-white-custom ${
+                        watchlist.includes(String(movie.id))
+                          ? "bg-green-600 hover:bg-green-700"
+                          : "bg-red-main hover:bg-red-main/90"
+                      }`}
+                      onClick={() => handleAddToWatchlist(movie.id)}
+                      disabled={watchlist.includes(String(movie.id))}
                     >
-                      Add to Watchlist
+                      {watchlist.includes(String(movie.id)) ? (
+                        <>
+                          <BookmarkCheck className="w-5 h-5" />
+                          Added
+                        </>
+                      ) : (
+                        <>Add to Watchlist</>
+                      )}
                     </button>
                     <button
                       className="border-gray-700 hover:bg-gray-800 text-white-custom px-4 py-2 rounded-md flex items-center gap-2"
@@ -179,33 +226,38 @@ function InteractivePosterGallery({ apiKey }) {
             <div className="relative h-[400px] w-[300px]">
               {movies.map((movie, index) => {
                 // Calculate position based on index relative to active index
-                const position = (index - activeIndex + movies.length) % movies.length;
+                const position =
+                  (index - activeIndex + movies.length) % movies.length;
                 let style = {};
 
                 if (position === 0) {
                   // Active poster
                   style = {
                     zIndex: 30,
-                    transform: 'translateX(0) scale(1) rotateY(0deg)',
-                    filter: 'brightness(100%)',
-                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.9)',
+                    transform: "translateX(0) scale(1) rotateY(0deg)",
+                    filter: "brightness(100%)",
+                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.9)",
                   };
                 } else if (position === 1 || position === movies.length - 1) {
                   // Side posters
                   const direction = position === 1 ? 1 : -1;
                   style = {
                     zIndex: 20,
-                    transform: `translateX(${direction * 50}%) scale(0.8) rotateY(${direction * 15}deg)`,
-                    filter: 'brightness(70%)',
-                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
+                    transform: `translateX(${
+                      direction * 50
+                    }%) scale(0.8) rotateY(${direction * 15}deg)`,
+                    filter: "brightness(70%)",
+                    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5)",
                   };
                 } else {
                   // Hidden posters
                   const direction = position <= movies.length / 2 ? 1 : -1;
                   style = {
                     zIndex: 10,
-                    transform: `translateX(${direction * 100}%) scale(0.6) rotateY(${direction * 30}deg)`,
-                    filter: 'brightness(40%)',
+                    transform: `translateX(${
+                      direction * 100
+                    }%) scale(0.6) rotateY(${direction * 30}deg)`,
+                    filter: "brightness(40%)",
                     opacity: 0,
                   };
                 }
@@ -239,7 +291,7 @@ function InteractivePosterGallery({ apiKey }) {
           <button
             key={index}
             className={`w-2 h-2 rounded-full transition-all ${
-              index === activeIndex ? 'bg-red-main w-6' : 'bg-gray-600'
+              index === activeIndex ? "bg-red-main w-6" : "bg-gray-600"
             }`}
             onClick={() => setActiveIndex(index)}
           >
