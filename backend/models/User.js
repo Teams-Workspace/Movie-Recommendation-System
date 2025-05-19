@@ -8,8 +8,7 @@ const userSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   otp: { type: String },
   otpExpires: { type: Date },
-  watchlist: [{ type: String }], // Store TMDB movie IDs
-  likes: [{ type: String }], // Store TMDB movie IDs
+
 });
 
 // Hash password before saving

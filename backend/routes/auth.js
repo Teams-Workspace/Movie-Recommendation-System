@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
+const Watchlist = require('../models/Watchlist');
+const Likes = require('../models/Likes');
 const router = express.Router();
 
 // Generate OTP
@@ -223,18 +225,27 @@ router.post('/reset-password', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 // Add to Watchlist
 router.post('/watchlist', authenticate, async (req, res) => {
   const { movieId } = req.body;
+  if (!movieId) return res.status(400).json({ message: 'Movie ID required' });
+
   try {
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
-    if (!user.watchlist.includes(movieId)) {
-      user.watchlist.push(movieId);
-      await user.save();
+
+    const watchlist = await Watchlist.findOne({ user: req.userId });
+    if (watchlist && watchlist.movieIds.includes(movieId)) {
+      return res.status(200).json({ message: 'Already in watchlist' });
     }
-    res.status(200).json({ message: 'Added to watchlist' });
+
+    const updatedWatchlist = await Watchlist.findOneAndUpdate(
+      { user: req.userId },
+      { $addToSet: { movieIds: movieId } },
+      { upsert: true, new: true }
+    );
+
+    res.status(200).json({ message: 'Movie added to watchlist' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -243,26 +254,64 @@ router.post('/watchlist', authenticate, async (req, res) => {
 // Get Watchlist
 router.get('/watchlist', authenticate, async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    res.status(200).json({ watchlist: user.watchlist });
+    const watchlist = await Watchlist.findOne({ user: req.userId }).select('movieIds');
+    res.status(200).json(watchlist ? watchlist.movieIds : []);
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Add to Likes
-router.post('/likes', authenticate, async (req, res) => {
+// Remove from Watchlist
+router.delete('/watchlist', authenticate, async (req, res) => {
   const { movieId } = req.body;
+  if (!movieId) return res.status(400).json({ message: 'Movie ID required' });
+
   try {
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
-    if (!user.likes.includes(movieId)) {
-      user.likes.push(movieId);
-      await user.save();
+
+    const watchlist = await Watchlist.findOne({ user: req.userId });
+    if (!watchlist || !watchlist.movieIds.includes(movieId)) {
+      return res.status(400).json({ message: 'Movie not in watchlist' });
     }
+
+    await Watchlist.findOneAndUpdate(
+      { user: req.userId },
+      { $pull: { movieIds: movieId } },
+      { new: true }
+    );
+
+    res.status(200).json({ message: 'Movie removed from watchlist' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+// Add to Likes
+router.post('/likes', authenticate, async (req, res) => {
+  const { movieId } = req.body;
+  if (!movieId) return res.status(400).json({ message: 'Movie ID required' });
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // Check if movieId already exists in user's likes
+    const likelist = await Likes.findOne({ user: req.userId });
+    if (likelist && likelist.movieIds.includes(movieId)) {
+      return res.status(200).json({ message: 'Already liked' });
+    }
+
+    const updatedlike = await Likes.findOneAndUpdate(
+      { user: req.userId },
+      { $addToSet: { movieIds: movieId } },
+      { upsert: true, new: true }
+    );
+
     res.status(200).json({ message: 'Added to likes' });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -270,10 +319,37 @@ router.post('/likes', authenticate, async (req, res) => {
 // Get Likes
 router.get('/likes', authenticate, async (req, res) => {
   try {
+    const likes = await Likes.findOne({ user: req.userId }).select('movieIds');
+    res.status(200).json({ likes: likes ? likes.movieIds : [] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete from Likes
+router.delete('/likes', authenticate, async (req, res) => {
+  const { movieId } = req.body;
+  if (!movieId) return res.status(400).json({ message: 'Movie ID required' });
+
+  try {
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
-    res.status(200).json({ likes: user.likes });
+
+    const likelist = await Likes.findOne({ user: req.userId });
+    if (!likelist || !likelist.movieIds.includes(movieId)) {
+      return res.status(400).json({ message: 'Movie not in likes' });
+    }
+
+    await Likes.findOneAndUpdate(
+      { user: req.userId },
+      { $pull: { movieIds: movieId } },
+      { new: true }
+    );
+
+    res.status(200).json({ message: 'Movie removed from likes' });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 });
