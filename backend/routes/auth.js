@@ -55,11 +55,10 @@ const generateEmailTemplate = (value, type) => {
     <!-- Header -->
     <tr>
     <td style="padding: 20px 0; text-align: center; background-color: #E50914;">
-    <img
-          src="http://localhost:5000/public/Logo.png"
-          alt="Movie Recommendation System Logo"
+    <h2>
+          MRS
           style="max-width: 200px; height: auto; display: block; margin: 0 auto;"
-            >
+            <h2/>
           </td>
         </tr>
         <!-- Body -->
