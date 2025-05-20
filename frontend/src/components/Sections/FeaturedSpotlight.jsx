@@ -62,7 +62,7 @@ function FeaturedSpotlight({ apiKey }) {
         theme: "dark",
       });
     } catch (err) {
-      toast.error(err.message || "Failed to add to watchlist", {
+      toast.error("Please log in to add to watchlist", {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -107,7 +107,7 @@ function FeaturedSpotlight({ apiKey }) {
         });
       }
     } catch (err) {
-      toast.error(err.message || `Failed to ${isLiked ? 'remove from' : 'add to'} likes`, {
+      toast.error( `Failed to ${isLiked ? 'remove from' : 'add to'} likes`, {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,

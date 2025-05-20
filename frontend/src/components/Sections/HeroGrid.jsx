@@ -3,53 +3,77 @@ import { useNavigate } from 'react-router-dom';
 import { Star, BookmarkCheck, Heart } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS
 import CustomLoader from '../cusloader';
 
 function HeroGrid({ apiKey }) {
   const navigate = useNavigate();
-  const { addToWatchlist, getWatchlist, addToLikes, getLikes, removeFromLikes } = useContext(AuthContext);
+  const { user, addToWatchlist, getWatchlist, addToLikes, getLikes, removeFromLikes } = useContext(AuthContext);
   const [movies, setMovies] = useState([]);
-  const [watchlist, setWatchlist] = useState([]); // Track watchlist movie IDs
-  const [likedMovies, setLikedMovies] = useState([]); // Track liked movie IDs
-  const [isLiking, setIsLiking] = useState({}); // Track liking status per movie
+  const [watchlist, setWatchlist] = useState([]);
+  const [likedMovies, setLikedMovies] = useState([]);
+  const [isLiking, setIsLiking] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
+  
+
   // Fetch movies, watchlist, and liked movies
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-        setError(null);
+useEffect(() => {
+  async function fetchData() {
+    try {
+      setLoading(true);
+      setError(null);
 
-        // Fetch popular movies
-        const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=2`;
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setMovies(data.results || []);
-
-        // Fetch watchlist
-        const watchlistIds = await getWatchlist();
-        setWatchlist(watchlistIds.map(id => String(id)));
-
-        // Fetch liked movies
-        const likedIds = await getLikes();
-        setLikedMovies(likedIds.map(id => String(id)));
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      // Fetch popular movies
+      const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=2`;
+      const response = await fetch(API_URL);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    }
+      const data = await response.json();
+      setMovies(data.results || []);
 
-    fetchData();
-  }, [apiKey, getWatchlist, getLikes]);
+      // Fetch watchlist and liked movies only for authenticated users
+      let watchlistIds = [];
+      let likedIds = [];
+      if (user) {
+        try {
+          watchlistIds = await getWatchlist(); // This is likely causing the 401 error
+          likedIds = await getLikes();
+          console.log('HeroGrid likedIds:', likedIds);
+        } catch (authErr) {
+          console.error('Auth fetch error:', authErr.message); // Logs "Invalid token"
+        }
+      }
+      setWatchlist(Array.isArray(watchlistIds) ? watchlistIds.map(id => String(id)) : []);
+      setLikedMovies(Array.isArray(likedIds) ? likedIds.map(id => String(id)) : []);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  fetchData();
+}, [apiKey, user, getWatchlist, getLikes]);
 
   const handleAddToWatchlist = async (movieId) => {
+    console.log('handleAddToWatchlist called, user:', user);
+    if (!user) {
+      console.log('Showing toast for unauthorized watchlist attempt');
+      toast.error("Please log in to add to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+      return;
+    }
     try {
       const result = await addToWatchlist(movieId);
       setWatchlist((prev) => [...prev, String(movieId)]);
@@ -76,12 +100,25 @@ function HeroGrid({ apiKey }) {
   };
 
   const handleToggleLike = async (movieId) => {
+    console.log('handleToggleLike called, user:', user);
+    if (!user) {
+      console.log('Showing toast for unauthorized like attempt');
+      toast.error("Please log in to like", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+      return;
+    }
     const isLiked = likedMovies.includes(String(movieId));
     setIsLiking((prev) => ({ ...prev, [movieId]: true }));
 
     try {
       if (isLiked) {
-        // Unlike
         const result = await removeFromLikes(String(movieId));
         setLikedMovies((prev) => prev.filter((id) => id !== String(movieId)));
         toast.success(result.message || "Movie removed from likes", {
@@ -94,7 +131,6 @@ function HeroGrid({ apiKey }) {
           theme: "dark",
         });
       } else {
-        // Like
         const result = await addToLikes(String(movieId));
         setLikedMovies((prev) => [...prev, String(movieId)]);
         toast.success(result.message || "Added to likes", {
@@ -141,7 +177,6 @@ function HeroGrid({ apiKey }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[600px]">
-      {/* Main Feature - Takes up 2 columns */}
       <div
         className="relative md:col-span-2 rounded-xl overflow-hidden h-[300px] md:h-full"
         onClick={() => setSelectedMovie(null)}
@@ -173,10 +208,7 @@ function HeroGrid({ apiKey }) {
                   ? 'bg-red-600 hover:bg-red-700'
                   : 'bg-red-main hover:bg-red-main/90'
               }`}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleToggleLike(mainFeature.id);
-              }}
+              onClick={() => handleToggleLike(mainFeature.id)}
               disabled={isLiking[mainFeature.id]}
             >
               {isLiking[mainFeature.id] ? (
@@ -192,10 +224,7 @@ function HeroGrid({ apiKey }) {
             </button>
             <button
               className="cursor-pointer border-gray-700 hover:bg-gray-800 text-white-custom px-4 py-2 rounded-md border flex items-center gap-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/movie/${mainFeature.id}`);
-              }}
+              onClick={() => navigate(`/movie/${mainFeature.id}`)}
             >
               More Info
             </button>
@@ -205,10 +234,7 @@ function HeroGrid({ apiKey }) {
                   ? 'bg-green-600 hover:bg-green-700'
                   : 'border-gray-700 hover:bg-gray-800 border'
               }`}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAddToWatchlist(mainFeature.id);
-              }}
+              onClick={() => handleAddToWatchlist(mainFeature.id)}
               disabled={watchlist.includes(String(mainFeature.id))}
             >
               {watchlist.includes(String(mainFeature.id)) ? (
@@ -218,6 +244,7 @@ function HeroGrid({ apiKey }) {
                 </>
               ) : (
                 <>
+                  <BookmarkCheck className="w-4 h-4" />
                   Watchlist
                 </>
               )}
@@ -226,7 +253,6 @@ function HeroGrid({ apiKey }) {
         </div>
       </div>
 
-      {/* Grid of 4 movies - Takes up 1 column */}
       <div className="grid grid-cols-2 md:grid-cols-1 gap-4 h-[300px] md:h-full">
         {gridMovies.map((movie) => (
           <div

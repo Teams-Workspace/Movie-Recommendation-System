@@ -39,6 +39,8 @@ function App() {
         draggable
         pauseOnHover
         theme="dark"
+        style={{ zIndex: 9999 }} // Ensure the toast is above other elements
+        limit={3} // Limit the number of toasts
       />
     </div>
     <AuthProvider>

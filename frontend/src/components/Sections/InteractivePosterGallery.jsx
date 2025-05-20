@@ -7,7 +7,7 @@ import CustomLoader from "../cusloader";
 
 function InteractivePosterGallery({ apiKey }) {
   const navigate = useNavigate();
-  const { addToWatchlist, getWatchlist } = useContext(AuthContext);
+  const { user, addToWatchlist, getWatchlist } = useContext(AuthContext);
   const [movies, setMovies] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -37,18 +37,27 @@ function InteractivePosterGallery({ apiKey }) {
             if (!detailResponse.ok) {
               throw new Error(`Failed to fetch details for movie ${movie.id}`);
             }
-            const detailData = await detailResponse.json(); // Fixed: Use detailResponse
+            const detailData = await detailResponse.json();
             return {
               ...movie,
               runtime: detailData.runtime || 0,
-              genre_ids: detailData.genres.map((g) => g.id), // TMDB /movie/:id uses genres
+              genre_ids: detailData.genres.map((g) => g.id),
             };
           })
         );
 
-        // Fetch watchlist
-        const watchlistIds = await getWatchlist();
-        setWatchlist(watchlistIds.map((id) => String(id)));
+        // Fetch watchlist only for authenticated users
+        let watchlistIds = [];
+        if (user) {
+          try {
+            watchlistIds = await getWatchlist();
+            console.log('InteractivePosterGallery watchlistIds:', watchlistIds);
+          } catch (authErr) {
+            console.error('Auth fetch error:', authErr.message);
+            // Continue with empty array to avoid blocking movie data
+          }
+        }
+        setWatchlist(Array.isArray(watchlistIds) ? watchlistIds.map((id) => String(id)) : []);
         setMovies(moviesWithDetails);
       } catch (err) {
         setError(err.message);
@@ -58,7 +67,7 @@ function InteractivePosterGallery({ apiKey }) {
     }
 
     fetchPopularMovies();
-  }, [apiKey, getWatchlist]);
+  }, [apiKey, user, getWatchlist]);
 
   // Auto-rotate when not hovering
   useEffect(() => {
@@ -72,17 +81,40 @@ function InteractivePosterGallery({ apiKey }) {
   }, [isHovering, movies.length]);
 
   const handleAddToWatchlist = async (movieId) => {
+    if (!user) {
+      toast.error("Please log in to add to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+      return;
+    }
+
     try {
       const result = await addToWatchlist(movieId);
-      setWatchlist((prev) => [...prev, String(movieId)]); // Add movieId to watchlist
+      setWatchlist((prev) => [...prev, String(movieId)]);
       toast.success(result.message || "Movie added to watchlist", {
         position: "bottom-right",
         autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
       });
     } catch (err) {
       toast.error(err.message || "Failed to add to watchlist", {
         position: "bottom-right",
         autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
       });
     }
   };
@@ -205,11 +237,14 @@ function InteractivePosterGallery({ apiKey }) {
                           Added
                         </>
                       ) : (
-                        <>Add to Watchlist</>
+                        <>
+                          <BookmarkCheck className="w-5 h-5" />
+                          Add to Watchlist
+                        </>
                       )}
                     </button>
                     <button
-                      className="border-gray-700 hover:bg-gray-800 text-white-custom px-4 py-2 rounded-md flex items-center gap-2"
+                      className="border-gray-700 hover:bg-gray-800 text-white-custom px-4 py-2 rounded-md flex items-center gap-2 border"
                       onClick={() => navigate(`/movie/${movie.id}`)}
                     >
                       <Info className="w-5 h-5" />

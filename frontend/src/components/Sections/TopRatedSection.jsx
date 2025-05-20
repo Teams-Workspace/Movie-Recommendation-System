@@ -3,19 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { Star, BookmarkCheck } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS
 import CustomLoader from '../cusloader';
 
 function TopRatedSection({ apiKey }) {
   const navigate = useNavigate();
-  const { addToWatchlist, getWatchlist } = useContext(AuthContext);
+  const { user, addToWatchlist, getWatchlist } = useContext(AuthContext);
   const [movies, setMovies] = useState([]);
-  const [watchlist, setWatchlist] = useState([]); // Track watchlist movie IDs
+  const [watchlist, setWatchlist] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch movies and watchlist
   useEffect(() => {
+
     async function fetchData() {
       try {
         setIsLoading(true);
@@ -47,9 +49,17 @@ function TopRatedSection({ apiKey }) {
           })
         );
 
-        // Fetch watchlist
-        const watchlistIds = await getWatchlist();
-        setWatchlist(watchlistIds.map(id => String(id))); // Ensure IDs are strings
+        // Fetch watchlist only for authenticated users
+        let watchlistIds = [];
+        if (user) {
+          try {
+            watchlistIds = await getWatchlist();
+            console.log('TopRatedSection watchlistIds:', watchlistIds);
+          } catch (authErr) {
+            console.error('Auth fetch error:', authErr.message);
+          }
+        }
+        setWatchlist(Array.isArray(watchlistIds) ? watchlistIds.map(id => String(id)) : []);
         setMovies(moviesWithDetails);
       } catch (err) {
         setError(err.message);
@@ -59,20 +69,45 @@ function TopRatedSection({ apiKey }) {
     }
 
     fetchData();
-  }, [apiKey, getWatchlist]);
+  }, [apiKey, user, getWatchlist]);
 
   const handleAddToWatchlist = async (movieId) => {
+    console.log('handleAddToWatchlist called, user:', user);
+    if (!user) {
+      // console.log('Showing toast for unauthorized watchlist attempt');
+      toast.error("Please log in to add to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+      return;
+    }
+
     try {
       const result = await addToWatchlist(movieId);
-      setWatchlist((prev) => [...prev, String(movieId)]); // Add movieId to watchlist
+      setWatchlist((prev) => [...prev, String(movieId)]);
       toast.success(result.message || "Movie added to watchlist", {
         position: "bottom-right",
         autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
       });
     } catch (err) {
       toast.error(err.message || "Failed to add to watchlist", {
         position: "bottom-right",
         autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
       });
     }
   };
@@ -163,7 +198,7 @@ function TopRatedSection({ apiKey }) {
                 className={`flex-1 flex items-center justify-center gap-2 px-3 py-1 rounded-md text-sm text-white-custom ${
                   watchlist.includes(String(movie.id))
                     ? 'bg-green-600 hover:bg-green-700'
-                    : 'border-gray-700 hover:bg-gray-800'
+                    : 'border-gray-700 hover:bg-gray-800 border'
                 }`}
                 onClick={() => handleAddToWatchlist(movie.id)}
                 disabled={watchlist.includes(String(movie.id))}
@@ -175,6 +210,7 @@ function TopRatedSection({ apiKey }) {
                   </>
                 ) : (
                   <>
+                    <BookmarkCheck className="w-4 h-4" />
                     Add to Watchlist
                   </>
                 )}

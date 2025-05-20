@@ -6,6 +6,7 @@ import { TiStarFullOutline } from "react-icons/ti";
 import { Heart, BookmarkCheck } from "lucide-react";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import SiteFooter from "../SiteFooter";
 
 export default function MovieDetail() {
@@ -69,13 +70,20 @@ export default function MovieDetail() {
           throw new Error(`Similar error! Status: ${similarResponse.status}`);
         const similarData = await similarResponse.json();
 
-        // Fetch watchlist
-        const watchlistIds = await getWatchlist();
+        // Fetch watchlist and liked movies only for authenticated users
+        let watchlistIds = [];
+        let likedIds = [];
+        if (user) {
+          try {
+            watchlistIds = await getWatchlist();
+            likedIds = await getLikes();
+            console.log('MovieDetail likedIds:', likedIds);
+          } catch (authErr) {
+            console.error('Auth fetch error:', authErr.message);
+            // Continue with empty arrays to avoid blocking movie data
+          }
+        }
         setWatchlist(Array.isArray(watchlistIds) ? watchlistIds.map(id => String(id)) : []);
-
-        // Fetch liked movies
-        const likedIds = await getLikes();
-        console.log('MovieDetail likedIds:', likedIds);
         setLikedMovies(Array.isArray(likedIds) ? likedIds.map(id => String(id)) : []);
 
         // Map movie data
@@ -161,7 +169,7 @@ export default function MovieDetail() {
     };
 
     fetchData();
-  }, [id, API_KEY, getWatchlist, getLikes]);
+  }, [id, API_KEY, user, getWatchlist, getLikes]);
 
   const handleAddToWatchlist = async (movieId) => {
     if (!user) {
@@ -286,7 +294,7 @@ export default function MovieDetail() {
     return (
       <div className="container mx-auto px-4 py-16 bg-black">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4 text-white-custom">
+          <h1 classнame="text-3xl font-bold mb-4 text-white-custom">
             {error || "Movie not found"}
           </h1>
           <p className="text-gray-400 mb-8">
@@ -379,7 +387,7 @@ export default function MovieDetail() {
                       likedMovies.includes(String(movie.id)) ? "bg-red-600 hover:bg-red-700" : ""
                     }`}
                     onClick={() => handleToggleLike(movie.id)}
-                    disabled={isLiking || !user}
+                    disabled={isLiking}
                   >
                     {isLiking ? (
                       <div className="w-5 h-5 border-2 border-white-custom border-t-transparent rounded-full animate-spin"></div>
@@ -399,7 +407,7 @@ export default function MovieDetail() {
                         : "border-gray-700 hover:bg-gray-800 border"
                     }`}
                     onClick={() => handleAddToWatchlist(movie.id)}
-                    disabled={watchlist.includes(String(movie.id)) || !user}
+                    disabled={watchlist.includes(String(movie.id))}
                   >
                     {watchlist.includes(String(movie.id)) ? (
                       <>
@@ -496,7 +504,6 @@ export default function MovieDetail() {
                       <h3 className="font-medium text-white-custom line-clamp-1">{movie.title}</h3>
                       <div className="flex items-center text-xs text-gray-400 mt-1">
                         <span>{movie.year}</span>
-                        کمیسیون
                         <span className="mx-1">•</span>
                         <span>{movie.duration}</span>
                       </div>

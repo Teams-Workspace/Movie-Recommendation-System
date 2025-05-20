@@ -3,19 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, BookmarkCheck } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS
 import CustomLoader from '../cusloader';
 
 function ComingSoonTimeline({ apiKey }) {
   const navigate = useNavigate();
-  const { addToWatchlist, getWatchlist } = useContext(AuthContext);
+  const { user, addToWatchlist, getWatchlist } = useContext(AuthContext);
   const [movies, setMovies] = useState([]);
-  const [watchlist, setWatchlist] = useState([]); // Track watchlist movie IDs
+  const [watchlist, setWatchlist] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch movies and watchlist
   useEffect(() => {
+  
+
     async function fetchData() {
       try {
         setIsLoading(true);
@@ -46,14 +49,22 @@ function ComingSoonTimeline({ apiKey }) {
             return {
               ...movie,
               runtime: detailData.runtime || 0,
-              genre_ids: detailData.genres.map((g) => g.id), // TMDB /movie/:id uses genres
+              genre_ids: detailData.genres.map((g) => g.id),
             };
           })
         );
 
-        // Fetch watchlist
-        const watchlistIds = await getWatchlist();
-        setWatchlist(watchlistIds.map(id => String(id))); // Ensure IDs are strings
+        // Fetch watchlist only for authenticated users
+        let watchlistIds = [];
+        if (user) {
+          try {
+            watchlistIds = await getWatchlist();
+            console.log('ComingSoonTimeline watchlistIds:', watchlistIds);
+          } catch (authErr) {
+            console.error('Auth fetch error:', authErr.message);
+          }
+        }
+        setWatchlist(Array.isArray(watchlistIds) ? watchlistIds.map(id => String(id)) : []);
         setMovies(moviesWithDetails);
       } catch (err) {
         setError(err.message);
@@ -63,20 +74,45 @@ function ComingSoonTimeline({ apiKey }) {
     }
 
     fetchData();
-  }, [apiKey, getWatchlist]);
+  }, [apiKey, user, getWatchlist]);
 
   const handleAddToWatchlist = async (movieId) => {
+    console.log('handleAddToWatchlist called, user:', user);
+    if (!user) {
+      console.log('Showing toast for unauthorized watchlist attempt');
+      toast.error("Please log in to add to watchlist", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+      return;
+    }
+
     try {
       const result = await addToWatchlist(movieId);
-      setWatchlist((prev) => [...prev, String(movieId)]); // Add movieId to watchlist
+      setWatchlist((prev) => [...prev, String(movieId)]);
       toast.success(result.message || "Movie added to watchlist", {
         position: "bottom-right",
         autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
       });
     } catch (err) {
       toast.error(err.message || "Failed to add to watchlist", {
         position: "bottom-right",
         autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
       });
     }
   };
@@ -159,7 +195,7 @@ function ComingSoonTimeline({ apiKey }) {
               className={`flex items-center gap-2 px-4 py-2 rounded-md text-white-custom ${
                 watchlist.includes(String(activeMovie.id))
                   ? 'bg-green-600 hover:bg-green-700'
-                  : 'border-gray-700 hover:bg-gray-800'
+                  : 'border-gray-700 hover:bg-gray-800 border'
               }`}
               onClick={() => handleAddToWatchlist(activeMovie.id)}
               disabled={watchlist.includes(String(activeMovie.id))}
@@ -171,6 +207,7 @@ function ComingSoonTimeline({ apiKey }) {
                 </>
               ) : (
                 <>
+                  <BookmarkCheck className="w-5 h-5" />
                   Add to Watchlist
                 </>
               )}
