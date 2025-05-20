@@ -42,7 +42,7 @@ function HorizontalScroll({ apiKey }) {
         if (user) {
           try {
             likedIds = await getLikes();
-            console.log('HorizontalScroll likedIds:', likedIds);
+            //console.log('HorizontalScroll likedIds:', likedIds);
           } catch (authErr) {
             console.error('Auth fetch error:', authErr.message);
           }
@@ -83,9 +83,9 @@ function HorizontalScroll({ apiKey }) {
   };
 
   const handleToggleLike = async (movieId) => {
-    console.log('handleToggleLike called, user:', user);
+    //console.log('handleToggleLike called, user:', user);
     if (!user) {
-      console.log('Showing toast for unauthorized like attempt');
+      //console.log('Showing toast for unauthorized like attempt');
       toast.error("Please log in to like", {
         position: "bottom-right",
         autoClose: 3000,

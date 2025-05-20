@@ -59,7 +59,7 @@ function ComingSoonTimeline({ apiKey }) {
         if (user) {
           try {
             watchlistIds = await getWatchlist();
-            console.log('ComingSoonTimeline watchlistIds:', watchlistIds);
+            //console.log('ComingSoonTimeline watchlistIds:', watchlistIds);
           } catch (authErr) {
             console.error('Auth fetch error:', authErr.message);
           }
@@ -77,9 +77,9 @@ function ComingSoonTimeline({ apiKey }) {
   }, [apiKey, user, getWatchlist]);
 
   const handleAddToWatchlist = async (movieId) => {
-    console.log('handleAddToWatchlist called, user:', user);
+    //console.log('handleAddToWatchlist called, user:', user);
     if (!user) {
-      console.log('Showing toast for unauthorized watchlist attempt');
+      //console.log('Showing toast for unauthorized watchlist attempt');
       toast.error("Please log in to add to watchlist", {
         position: "bottom-right",
         autoClose: 3000,

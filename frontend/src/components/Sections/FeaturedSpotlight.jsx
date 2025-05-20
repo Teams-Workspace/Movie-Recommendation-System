@@ -36,7 +36,7 @@ function FeaturedSpotlight({ apiKey }) {
 
         // Fetch liked movies
         const likedIds = await getLikes();
-        console.log('FeaturedSpotlight likedIds:', likedIds);
+        //console.log('FeaturedSpotlight likedIds:', likedIds);
         setLikedMovies(Array.isArray(likedIds) ? likedIds.map(id => String(id)) : []);
       } catch (err) {
         console.error('FeaturedSpotlight fetchData error:', err.message);

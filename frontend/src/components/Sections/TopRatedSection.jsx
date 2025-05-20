@@ -54,7 +54,7 @@ function TopRatedSection({ apiKey }) {
         if (user) {
           try {
             watchlistIds = await getWatchlist();
-            console.log('TopRatedSection watchlistIds:', watchlistIds);
+            //console.log('TopRatedSection watchlistIds:', watchlistIds);
           } catch (authErr) {
             console.error('Auth fetch error:', authErr.message);
           }
@@ -72,9 +72,9 @@ function TopRatedSection({ apiKey }) {
   }, [apiKey, user, getWatchlist]);
 
   const handleAddToWatchlist = async (movieId) => {
-    console.log('handleAddToWatchlist called, user:', user);
+    //console.log('handleAddToWatchlist called, user:', user);
     if (!user) {
-      // console.log('Showing toast for unauthorized watchlist attempt');
+      // //console.log('Showing toast for unauthorized watchlist attempt');
       toast.error("Please log in to add to watchlist", {
         position: "bottom-right",
         autoClose: 3000,

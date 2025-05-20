@@ -51,7 +51,7 @@ function InteractivePosterGallery({ apiKey }) {
         if (user) {
           try {
             watchlistIds = await getWatchlist();
-            console.log('InteractivePosterGallery watchlistIds:', watchlistIds);
+            //console.log('InteractivePosterGallery watchlistIds:', watchlistIds);
           } catch (authErr) {
             console.error('Auth fetch error:', authErr.message);
             // Continue with empty array to avoid blocking movie data

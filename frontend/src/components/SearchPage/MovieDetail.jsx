@@ -77,7 +77,7 @@ export default function MovieDetail() {
           try {
             watchlistIds = await getWatchlist();
             likedIds = await getLikes();
-            console.log('MovieDetail likedIds:', likedIds);
+            //console.log('MovieDetail likedIds:', likedIds);
           } catch (authErr) {
             console.error('Auth fetch error:', authErr.message);
             // Continue with empty arrays to avoid blocking movie data

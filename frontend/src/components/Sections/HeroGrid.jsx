@@ -42,7 +42,7 @@ useEffect(() => {
         try {
           watchlistIds = await getWatchlist(); // This is likely causing the 401 error
           likedIds = await getLikes();
-          console.log('HeroGrid likedIds:', likedIds);
+          //console.log('HeroGrid likedIds:', likedIds);
         } catch (authErr) {
           console.error('Auth fetch error:', authErr.message); // Logs "Invalid token"
         }
@@ -60,9 +60,9 @@ useEffect(() => {
 }, [apiKey, user, getWatchlist, getLikes]);
 
   const handleAddToWatchlist = async (movieId) => {
-    console.log('handleAddToWatchlist called, user:', user);
+    //console.log('handleAddToWatchlist called, user:', user);
     if (!user) {
-      console.log('Showing toast for unauthorized watchlist attempt');
+      //console.log('Showing toast for unauthorized watchlist attempt');
       toast.error("Please log in to add to watchlist", {
         position: "bottom-right",
         autoClose: 3000,
@@ -100,9 +100,9 @@ useEffect(() => {
   };
 
   const handleToggleLike = async (movieId) => {
-    console.log('handleToggleLike called, user:', user);
+    //console.log('handleToggleLike called, user:', user);
     if (!user) {
-      console.log('Showing toast for unauthorized like attempt');
+      //console.log('Showing toast for unauthorized like attempt');
       toast.error("Please log in to like", {
         position: "bottom-right",
         autoClose: 3000,
