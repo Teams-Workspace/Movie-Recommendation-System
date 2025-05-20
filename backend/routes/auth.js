@@ -7,6 +7,7 @@ const User = require('../models/User');
 const Watchlist = require('../models/Watchlist');
 const Likes = require('../models/Likes');
 const router = express.Router();
+const axios = require('axios');
 
 // Generate OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
@@ -390,6 +391,146 @@ router.get('/profile', authenticate, async (req, res) => {
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.status(200).json({ name: user.name, email: user.email });
   } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// TMDB API base URL
+const TMDB_API_BASE = 'https://api.themoviedb.org/3';
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
+
+// Recommendations Endpoint
+router.get('/recommendations', async (req, res) => {
+  try {
+    // Check for token (optional authentication)
+    let userId = null;
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        userId = decoded.id;
+      } catch (err) {
+        // Proceed without userId if token is invalid
+        console.error('Invalid token for recommendations:', err.message);
+      }
+    }
+
+    // Fallback for unauthenticated users or empty watchlist/likes
+    const fetchPopularMovies = async () => {
+      const response = await axios.get(`${TMDB_API_BASE}/movie/popular`, {
+        params: { api_key: TMDB_API_KEY, language: 'en-US', page: 1 },
+      });
+      return response.data.results.slice(0, 6);
+    };
+
+    if (!userId) {
+      const popularMovies = await fetchPopularMovies();
+      return res.status(200).json(popularMovies);
+    }
+
+    // Fetch watchlist and likes
+    const watchlist = await Watchlist.findOne({ user: userId }).select('movieIds');
+    const likes = await Likes.findOne({ user: userId }).select('movieIds');
+    const watchlistIds = watchlist ? watchlist.movieIds : [];
+    const likesIds = likes ? likes.movieIds : [];
+
+    // If no watchlist or likes, return popular movies
+    if (!watchlistIds.length && !likesIds.length) {
+      const popularMovies = await fetchPopularMovies();
+      return res.status(200).json(popularMovies);
+    }
+
+    // Combine movie IDs (deduplicate)
+    const movieIds = [...new Set([...watchlistIds, ...likesIds])];
+
+    // Fetch movie details from TMDB
+    const movieDetails = await Promise.all(
+      movieIds.map(async (id) => {
+        try {
+          const response = await axios.get(`${TMDB_API_BASE}/movie/${id}`, {
+            params: { api_key: TMDB_API_KEY, language: 'en-US' },
+          });
+          return {
+            id,
+            genres: response.data.genres.map((g) => g.id),
+            vote_average: response.data.vote_average,
+          };
+        } catch (err) {
+          console.error(`Failed to fetch TMDB movie ${id}:`, err.message);
+          return null;
+        }
+      })
+    );
+
+    // Filter out failed requests
+    const validMovies = movieDetails.filter((movie) => movie !== null);
+
+    // Calculate genre frequencies (weight likes 2x)
+    const genreCounts = {};
+    validMovies.forEach((movie) => {
+      const isLiked = likesIds.includes(movie.id);
+      const weight = isLiked ? 2 : 1;
+      movie.genres.forEach((genreId) => {
+        genreCounts[genreId] = (genreCounts[genreId] || 0) + weight;
+      });
+    });
+
+    // Sort genres by frequency, take top 3
+    const topGenres = Object.entries(genreCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([genreId]) => genreId);
+
+    // Calculate average rating (weighted)
+    const totalWeight = validMovies.reduce((sum, movie) => {
+      const isLiked = likesIds.includes(movie.id);
+      return sum + (isLiked ? 2 : 1);
+    }, 0);
+    const avgRating =
+      validMovies.reduce((sum, movie) => {
+        const isLiked = likesIds.includes(movie.id);
+        return sum + movie.vote_average * (isLiked ? 2 : 1);
+      }, 0) / (totalWeight || 1);
+
+    // Set minimum rating (avg - 1.0 or 6.0)
+    const minRating = Math.max(avgRating - 1.0, 6.0);
+
+    // Fetch recommended movies from TMDB
+    const response = await axios.get(`${TMDB_API_BASE}/discover/movie`, {
+      params: {
+        api_key: TMDB_API_KEY,
+        language: 'en-US',
+        sort_by: 'vote_average.desc',
+        with_genres: topGenres.join(','),
+        'vote_average.gte': minRating,
+        page: 1,
+      },
+    });
+
+    // Filter out watchlist/likes movies, limit to 6
+    const recommendations = response.data.results
+      .filter((movie) => !watchlistIds.includes(String(movie.id)) && !likesIds.includes(String(movie.id)))
+      .slice(0, 6);
+
+    // If insufficient recommendations, supplement with popular movies
+    if (recommendations.length < 6) {
+      const popularResponse = await axios.get(`${TMDB_API_BASE}/movie/popular`, {
+        params: { api_key: TMDB_API_KEY, language: 'en-US', page: 1 },
+      });
+      const additionalMovies = popularResponse.data.results
+        .filter(
+          (movie) =>
+            !watchlistIds.includes(String(movie.id)) &&
+            !likesIds.includes(String(movie.id)) &&
+            !recommendations.some((rec) => rec.id === movie.id)
+        )
+        .slice(0, 6 - recommendations.length);
+      recommendations.push(...additionalMovies);
+    }
+
+    res.status(200).json(recommendations);
+  } catch (err) {
+    console.error('Recommendations error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
