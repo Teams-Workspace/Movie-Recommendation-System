@@ -17,7 +17,7 @@ function SiteFooter() {
               <span className="text-red-main font-medium">Saad Ali</span>
               <div className="flex space-x-4">
                 <a
-                  href="https://github.com/yourusername"
+                  href="https://github.com/Saad123ali"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-red-600 transition-colors"
@@ -26,7 +26,7 @@ function SiteFooter() {
                   <span className="sr-only">GitHub</span>
                 </a>
                 <a
-                  href="https://linkedin.com/in/yourusername"
+                  href="https://www.linkedin.com/in/itsmesaadali/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-red-600 transition-colors"
@@ -44,7 +44,7 @@ function SiteFooter() {
                   <span className="sr-only">Instagram</span>
                 </a>
                 <a
-                  href="mailto:your.email@example.com"
+                  href="mailto:your.itmesaad@gmail.com"
                   className="text-gray-400 hover:text-red-600 transition-colors"
                 >
                   <MdAttachEmail className="h-5 w-5" />
@@ -56,7 +56,7 @@ function SiteFooter() {
               <span className="text-red-main font-medium">Abrar Ali</span>
               <div className="flex space-x-4">
                 <a
-                  href="https://github.com/yourusername"
+                  href="https://github.com/AbrarAli-SE"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-red-600 transition-colors"
@@ -65,7 +65,7 @@ function SiteFooter() {
                   <span className="sr-only">GitHub</span>
                 </a>
                 <a
-                  href="https://linkedin.com/in/yourusername"
+                  href="https://www.linkedin.com/in/abrar-ali-se/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-red-600 transition-colors"
@@ -83,7 +83,7 @@ function SiteFooter() {
                   <span className="sr-only">Instagram</span>
                 </a>
                 <a
-                  href="mailto:your.email@example.com"
+                  href="mailto:your.abrarali.se@gmail.com"
                   className="text-gray-400 hover:text-red-600 transition-colors"
                 >
                   <MdAttachEmail className="h-5 w-5" />

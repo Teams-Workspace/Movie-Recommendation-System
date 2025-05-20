@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Star, BookmarkCheck, Heart } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import CSS
+import 'react-toastify/dist/ReactToastify.css';
 import CustomLoader from '../cusloader';
 
 function HeroGrid({ apiKey }) {
   const navigate = useNavigate();
-  const { user, addToWatchlist, getWatchlist, addToLikes, getLikes, removeFromLikes } = useContext(AuthContext);
+  const { user, addToWatchlist, getWatchlist, addToLikes, getLikes, removeFromLikes, getRecommendations } =
+    useContext(AuthContext);
   const [movies, setMovies] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [likedMovies, setLikedMovies] = useState([]);
@@ -17,100 +18,111 @@ function HeroGrid({ apiKey }) {
   const [error, setError] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        setError(null);
 
-  // Fetch movies, watchlist, and liked movies
-useEffect(() => {
-  async function fetchData() {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Fetch popular movies
-      const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=2`;
-      const response = await fetch(API_URL);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      setMovies(data.results || []);
-
-      // Fetch watchlist and liked movies only for authenticated users
-      let watchlistIds = [];
-      let likedIds = [];
-      if (user) {
-        try {
-          watchlistIds = await getWatchlist(); // This is likely causing the 401 error
-          likedIds = await getLikes();
-          //console.log('HeroGrid likedIds:', likedIds);
-        } catch (authErr) {
-          console.error('Auth fetch error:', authErr.message); // Logs "Invalid token"
+        // Fetch recommendations via AuthContext
+        const data = await getRecommendations();
+        if (!Array.isArray(data) || data.length < 5) {
+          throw new Error('Insufficient movies returned for display');
         }
-      }
-      setWatchlist(Array.isArray(watchlistIds) ? watchlistIds.map(id => String(id)) : []);
-      setLikedMovies(Array.isArray(likedIds) ? likedIds.map(id => String(id)) : []);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
+        setMovies(data);
 
-  fetchData();
-}, [apiKey, user, getWatchlist, getLikes]);
+        // Fetch watchlist and liked movies only for authenticated users
+        let watchlistIds = [];
+        let likedIds = [];
+        if (user) {
+          try {
+            watchlistIds = await getWatchlist();
+            likedIds = await getLikes();
+          } catch (authErr) {
+            console.error('Auth fetch error:', authErr.message);
+            // Handle 401 (invalid token) gracefully
+            if (authErr.message.includes('Invalid token')) {
+              toast.error('Session expired. Please log in again.', {
+                position: 'bottom-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: 'dark',
+              });
+            }
+          }
+        }
+        setWatchlist(Array.isArray(watchlistIds) ? watchlistIds.map((id) => String(id)) : []);
+        setLikedMovies(Array.isArray(likedIds) ? likedIds.map((id) => String(id)) : []);
+      } catch (err) {
+        setError(err.message);
+        toast.error(err.message || 'Failed to fetch recommendations', {
+          position: 'bottom-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: 'dark',
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, [user, getRecommendations, getWatchlist, getLikes]);
 
   const handleAddToWatchlist = async (movieId) => {
-    //console.log('handleAddToWatchlist called, user:', user);
     if (!user) {
-      //console.log('Showing toast for unauthorized watchlist attempt');
-      toast.error("Please log in to add to watchlist", {
-        position: "bottom-right",
+      toast.error('Please log in to add to watchlist', {
+        position: 'bottom-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        theme: "dark",
+        theme: 'dark',
       });
       return;
     }
     try {
       const result = await addToWatchlist(movieId);
       setWatchlist((prev) => [...prev, String(movieId)]);
-      toast.success(result.message || "Movie added to watchlist", {
-        position: "bottom-right",
+      toast.success(result.message || 'Movie added to watchlist', {
+        position: 'bottom-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        theme: "dark",
+        theme: 'dark',
       });
     } catch (err) {
-      toast.error(err.message || "Failed to add to watchlist", {
-        position: "bottom-right",
+      toast.error(err.message || 'Failed to add to watchlist', {
+        position: 'bottom-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        theme: "dark",
+        theme: 'dark',
       });
     }
   };
 
   const handleToggleLike = async (movieId) => {
-    //console.log('handleToggleLike called, user:', user);
     if (!user) {
-      //console.log('Showing toast for unauthorized like attempt');
-      toast.error("Please log in to like", {
-        position: "bottom-right",
+      toast.error('Please log in to like', {
+        position: 'bottom-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        theme: "dark",
+        theme: 'dark',
       });
       return;
     }
@@ -121,37 +133,37 @@ useEffect(() => {
       if (isLiked) {
         const result = await removeFromLikes(String(movieId));
         setLikedMovies((prev) => prev.filter((id) => id !== String(movieId)));
-        toast.success(result.message || "Movie removed from likes", {
-          position: "bottom-right",
+        toast.success(result.message || 'Movie removed from likes', {
+          position: 'bottom-right',
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          theme: "dark",
+          theme: 'dark',
         });
       } else {
         const result = await addToLikes(String(movieId));
         setLikedMovies((prev) => [...prev, String(movieId)]);
-        toast.success(result.message || "Added to likes", {
-          position: "bottom-right",
+        toast.success(result.message || 'Added to likes', {
+          position: 'bottom-right',
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          theme: "dark",
+          theme: 'dark',
         });
       }
     } catch (err) {
       toast.error(err.message || `Failed to ${isLiked ? 'remove from' : 'add to'} likes`, {
-        position: "bottom-right",
+        position: 'bottom-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        theme: "dark",
+        theme: 'dark',
       });
     } finally {
       setIsLiking((prev) => ({ ...prev, [movieId]: false }));
@@ -208,7 +220,10 @@ useEffect(() => {
                   ? 'bg-red-600 hover:bg-red-700'
                   : 'bg-red-main hover:bg-red-main/90'
               }`}
-              onClick={() => handleToggleLike(mainFeature.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleToggleLike(mainFeature.id);
+              }}
               disabled={isLiking[mainFeature.id]}
             >
               {isLiking[mainFeature.id] ? (
@@ -224,7 +239,10 @@ useEffect(() => {
             </button>
             <button
               className="cursor-pointer border-gray-700 hover:bg-gray-800 text-white-custom px-4 py-2 rounded-md border flex items-center gap-2"
-              onClick={() => navigate(`/movie/${mainFeature.id}`)}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/movie/${mainFeature.id}`);
+              }}
             >
               More Info
             </button>
@@ -234,7 +252,10 @@ useEffect(() => {
                   ? 'bg-green-600 hover:bg-green-700'
                   : 'border-gray-700 hover:bg-gray-800 border'
               }`}
-              onClick={() => handleAddToWatchlist(mainFeature.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToWatchlist(mainFeature.id);
+              }}
               disabled={watchlist.includes(String(mainFeature.id))}
             >
               {watchlist.includes(String(mainFeature.id)) ? (

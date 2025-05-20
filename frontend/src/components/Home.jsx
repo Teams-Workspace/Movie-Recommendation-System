@@ -37,7 +37,7 @@ function Home() {
       <section className="py-8">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">
-            Featured Movies
+            Recommended for you
           </h2>
           <HeroGrid apiKey={API_KEY} />
         </div>

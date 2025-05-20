@@ -6,7 +6,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
 
-  // Use the backend URL from the .env file
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
@@ -155,7 +154,7 @@ export function AuthProvider({ children }) {
       });
       if (response.status === 204) return [];
       const text = await response.text();
-      console.log('getLikes raw response:', text);
+      //console.log('getLikes raw response:', text);
       if (!text) {
         console.error('getLikes: Empty response from server');
         return [];
@@ -173,7 +172,7 @@ export function AuthProvider({ children }) {
         console.error('getLikes: data.likes is not an array:', likes);
         return [];
       }
-      return likes;
+      return likes; 
     } catch (err) {
       console.error('getLikes error:', err.message);
       throw err;
@@ -232,6 +231,38 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const getRecommendations = async () => {
+    try {
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const response = await fetch(`${BACKEND_URL}/api/auth/recommendations`, {
+        headers,
+      });
+      const text = await response.text();
+      if (!text) {
+        console.error('getRecommendations: Empty response from server');
+        throw new Error('Failed to fetch recommendations: Empty response');
+      }
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        console.error('getRecommendations: Invalid JSON:', text);
+        throw new Error('Failed to fetch recommendations: Invalid JSON response');
+      }
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch recommendations');
+      }
+      if (!Array.isArray(data)) {
+        console.error('getRecommendations: Data is not an array:', data);
+        throw new Error('Failed to fetch recommendations: Invalid data format');
+      }
+      return data.slice(0, 6); // Ensure max 6 movies
+    } catch (err) {
+      console.error('getRecommendations error:', err.message);
+      throw err;
+    }
+  };
+
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -254,6 +285,7 @@ export function AuthProvider({ children }) {
         removeFromLikes,
         getProfile,
         updateProfile,
+        getRecommendations,
         logout,
       }}
     >
