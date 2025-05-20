@@ -6,6 +6,9 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
 
+  // Use the backend URL from the .env file
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
     if (token) {
       localStorage.setItem('token', token);
@@ -18,7 +21,7 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -35,7 +38,7 @@ export function AuthProvider({ children }) {
 
   const signup = async (name, email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/signup', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
@@ -50,7 +53,7 @@ export function AuthProvider({ children }) {
 
   const verifyOTP = async (email, otp) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp }),
@@ -65,7 +68,7 @@ export function AuthProvider({ children }) {
 
   const forgotPassword = async (email) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/forgot-password', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -80,7 +83,7 @@ export function AuthProvider({ children }) {
 
   const addToWatchlist = async (movieId) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/watchlist', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/watchlist`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +101,7 @@ export function AuthProvider({ children }) {
 
   const getWatchlist = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/watchlist', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/watchlist`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
@@ -111,7 +114,7 @@ export function AuthProvider({ children }) {
 
   const removeFromWatchlist = async (movieId) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/watchlist', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/watchlist`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -129,7 +132,7 @@ export function AuthProvider({ children }) {
 
   const addToLikes = async (movieId) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/likes', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/likes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -147,7 +150,7 @@ export function AuthProvider({ children }) {
 
   const getLikes = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/likes', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/likes`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.status === 204) return [];
@@ -179,7 +182,7 @@ export function AuthProvider({ children }) {
 
   const removeFromLikes = async (movieId) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/likes', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/likes`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -197,7 +200,7 @@ export function AuthProvider({ children }) {
 
   const getProfile = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/profile', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
@@ -212,7 +215,7 @@ export function AuthProvider({ children }) {
 
   const updateProfile = async ({ name, email, currentPassword, newPassword }) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/update-profile', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/update-profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
