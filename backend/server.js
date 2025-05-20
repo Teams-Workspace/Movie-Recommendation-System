@@ -13,6 +13,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+app.use(cors({
+  origin: 'https://movie-recommendation-system-seven-orpin.vercel.app',
+  credentials: true // If your login uses cookies or tokens
+}));
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/', (req, res) => {
