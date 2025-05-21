@@ -10,7 +10,7 @@ const app = express();
 
 // CORS configuration
 const corsOptions = {
-  origin: 'http://localhost:5173', // Allow requests from React + Vite frontend
+  origin: ['http://localhost:5173', 'https://mrs-api-black.vercel.app'], // Allow requests from React + Vite frontend
   optionsSuccessStatus: 200 // For legacy browser support
 };
 
