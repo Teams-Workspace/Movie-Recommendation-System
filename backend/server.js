@@ -4,20 +4,19 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/auth');
 
-
 dotenv.config();
 
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:5173', // Allow requests from React + Vite frontend
+  optionsSuccessStatus: 200 // For legacy browser support
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
-
-
-app.use(cors({
-  origin: 'https://movie-recommendation-system-seven-orpin.vercel.app',
-  credentials: true // If your login uses cookies or tokens
-}));
 
 // Routes
 app.use('/api/auth', authRoutes);
