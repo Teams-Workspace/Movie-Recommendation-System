@@ -12,10 +12,12 @@ const PORT = process.env.PORT
 
 DB();
 
-app.use(cors({
-  origin: 'https://mrsapp.netlify.app', // frontend URL
-  credentials: true
-}));
+const corsOptions = {
+  origin: 'https://mrsapp.netlify.app',
+}
+
+app.use(cors(corsOptions))
+
 
 app.use(express.json());
 
