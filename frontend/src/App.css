@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --dark: #111827;
+    --red-main: #F40000;
+    --black-dark: #0f1419;
+    --light-gray: #E5E7EB;
+    --light-white: #FFFFFF;
+  }
+}
+
+/* Define custom colors for Tailwind */
+@layer utilities {
+  .bg-red-main {
+    background-color: var(--red-main);
+  }
+
+  .text-red-main {
+    color: var(--red-main);
+  }
+
+  .bg-black-dark {
+    background-color: var(--black-dark);
+  }
+
+ 
+  .text-black-dark {
+    color: var(--black-dark);
+  }
+
+  .bg-dark{
+    background-color: var(--dark);
+  }
+  .text-dark{
+    color: var(--dark);
+  }
+
+  .bg-light-white{
+    background-color: var(--light-white);
+  }
+
+  .text-light-white{
+    color: var(--light-white);
+  }
+
+  .bg-light-gray {
+    background-color: var(--light-gray);
+  }
+
+  .text-light-gray {
+    color: var(--light-gray);
+  }
+
+  .hover\:text-red-main-hover:hover {
+    color: var(--red-main);
+  }
+
+  .hover\:bg-red-main-hover:hover {
+    background-color: var(--red-main);
+  }
+
+  .custom-border {
+    border-color: #374151; /* gray-700 fallback */
+  }
+}
+
+
+
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, and Opera */
+}
+
+
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem; /* smaller padding for inside a button */
+}
+
+.spinner-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.spinner-circle:before,
+.spinner-circle:after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 3px dashed #ffffff;
+  width: 20px;
+  height: 20px;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.spinner-circle:before {
+  animation: loading 1s linear infinite;
+  z-index: 1;
+}
+
+.spinner-circle:after {
+  animation: loading 1s ease infinite;
+  z-index: 2;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

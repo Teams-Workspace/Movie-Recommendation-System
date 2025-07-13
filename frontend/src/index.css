@@ -1,85 +1,22 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;700&display=swap');
 
-html,
-body,
-#root {
-  margin: 0;
-  padding: 0;
+
+html, body{
+  margin: 0%;
+  padding: 0%;
   box-sizing: border-box;
-  width: 100%;
 }
 
+/* Import in your CSS or <head> */
 
+/* Usage */
+h1, h2, h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
-@layer base {
-  :root {
-    --red-main: #F40000;
-    --dark: #090809;
-    --white: #FFFFFF;
-    --light-gray: #E5E7EB;
-    --primary: #2563eb,
-    --light-gray: #e5e7eb,
-    --dark: #111827
-  }
 }
 
-/* Define custom colors for Tailwind */
-@layer utilities {
-  .bg-red-main {
-    background-color: var(--red-main);
-  }
-
-  .text-red-main {
-    color: var(--red-main);
-  }
-
-  .bg-dark {
-    background-color: var(--dark);
-  }
-
- 
-  .text-dark {
-    color: var(--dark);
-  }
-
-  .bg-white-custom {
-    background-color: var(--white);
-  }
-
-  .text-white-custom {
-    color: var(--white);
-  }
-
-  .bg-light-gray {
-    background-color: var(--light-gray);
-  }
-
-  .text-light-gray {
-    color: var(--light-gray);
-  }
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-  /* Chrome, Safari, and Opera */
-}
-
-
-
-body,
-html {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+body, p, button {
+  font-family: 'Manrope', sans-serif;
 }

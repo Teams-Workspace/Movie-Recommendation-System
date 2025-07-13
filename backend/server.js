@@ -1,34 +1,34 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const authRoutes = require('./routes/auth');
+require('dotenv').config()
+const express = require('express')
+const DB = require('./config/DBconfig')
+const cors = require('cors')
+const authRoutes = require('./routes/auth')
+const userRoutes = require('./routes/user')
+const likeRoutes = require('./routes/like')
+const watchlistRoutes = require('./routes/watchlist')
 
-dotenv.config();
+const app = express()
+const PORT = process.env.PORT 
 
-const app = express();
+DB();
 
-// CORS configuration
-const corsOptions = {
-  origin: ['http://localhost:5173', 'https://mrs-api-black.vercel.app'], // Allow requests from React + Vite frontend
-  optionsSuccessStatus: 200 // For legacy browser support
-};
+app.use(cors({
+  origin: 'http://localhost:5173', // frontend URL
+  credentials: true
+}));
 
-// Middleware
-app.use(cors(corsOptions));
 app.use(express.json());
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/', (req, res) => {
-  res.send('Welcome to the backend API');
-});
+app.get('/', (req, res)=>{
+    res.send('Hello World')     
+})
 
-// MongoDB Connection
-mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+app.use('/api', authRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/likes', likeRoutes);
+app.use('/api/watchlist', watchlistRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.listen(PORT, ()=>{
+    console.log(`Server running =>  ${PORT}`)
+})
