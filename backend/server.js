@@ -13,7 +13,7 @@ const PORT = process.env.PORT
 DB();
 
 app.use(cors({
-  origin: 'http://localhost:5173', // frontend URL
+  origin: 'https://mrsapp.netlify.app', // frontend URL
   credentials: true
 }));
 
