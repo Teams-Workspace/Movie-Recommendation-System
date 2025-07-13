@@ -30,7 +30,22 @@ app.use('/api/user', userRoutes);
 app.use('/api/likes', likeRoutes);
 app.use('/api/watchlist', watchlistRoutes);
 
+// Global error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal server error' });
+});
 
-app.listen(PORT, ()=>{
-    console.log(`Server running =>  ${PORT}`)
-})
+const startServer = async () => {
+  try {
+    await DB(); // Await MongoDB connection
+    app.listen(PORT, () => {
+      console.log(`Server running => ${PORT}`);
+    });
+  } catch (err) {
+    console.error('Failed to start server:', err);
+    process.exit(1); // Optional: exit if DB connection fails
+  }
+};
+
+startServer();
